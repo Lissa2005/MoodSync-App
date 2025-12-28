@@ -1,2 +1,2 @@
 # MoodSync-App
-# An AI Mood detecting app.
+An AI mood-detecting app.
