@@ -1,4 +1,4 @@
-name: Frontend CI (Flutter)
+name: Frontend CI (Flutter Tests)
 
 on:
   pull_request:
@@ -8,19 +8,18 @@ on:
       - ".github/workflows/frontend-ci.yml"
 
 jobs:
-  test-frontend:
+  frontend-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.19.0"
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: |
           cd frontend
           flutter pub get
