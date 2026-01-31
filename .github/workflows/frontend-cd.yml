@@ -1,0 +1,29 @@
+name: Frontend CD (Build)
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "frontend/**"
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.0"
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          flutter pub get
+
+      - name: Build Flutter app
+        run: |
+          cd frontend
+          flutter build apk --debug
