@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Moodsync',
-      home: const signin_screen(),
+      home: const SigninScreen(),
     );
   }
 }

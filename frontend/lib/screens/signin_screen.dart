@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:moodsync/screens/home_screen.dart';
 
-class signin_screen extends StatelessWidget {
-  const signin_screen({super.key});
+class SigninScreen extends StatelessWidget {
+  const SigninScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Sign In')),
       body: Padding(
-        padding: const EdgeInsets.all(20)
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -24,7 +24,7 @@ class signin_screen extends StatelessWidget {
               onPressed: (){
                 Navigator.pushReplacement(
                   context, 
-                  MaterialPageRoute(builder: (_) => const home_screen()),
+                  MaterialPageRoute(builder: (_) => const HomeScreen()),
                   );
               },
                child: const Text('Sign In'),
@@ -32,6 +32,6 @@ class signin_screen extends StatelessWidget {
           ],
         ),
       ),
-    )
+    );
   }
 }
