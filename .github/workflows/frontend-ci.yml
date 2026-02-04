@@ -3,38 +3,42 @@ name: Frontend CI - Flutter Tests
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - "frontend/**"
-      - ".github/workflows/frontend-ci.yml"
-
   pull_request:
     branches: [ "main" ]
-    paths:
-      - "frontend/**"
-      - ".github/workflows/frontend-ci.yml"
 
 jobs:
-  test:
+  changes:
     runs-on: ubuntu-latest
-
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
     steps:
       - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+              - '.github/workflows/frontend-ci.yml'
 
+  test:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.19.0"
-
       - name: Install dependencies
         run: |
           cd frontend
           flutter pub get
-
       - name: Analyze code
         run: |
           cd frontend
           flutter analyze
-
       - name: Run tests
         run: |
           cd frontend
