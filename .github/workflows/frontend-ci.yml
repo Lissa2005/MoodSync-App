@@ -15,7 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dorny/paths-filter@v3
+      - name: Detect frontend changes
+        uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
@@ -23,7 +24,7 @@ jobs:
               - 'frontend/**'
               - '.github/workflows/frontend-ci.yml'
 
-  test:
+  frontend-test:
     needs: changes
     runs-on: ubuntu-latest
 
