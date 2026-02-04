@@ -15,7 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dorny/paths-filter@v3
+      - name: Detect backend changes
+        uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
@@ -23,7 +24,7 @@ jobs:
               - 'backend/**'
               - '.github/workflows/backend-ci.yml'
 
-  test:
+  backend-test:
     needs: changes
     runs-on: ubuntu-latest
 
@@ -33,7 +34,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.11"
 
       - name: Install dependencies
         if: ${{ needs.changes.outputs.backend == 'true' }}
