@@ -1,6 +1,12 @@
-name: Frontend CI (Flutter Tests)
+name: Frontend CI - Flutter Tests
 
 on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+
   pull_request:
     branches: [ "main" ]
     paths:
@@ -8,7 +14,7 @@ on:
       - ".github/workflows/frontend-ci.yml"
 
 jobs:
-  frontend-tests:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,12 +25,17 @@ jobs:
         with:
           flutter-version: "3.19.0"
 
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: |
           cd frontend
           flutter pub get
 
-      - name: Run Flutter tests
+      - name: Analyze code
+        run: |
+          cd frontend
+          flutter analyze
+
+      - name: Run tests
         run: |
           cd frontend
           flutter test
