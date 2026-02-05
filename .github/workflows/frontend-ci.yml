@@ -1,14 +1,31 @@
-name: Frontend CI (Flutter Tests)
+name: Frontend CI - Flutter Tests
 
 on:
+  push:
+    branches:
+      - "**"
   pull_request:
     branches: [ "main" ]
-    paths:
-      - "frontend/**"
-      - ".github/workflows/frontend-ci.yml"
 
 jobs:
-  frontend-tests:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect frontend changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+              - '.github/workflows/frontend-ci.yml'
+
+  frontend-test:
+    needs: changes
     runs-on: ubuntu-latest
 
     steps:
@@ -19,12 +36,24 @@ jobs:
         with:
           flutter-version: "3.19.0"
 
-      - name: Install frontend dependencies
+      - name: Install dependencies
+        if: ${{ needs.changes.outputs.frontend == 'true' }}
         run: |
           cd frontend
           flutter pub get
 
-      - name: Run Flutter tests
+      - name: Analyze code
+        if: ${{ needs.changes.outputs.frontend == 'true' }}
+        run: |
+          cd frontend
+          flutter analyze
+
+      - name: Run tests
+        if: ${{ needs.changes.outputs.frontend == 'true' }}
         run: |
           cd frontend
           flutter test
+
+      - name: Skip message
+        if: ${{ needs.changes.outputs.frontend != 'true' }}
+        run: echo "No frontend changes, skipping frontend tests."
