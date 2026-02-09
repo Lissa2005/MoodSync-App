@@ -25,7 +25,7 @@ class SigninScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: (){
-                Authenticator.login()
+                Authenticator.login();
                 Navigator.pushReplacement(
                   context, 
                   MaterialPageRoute(builder: (_) => const HomeScreen()),

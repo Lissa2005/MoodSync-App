@@ -3,7 +3,6 @@ import 'package:moodsync/screens/activities_screen.dart';
 import './about_page.dart';
 import './mood_input_Screen.dart';
 import './Interactive_platform.dart';
-import './activities_screen.dart';
 import 'package:moodsync/authenticator.dart';
 
 class HomeScreen extends StatelessWidget{

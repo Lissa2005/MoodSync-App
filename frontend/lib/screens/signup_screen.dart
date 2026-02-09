@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodsync/screens/home_screen.dart';
-import 'package:moodsync/screens/signin_screen.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
