@@ -16,16 +16,16 @@ class SigninScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(decoration: const InputDecoration(labelText:'Name')),
+            const TextField(decoration: InputDecoration(labelText:'Name')),
             const SizedBox(height: 10),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Password'),
+            const TextField(
+              decoration: InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: (){
-                Authenticator.login()
+                Authenticator.login();
                 Navigator.pushReplacement(
                   context, 
                   MaterialPageRoute(builder: (_) => const HomeScreen()),
