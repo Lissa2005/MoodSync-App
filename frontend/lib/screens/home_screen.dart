@@ -4,6 +4,7 @@ import './about_page.dart';
 import './mood_input_Screen.dart';
 import './Interactive_platform.dart';
 import './activities_screen.dart';
+import 'package:moodsync/authenticator.dart';
 
 class HomeScreen extends StatelessWidget{
   const HomeScreen({super.key});
@@ -11,7 +12,19 @@ class HomeScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('MoodSync')),
+      appBar: AppBar(
+        title: const Text('MoodSync'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              Authenticator.logout(); // 🔴 SESSION ENDS HERE
+
+              Navigator.pushReplacementNamed(context, '/signin');
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
