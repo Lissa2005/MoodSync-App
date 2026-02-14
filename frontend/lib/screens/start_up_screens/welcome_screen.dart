@@ -119,7 +119,7 @@ class _WelcomePage extends StatelessWidget {
         children: [
           //the app logo
           Image.asset(
-            'assets/images/logo.jpeg',
+            'assets/image/logo.jpeg',
             height: 220,
           ),
           const SizedBox(height: 40),
