@@ -15,5 +15,11 @@ void main() {
 
     // Just verify app loads
     expect(find.byType(WelcomeScreen), findsOneWidget);
+    
+    // Let all frames, animations, and async work finish
+    await tester.pumpAndSettle();
+
+    // If we reach here, the app did not crash
+    expect(find.byType(MoodSyncApp), findsNothing); // sanity check
   });
 }
