@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget{
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              Authenticator.logout(); // 🔴 SESSION ENDS HERE
+              Authenticator.logout(); //  SESSION ENDS HERE
 
               Navigator.pushReplacementNamed(context, '/signin');
             },

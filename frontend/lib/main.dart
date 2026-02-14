@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
-import 'screens/signin_screen.dart';
-
+import 'screens/start_up_screens/welcome_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MoodSyncApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MoodSyncApp extends StatelessWidget {
+  const MoodSyncApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Moodsync',
-      home: SigninScreen(),
+    return  MaterialApp(
+      debugShowCheckedModeBanner: false,
+
+      //Default Theme
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
+
+        scaffoldBackgroundColor: const Color(0xE6E6FAFF),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            foregroundColor: Colors.white,
+          ),
+        ),
+      ),
+      home: const WelcomeScreen(),
     );
   }
 }
-
