@@ -10,14 +10,14 @@ class MusicPlaylistScreen extends StatefulWidget {
   final String playlistDetails;
   
   const MusicPlaylistScreen({
-    Key? key,
+    super.key,
     required this.mood,
     required this.primaryColor,
     required this.secondaryColor,
     required this.accentColor,
     required this.playlistName,
     required this.playlistDetails,
-  }) : super(key: key);
+  }) ;
 
   @override
   State<MusicPlaylistScreen> createState() => _MusicPlaylistScreenState();

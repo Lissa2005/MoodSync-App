@@ -8,13 +8,13 @@ class MusicPlayerScreen extends StatefulWidget {
   final Map<String, String> song;
   
   const MusicPlayerScreen({
-    Key? key,
+    super.key,
     required this.mood,
     required this.primaryColor,
     required this.secondaryColor,
     required this.accentColor,
     required this.song,
-  }) : super(key: key);
+  });
 
   @override
   State<MusicPlayerScreen> createState() => _MusicPlayerScreenState();

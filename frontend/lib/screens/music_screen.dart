@@ -7,12 +7,12 @@ class MusicScreen extends StatefulWidget {
   final Color accentColor;
   
   const MusicScreen({
-    Key? key,
+    super.key,
     required this.mood,
     required this.primaryColor,
     required this.secondaryColor,
     required this.accentColor,
-  }) : super(key: key);
+  }) ;
 
   @override
   State<MusicScreen> createState() => _MusicScreenState();
