@@ -10,9 +10,24 @@ class MoodSyncApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WelcomeScreen(),
+
+      //Default Theme
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
+
+        scaffoldBackgroundColor: const Color(0xE6E6FAFF),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            foregroundColor: Colors.white,
+          ),
+        ),
+      ),
+      home: const WelcomeScreen(),
     );
   }
 }
