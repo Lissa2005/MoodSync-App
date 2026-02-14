@@ -15,3 +15,4 @@ class MoodSyncApp extends StatelessWidget {
       home: WelcomeScreen(),
     );
   }
+}
