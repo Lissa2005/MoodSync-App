@@ -7,12 +7,13 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:moodsync/main.dart';
+import 'package:moodsync/screens/start_up_screens/welcome_screen.dart';
 
 void main() {
   testWidgets('App launches without crashing', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const MoodSyncApp());
 
     // Just verify app loads
-    expect(find.byType(MyApp), findsOneWidget);
+    expect(find.byType(WelcomeScreen), findsOneWidget);
   });
 }
