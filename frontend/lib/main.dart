@@ -1,21 +1,10 @@
 import 'package:flutter/material.dart';
-import 'screens/signin_screen.dart';
-
+import 'screens/start_up_screens/welcome_screen.dart';
 
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Moodsync',
-      home: SigninScreen(),
-    );
-  }
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: WelcomeScreen(),
+  ));
 }
 
