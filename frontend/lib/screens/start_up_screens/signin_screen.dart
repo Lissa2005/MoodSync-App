@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodsync/authenticator.dart';
 import 'package:moodsync/screens/home_screen.dart';
-import 'package:moodsync/screens/signup_screen.dart';
+import 'package:moodsync/screens/start_up_screens/signup_screen.dart';
 
 
 class SigninScreen extends StatelessWidget {
