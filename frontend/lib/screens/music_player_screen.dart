@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/bottom_nav_bar.dart';
 
 class MusicPlayerScreen extends StatefulWidget {
   final String mood;
@@ -47,6 +48,32 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
     return '${min.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}';
   }
 
+  void _onNavBarTap(int index) {
+    switch (index) {
+      case 0:
+        Navigator.popUntil(context, (route) => route.isFirst);
+        break;
+      case 1:
+        Navigator.popUntil(context, (route) => route.isFirst);
+        break;
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Food screen coming soon!')),
+        );
+        break;
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Stories screen coming soon!')),
+        );
+        break;
+      case 4:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Activities screen coming soon!')),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,14 +82,13 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_downward, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
                     ),
                     Text(
@@ -81,7 +107,6 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
                 ),
               ),
               
-              // Album art
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 20),
                 child: Center(
@@ -116,7 +141,6 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
                 ),
               ),
               
-              // Song info
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
@@ -141,7 +165,6 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
                 ),
               ),
               
-              // Progress bar
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
@@ -185,7 +208,6 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
                 ),
               ),
               
-              // Controls
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 32.0),
                 child: Row(
@@ -247,7 +269,6 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
                 ),
               ),
               
-              // Bottom bar
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Row(
@@ -275,6 +296,11 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> with SingleTicker
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 1,
+        selectedColor: widget.primaryColor,
+        onTap: _onNavBarTap,
       ),
     );
   }

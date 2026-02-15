@@ -24,7 +24,6 @@ class _MusicScreenState extends State<MusicScreen> {
   bool isPlaying = false;
   String currentMood = 'happy'; 
   
-  // Sample playlist data based on mood
   final Map<String, List<Map<String, String>>> moodPlaylists = {
     'happy': [
       {'name': 'Sunshine Vibes', 'songs': '24 songs • 1h 45m'},
@@ -68,7 +67,6 @@ class _MusicScreenState extends State<MusicScreen> {
     ],
   };
 
-  // Sample tracklist based on mood
   final Map<String, List<Map<String, String>>> tracklists = {
     'happy': [
       {'title': 'Happy', 'artist': 'Pharrell Williams', 'duration': '3:53'},
@@ -87,26 +85,22 @@ class _MusicScreenState extends State<MusicScreen> {
 
   void _onNavBarTap(int index) {
     switch (index) {
-      case 0: // Home
+      case 0:
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
-      case 1: // Music (current)
-        // Already here, do nothing
+      case 1:
         break;
-      case 2: // Food
-        // Navigate to food screen (when created)
+      case 2:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Food screen coming soon!')),
         );
         break;
-      case 3: // Stories
-        // Navigate to stories screen (when created)
+      case 3:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Stories screen coming soon!')),
         );
         break;
-      case 4: // Activities
-        // Navigate to activities screen (when created)
+      case 4:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Activities screen coming soon!')),
         );
@@ -122,7 +116,6 @@ class _MusicScreenState extends State<MusicScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -148,7 +141,6 @@ class _MusicScreenState extends State<MusicScreen> {
                 ),
               ),
               
-              // Time and vibe
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -183,7 +175,6 @@ class _MusicScreenState extends State<MusicScreen> {
               
               const SizedBox(height: 20),
               
-              // Main playlist card
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.all(20),
@@ -301,7 +292,6 @@ class _MusicScreenState extends State<MusicScreen> {
               
               const SizedBox(height: 24),
               
-              // More Playlists section
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -328,7 +318,6 @@ class _MusicScreenState extends State<MusicScreen> {
               
               const SizedBox(height: 12),
               
-              // Horizontal playlist list
               SizedBox(
                 height: 120,
                 child: ListView.builder(
@@ -407,7 +396,6 @@ class _MusicScreenState extends State<MusicScreen> {
               
               const SizedBox(height: 24),
               
-              // TRACKLIST header
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -426,19 +414,12 @@ class _MusicScreenState extends State<MusicScreen> {
                       color: widget.accentColor,
                       size: 20,
                     ),
-                    const SizedBox(width: 16),
-                    Icon(
-                      Icons.download,
-                      color: widget.accentColor,
-                      size: 20,
-                    ),
                   ],
                 ),
               ),
               
               const SizedBox(height: 12),
               
-              // Tracklist
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -515,9 +496,8 @@ class _MusicScreenState extends State<MusicScreen> {
         ),
       ),
       
-      // Bottom Navigation Bar - USING SHARED WIDGET
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 1, // Music tab selected
+        currentIndex: 1,
         selectedColor: widget.primaryColor,
         onTap: _onNavBarTap,
       ),
