@@ -1,27 +1,41 @@
-print("TEXT EMOTION DETECTION")
+import pandas as pd
+import joblib
+import os
+import json
+
+print("TEXT EMOTION DETECTION USING ML MODEL")
 print("=" * 40)
 
-def detect_emotion_simple(text):
-    """Simple rule-based emotion detection for Week 2"""
-    text_lower = text.lower()
-    
-    emotion_keywords = {
-        'joy': ['happy', 'joy', 'excited', 'good', 'great', 'awesome', 'love'],
-        'sadness': ['sad', 'unhappy', 'depressed', 'bad', 'worried', 'upset'],
-        'anger': ['angry', 'mad', 'furious', 'annoyed', 'hate'],
-        'calm': ['calm', 'peaceful', 'relaxed', 'chill', 'quiet'],
-        'surprise': ['surprised', 'wow', 'amazing', 'unexpected']
-    }
-    
-    for emotion, keywords in emotion_keywords.items():
-        for keyword in keywords:
-            if keyword in text_lower:
-                confidence = 0.85 + (len(keyword) * 0.01)  # Simple confidence calculation
-                return emotion, min(confidence, 0.95)
-    
-    return "neutral", 0.70
+# ---------- Load trained model and vectorizer ----------
+model_path = "models/text_model_trained.pkl"
+vectorizer_path = "models/text_vectorizer_trained.pkl"
 
-# Test cases
+if not os.path.exists(model_path) or not os.path.exists(vectorizer_path):
+    print("❌ Trained model or vectorizer not found. Please train the model first!")
+    exit(1)
+
+model = joblib.load(model_path)
+vectorizer = joblib.load(vectorizer_path)
+
+print("✅ Model and vectorizer loaded successfully")
+
+# ---------- Function to predict emotion ----------
+def predict_emotion(text):
+    """
+    Input: text string
+    Output: (predicted_emotion, confidence)
+    """
+    X = vectorizer.transform([text])
+    predicted_emotion = model.predict(X)[0]
+
+    # Confidence: probability of predicted class
+    probs = model.predict_proba(X)[0]
+    class_index = list(model.classes_).index(predicted_emotion)
+    confidence = probs[class_index]
+
+    return predicted_emotion, confidence
+
+# ---------- Test cases ----------
 test_texts = [
     "I am so happy today!",
     "This makes me feel sad and disappointed",
@@ -30,33 +44,25 @@ test_texts = [
     "I'm surprised by this news!"
 ]
 
-print("Testing emotion detection:")
-print("-" * 30)
-
-import json
-import os
-
 results = []
 for text in test_texts:
-    emotion, confidence = detect_emotion_simple(text)
+    emotion, confidence = predict_emotion(text)
     results.append({
         "text": text,
         "emotion": emotion,
-        "confidence": confidence
+        "confidence": round(confidence, 2)
     })
-    
-    print(f"\n '{text}'")
+    print(f"\n'{text}'")
     print(f"Emotion: {emotion.upper()}")
     print(f"Confidence: {confidence:.1%}")
 
-# Save results
-os.makedirs("../../outputs", exist_ok=True)
-with open("../../outputs/text_emotion_results.json", "w") as f:
+# ---------- Save results ----------
+if not os.path.exists("outputs"):
+    os.makedirs("outputs")
+
+output_path = "outputs/text_emotion_results.json"
+with open(output_path, "w") as f:
     json.dump(results, f, indent=2)
 
-print("\n" + "=" * 40)
-print("TEXT EMOTION DETECTOR WORKING!")
-print("Results saved: outputs/text_emotion_results.json")
-print("Note: Using simple rule-based detection for Week 2")
-print("Will upgrade to BERT model in production")
+print(f"\n✅ Prediction results saved to {output_path}")
 print("=" * 40)
