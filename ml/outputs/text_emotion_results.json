@@ -1,0 +1,27 @@
+[
+  {
+    "text": "I am so happy today!",
+    "emotion": "joy",
+    "confidence": 0.87
+  },
+  {
+    "text": "This makes me feel sad and disappointed",
+    "emotion": "sadness",
+    "confidence": 0.79
+  },
+  {
+    "text": "I am angry about what happened",
+    "emotion": "neutral",
+    "confidence": 0.59
+  },
+  {
+    "text": "I feel calm and peaceful right now",
+    "emotion": "neutral",
+    "confidence": 0.82
+  },
+  {
+    "text": "I'm surprised by this news!",
+    "emotion": "surprise",
+    "confidence": 0.73
+  }
+]

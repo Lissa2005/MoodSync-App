@@ -18,7 +18,7 @@ print(f"Using {len(df)} samples for training")
 # 3. Convert text to numbers
 vectorizer = TfidfVectorizer(max_features=2000)
 X = vectorizer.fit_transform(df['text'])
-y = df['labels']
+y = df['emotion']
 
 # 4. Train model
 model = LogisticRegression(max_iter=1000)
