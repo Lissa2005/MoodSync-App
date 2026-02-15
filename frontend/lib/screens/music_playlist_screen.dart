@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'music_player_screen.dart';
+import '../widgets/bottom_nav_bar.dart';
 
 class MusicPlaylistScreen extends StatefulWidget {
   final String mood;
@@ -26,7 +27,6 @@ class MusicPlaylistScreen extends StatefulWidget {
 class _MusicPlaylistScreenState extends State<MusicPlaylistScreen> {
   bool isFollowing = false;
   
-  // Sample songs for playlist
   final List<Map<String, String>> playlistSongs = [
     {'title': 'Happy', 'artist': 'Pharrell Williams', 'duration': '3:53', 'popularity': '1'},
     {'title': 'Good Life', 'artist': 'OneRepublic', 'duration': '4:13', 'popularity': '2'},
@@ -40,13 +40,38 @@ class _MusicPlaylistScreenState extends State<MusicPlaylistScreen> {
     {'title': 'Firework', 'artist': 'Katy Perry', 'duration': '3:47', 'popularity': '10'},
   ];
 
+  void _onNavBarTap(int index) {
+    switch (index) {
+      case 0:
+        Navigator.popUntil(context, (route) => route.isFirst);
+        break;
+      case 1:
+        Navigator.popUntil(context, (route) => route.isFirst);
+        break;
+      case 2:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Food screen coming soon!')),
+        );
+        break;
+      case 3:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Stories screen coming soon!')),
+        );
+        break;
+      case 4:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Activities screen coming soon!')),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: widget.primaryColor.withOpacity(0.1),
       body: CustomScrollView(
         slivers: [
-          // App Bar with image
           SliverAppBar(
             expandedHeight: 250,
             pinned: true,
@@ -117,7 +142,6 @@ class _MusicPlaylistScreenState extends State<MusicPlaylistScreen> {
             ],
           ),
           
-          // Playlist info
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -191,7 +215,6 @@ class _MusicPlaylistScreenState extends State<MusicPlaylistScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // Playlist info text
                   Row(
                     children: [
                       CircleAvatar(
@@ -221,7 +244,6 @@ class _MusicPlaylistScreenState extends State<MusicPlaylistScreen> {
             ),
           ),
           
-          // Songs list
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
@@ -294,6 +316,11 @@ class _MusicPlaylistScreenState extends State<MusicPlaylistScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 1,
+        selectedColor: widget.primaryColor,
+        onTap: _onNavBarTap,
       ),
     );
   }
