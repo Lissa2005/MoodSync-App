@@ -258,7 +258,7 @@ class _AllergiesScreenState extends State<AllergiesScreen> {
                       ),
                     ),
                   );
-                }).toList(),
+                }),
                 
                 const SizedBox(height: 20),
                 
