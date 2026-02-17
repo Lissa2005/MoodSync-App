@@ -27,18 +27,21 @@ class _FoodScreenState extends State<FoodScreen> {
     {
       'name': 'Thai Red Curry Chicken',
       'rating': 5.5,
+      'image': '🍛',
       'chef': 'Chef Thai',
       'allergens': ['Peanuts'],
     },
     {
       'name': 'Sushi Platter',
       'rating': 4.96,
+      'image': '🍣',
       'chef': 'Chef Tanaka',
       'allergens': ['Fish', 'Shellfish'],
     },
     {
       'name': 'Tacos al Pastor',
       'rating': 4.8,
+      'image': '🌮',
       'chef': 'Chef Maria',
       'allergens': ['Gluten'],
     },
@@ -48,6 +51,7 @@ class _FoodScreenState extends State<FoodScreen> {
     {
       'name': 'Grilled Salmon with Dill Sauce',
       'rating': 5.0,
+      'image': '🐟',
       'chef': 'Chef Anton',
       'allergens': ['Fish'],
       'safe': true,
@@ -55,6 +59,7 @@ class _FoodScreenState extends State<FoodScreen> {
     {
       'name': 'Vegan Chocolate Cake',
       'rating': 4.9,
+      'image': '🍰',
       'chef': 'Baker Ella',
       'allergens': [],
       'safe': true,
@@ -62,6 +67,7 @@ class _FoodScreenState extends State<FoodScreen> {
     {
       'name': 'Mushroom Risotto',
       'rating': 4.7,
+      'image': '🍄',
       'chef': 'Chef Luigi',
       'allergens': ['Milk'],
       'safe': false,
