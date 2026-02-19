@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/start_up_screens/welcome_screen.dart';
+import 'screens/start_up_screens/signin_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MoodSyncApp());
@@ -27,7 +29,13 @@ class MoodSyncApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const WelcomeScreen(),
+      initialRoute: '/welcome',
+      //the path
+      routes: {
+        '/welcome': (_)=> const WelcomeScreen(),
+        '/signin' : (_)=> const SigninScreen(),
+        '/home' : (_)=> const HomeScreen(),//bottom navigation
+      },
     );
   }
 }

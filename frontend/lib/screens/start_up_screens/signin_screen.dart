@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moodsync/authenticator.dart';
-import 'package:moodsync/screens/home_screen.dart';
 import 'package:moodsync/screens/start_up_screens/signup_screen.dart';
 
 
@@ -16,7 +15,7 @@ class SigninScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const TextField(decoration: InputDecoration(labelText:'Name')),
+            const TextField(decoration: InputDecoration(labelText:'User Name')),
             const SizedBox(height: 10),
             const TextField(
               decoration: InputDecoration(labelText: 'Password'),
@@ -25,10 +24,12 @@ class SigninScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: (){
-                Authenticator.login();
-                Navigator.pushReplacement(
-                  context, 
-                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                Authenticator.login(
+                  name:'' ,
+                  email: '',
+                );
+                Navigator.pushReplacementNamed(
+                  context,'/home'
                   );
               },
                child: const Text('Sign In'),
