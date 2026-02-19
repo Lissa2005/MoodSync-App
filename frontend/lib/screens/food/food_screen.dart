@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'allergies_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
+import 'recipe_detail_screen.dart'; // You'll need to create this
 
 class FoodScreen extends StatefulWidget {
   final String mood;
@@ -26,10 +27,11 @@ class _FoodScreenState extends State<FoodScreen> {
   final List<Map<String, dynamic>> popularDishes = [
     {
       'name': 'Thai Red Curry Chicken',
-      'rating': 5.5,
+      'rating': 4.5, // Changed from 5.5 to 4.5 (ratings should be out of 5)
       'image': '🍛',
       'chef': 'Chef Thai',
       'allergens': ['Peanuts'],
+      'isSaved': false, // Add saved state
     },
     {
       'name': 'Sushi Platter',
@@ -37,6 +39,7 @@ class _FoodScreenState extends State<FoodScreen> {
       'image': '🍣',
       'chef': 'Chef Tanaka',
       'allergens': ['Fish', 'Shellfish'],
+      'isSaved': false,
     },
     {
       'name': 'Tacos al Pastor',
@@ -44,6 +47,7 @@ class _FoodScreenState extends State<FoodScreen> {
       'image': '🌮',
       'chef': 'Chef Maria',
       'allergens': ['Gluten'],
+      'isSaved': false,
     },
   ];
 
@@ -55,6 +59,9 @@ class _FoodScreenState extends State<FoodScreen> {
       'chef': 'Chef Anton',
       'allergens': ['Fish'],
       'safe': true,
+      'isSaved': false,
+      'prepTime': '25 min',
+      'difficulty': 'Medium',
     },
     {
       'name': 'Vegan Chocolate Cake',
@@ -63,6 +70,9 @@ class _FoodScreenState extends State<FoodScreen> {
       'chef': 'Baker Ella',
       'allergens': [],
       'safe': true,
+      'isSaved': false,
+      'prepTime': '45 min',
+      'difficulty': 'Easy',
     },
     {
       'name': 'Mushroom Risotto',
@@ -71,6 +81,9 @@ class _FoodScreenState extends State<FoodScreen> {
       'chef': 'Chef Luigi',
       'allergens': ['Milk'],
       'safe': false,
+      'isSaved': false,
+      'prepTime': '35 min',
+      'difficulty': 'Medium',
     },
   ];
 
@@ -80,6 +93,16 @@ class _FoodScreenState extends State<FoodScreen> {
     'Dinner',
     'Desserts',
   ];
+
+  void _toggleSave(int index, bool isPopular) {
+    setState(() {
+      if (isPopular) {
+        popularDishes[index]['isSaved'] = !popularDishes[index]['isSaved'];
+      } else {
+        recommendedRecipes[index]['isSaved'] = !recommendedRecipes[index]['isSaved'];
+      }
+    });
+  }
 
   void _onNavBarTap(int index) {
     switch (index) {
@@ -117,6 +140,23 @@ class _FoodScreenState extends State<FoodScreen> {
     return true;
   }
 
+  Widget _buildRatingStars(double rating) {
+    int fullStars = rating.floor();
+    bool hasHalfStar = (rating - fullStars) >= 0.5;
+    
+    return Row(
+      children: List.generate(5, (index) {
+        if (index < fullStars) {
+          return const Icon(Icons.star, color: Colors.amber, size: 16);
+        } else if (index == fullStars && hasHalfStar) {
+          return const Icon(Icons.star_half, color: Colors.amber, size: 16);
+        } else {
+          return const Icon(Icons.star_border, color: Colors.amber, size: 16);
+        }
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,7 +189,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 
                 const SizedBox(height: 20),
                 
-                // Allergies section
+                // Allergies section (keeping as is - you said it's okay)
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -294,125 +334,159 @@ class _FoodScreenState extends State<FoodScreen> {
                     final dish = popularDishes[index];
                     final safe = isSafeForUser(dish);
                     
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: safe ? null : Border.all(
-                          color: Colors.red.withOpacity(0.3),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            blurRadius: 5,
-                            offset: const Offset(0, 2),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipeDetailScreen(
+                              recipe: dish,
+                              primaryColor: widget.primaryColor,
+                              secondaryColor: widget.secondaryColor,
+                              accentColor: widget.accentColor,
+                            ),
                           ),
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: widget.primaryColor.withOpacity(0.2),
-                                  borderRadius: const BorderRadius.vertical(
-                                    top: Radius.circular(12),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    dish['image'],
-                                    style: const TextStyle(fontSize: 30),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: safe ? null : Border.all(
+                            color: Colors.red.withOpacity(0.3),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              blurRadius: 5,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Stack(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Stack(
                                   children: [
-                                    Text(
-                                      dish['name'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                          size: 14,
+                                    Container(
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        color: widget.primaryColor.withOpacity(0.2),
+                                        borderRadius: const BorderRadius.vertical(
+                                          top: Radius.circular(12),
                                         ),
-                                        const SizedBox(width: 2),
-                                        Text(
-                                          dish['rating'].toString(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          dish['image'],
+                                          style: const TextStyle(fontSize: 30),
+                                        ),
+                                      ),
+                                    ),
+                                    // Save icon
+                                    Positioned(
+                                      top: 4,
+                                      right: 4,
+                                      child: GestureDetector(
+                                        onTap: () => _toggleSave(index, true),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.withOpacity(0.3),
+                                                blurRadius: 3,
+                                                offset: const Offset(0, 1),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Icon(
+                                            dish['isSaved'] 
+                                                ? Icons.bookmark 
+                                                : Icons.bookmark_border,
+                                            color: dish['isSaved'] 
+                                                ? widget.primaryColor 
+                                                : Colors.grey,
+                                            size: 16,
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          if (!safe)
-                            Positioned(
-                              top: 4,
-                              right: 4,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        dish['name'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      _buildRatingStars(dish['rating']),
+                                    ],
+                                  ),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Text(
-                                  '⚠️',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
+                              ],
+                            ),
+                            if (!safe)
+                              Positioned(
+                                top: 4,
+                                left: 4,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Text(
+                                    '⚠️',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          if (safe && activeAllergens.isNotEmpty)
-                            Positioned(
-                              top: 4,
-                              left: 4,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Text(
-                                  '✓ Safe',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                    fontWeight: FontWeight.bold,
+                            if (safe && activeAllergens.isNotEmpty)
+                              Positioned(
+                                top: 4,
+                                left: 4,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Text(
+                                    '✓ Safe',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -504,120 +578,165 @@ class _FoodScreenState extends State<FoodScreen> {
                     final recipe = recommendedRecipes[index];
                     final safe = isSafeForUser(recipe);
                     
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: safe ? null : Border.all(
-                          color: Colors.red.withOpacity(0.3),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            blurRadius: 5,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: widget.primaryColor.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(10),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipeDetailScreen(
+                              recipe: recipe,
+                              primaryColor: widget.primaryColor,
+                              secondaryColor: widget.secondaryColor,
+                              accentColor: widget.accentColor,
                             ),
-                            child: Center(
-                              child: Text(
-                                recipe['image'],
-                                style: const TextStyle(fontSize: 30),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: safe ? null : Border.all(
+                            color: Colors.red.withOpacity(0.3),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              blurRadius: 5,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: widget.primaryColor.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  recipe['image'],
+                                  style: const TextStyle(fontSize: 30),
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        recipe['name'],
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          recipe['name'],
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
                                         ),
+                                      ),
+                                      // Save icon
+                                      GestureDetector(
+                                        onTap: () => _toggleSave(index, false),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          child: Icon(
+                                            recipe['isSaved'] 
+                                                ? Icons.bookmark 
+                                                : Icons.bookmark_border,
+                                            color: recipe['isSaved'] 
+                                                ? widget.primaryColor 
+                                                : Colors.grey,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    recipe['chef'],
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  _buildRatingStars(recipe['rating']),
+                                  const SizedBox(height: 4),
+                                  if (safe && activeAllergens.isNotEmpty)
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(
+                                            Icons.check_circle,
+                                            color: Colors.green,
+                                            size: 14,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          const Text(
+                                            'Safe for you',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    if (safe && activeAllergens.isNotEmpty)
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: const Text(
-                                          'Safe',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                  if (!safe)
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 2,
                                       ),
-                                    if (!safe)
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: const Text(
-                                          'Warning',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  recipe['chef'],
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: List.generate(5, (starIndex) {
-                                    return Icon(
-                                      starIndex < recipe['rating'].floor()
-                                          ? Icons.star
-                                          : Icons.star_border,
-                                      color: Colors.amber,
-                                      size: 16,
-                                    );
-                                  }),
-                                ),
-                              ],
+                                      child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.warning,
+                                            color: Colors.red,
+                                            size: 14,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'Contains allergens',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -630,7 +749,7 @@ class _FoodScreenState extends State<FoodScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 2, // Food tab selected
+        currentIndex: 2, 
         selectedColor: widget.primaryColor,
         onTap: _onNavBarTap,
       ),
