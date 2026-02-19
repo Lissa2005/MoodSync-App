@@ -443,7 +443,7 @@ class _FoodScreenState extends State<FoodScreen> {
                               ],
                             ),
                             if (!safe)
-                              const Positioned(
+                              Positioned(
                                 top: 4,
                                 left: 4,
                                 child: Container(
@@ -470,7 +470,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                 ),
                               ),
                             if (safe && activeAllergens.isNotEmpty)
-                              const Positioned(
+                              Positioned(
                                 top: 4,
                                 left: 4,
                                 child: Container(
