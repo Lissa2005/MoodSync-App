@@ -451,9 +451,9 @@ class _FoodScreenState extends State<FoodScreen> {
                                     horizontal: 6,
                                     vertical: 2,
                                   ),
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.red,
-                                    borderRadius: const BorderRadius.only(
+                                    borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
                                       bottomLeft: Radius.circular(10),
@@ -478,9 +478,9 @@ class _FoodScreenState extends State<FoodScreen> {
                                     horizontal: 6,
                                     vertical: 2,
                                   ),
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.green,
-                                    borderRadius: const BorderRadius.only(
+                                    borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
                                       bottomLeft: Radius.circular(10),
