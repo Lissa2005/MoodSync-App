@@ -22,7 +22,7 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   // push notification settings
   bool pushNewMusic = true;
-  bool pushTrendingThemes = false;
+  bool pushCommunityStories = true;
   bool pushMoodReminders = true;
   
   // email notification settings
@@ -149,13 +149,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           _buildDivider(),
                           
                           _buildSwitchTile(
-                            icon: Icons.trending_up,
-                            title: 'Trending Themes',
-                            subtitle: 'Popular themes from community',
-                            value: pushTrendingThemes,
+                            icon: Icons.people,
+                            title: 'Community Stories',
+                            subtitle: 'New stories from your community',
+                            value: pushCommunityStories,
                             onChanged: (value) {
                               setState(() {
-                                pushTrendingThemes = value;
+                                pushCommunityStories = value;
                               });
                             },
                           ),
