@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'allergies_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
-import 'recipe_detail_screen.dart'; // You'll need to create this
+import 'recipe_detail_screen.dart';
 
 class FoodScreen extends StatefulWidget {
   final String mood;
@@ -27,11 +27,11 @@ class _FoodScreenState extends State<FoodScreen> {
   final List<Map<String, dynamic>> popularDishes = [
     {
       'name': 'Thai Red Curry Chicken',
-      'rating': 4.5, // Changed from 5.5 to 4.5 (ratings should be out of 5)
+      'rating': 4.5,
       'image': '🍛',
       'chef': 'Chef Thai',
       'allergens': ['Peanuts'],
-      'isSaved': false, // Add saved state
+      'isSaved': false,
     },
     {
       'name': 'Sushi Platter',
@@ -113,7 +113,7 @@ class _FoodScreenState extends State<FoodScreen> {
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
       case 2:
-        // Already on food tab
+        // in food screen
         break;
       case 3:
         ScaffoldMessenger.of(context).showSnackBar(
@@ -168,7 +168,8 @@ class _FoodScreenState extends State<FoodScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header
+                
+                // header
                 Row(
                   children: [
                     IconButton(
@@ -189,7 +190,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 
                 const SizedBox(height: 20),
                 
-                // Allergies section (keeping as is - you said it's okay)
+                // allergy section
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -292,7 +293,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 
                 const SizedBox(height: 20),
                 
-                // Popular Dishes section
+                // popular dishes section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -319,7 +320,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 
                 const SizedBox(height: 12),
                 
-                // Popular dishes grid
+                // popular dishes grid
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -386,7 +387,8 @@ class _FoodScreenState extends State<FoodScreen> {
                                         ),
                                       ),
                                     ),
-                                    // Save icon
+                                    
+                                    //save icon
                                     Positioned(
                                       top: 4,
                                       right: 4,
@@ -401,7 +403,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                               BoxShadow(
                                                 color: Colors.grey.withOpacity(0.3),
                                                 blurRadius: 3,
-                                                offset: const Offset(0, 1),
+                                                offset: Offset(0, 1),
                                               ),
                                             ],
                                           ),
@@ -441,19 +443,24 @@ class _FoodScreenState extends State<FoodScreen> {
                               ],
                             ),
                             if (!safe)
-                              Positioned(
+                              const Positioned(
                                 top: 4,
                                 left: 4,
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: 6,
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                    ),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     '⚠️',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -463,19 +470,24 @@ class _FoodScreenState extends State<FoodScreen> {
                                 ),
                               ),
                             if (safe && activeAllergens.isNotEmpty)
-                              Positioned(
+                              const Positioned(
                                 top: 4,
                                 left: 4,
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: 6,
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.green,
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                    ),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     '✓ Safe',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -494,7 +506,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 
                 const SizedBox(height: 20),
                 
-                // Categories section
+                // categories section
                 Text(
                   'Categories',
                   style: TextStyle(
@@ -542,7 +554,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 
                 const SizedBox(height: 20),
                 
-                // Recommended Recipes section
+                // recommended recipes section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -569,7 +581,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 
                 const SizedBox(height: 12),
                 
-                // Recommended recipes list
+                // recommended recipes list
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -642,7 +654,9 @@ class _FoodScreenState extends State<FoodScreen> {
                                           ),
                                         ),
                                       ),
-                                      // Save icon
+                                      
+
+                                      // save icon
                                       GestureDetector(
                                         onTap: () => _toggleSave(index, false),
                                         child: Container(
@@ -682,16 +696,16 @@ class _FoodScreenState extends State<FoodScreen> {
                                         color: Colors.green.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
-                                      child: Row(
+                                      child: const Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          const Icon(
+                                          Icon(
                                             Icons.check_circle,
                                             color: Colors.green,
                                             size: 14,
                                           ),
-                                          const SizedBox(width: 4),
-                                          const Text(
+                                          SizedBox(width: 4),
+                                          Text(
                                             'Safe for you',
                                             style: TextStyle(
                                               color: Colors.green,
