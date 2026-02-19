@@ -403,7 +403,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                               BoxShadow(
                                                 color: Colors.grey.withOpacity(0.3),
                                                 blurRadius: 3,
-                                                offset: Offset(0, 1),
+                                                offset: const Offset(0, 1),
                                               ),
                                             ],
                                           ),
@@ -447,20 +447,20 @@ class _FoodScreenState extends State<FoodScreen> {
                                 top: 4,
                                 left: 4,
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 6,
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.red,
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
                                       bottomLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10),
                                     ),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     '⚠️',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -474,20 +474,20 @@ class _FoodScreenState extends State<FoodScreen> {
                                 top: 4,
                                 left: 4,
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 6,
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.green,
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
                                       bottomLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10),
                                     ),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     '✓ Safe',
                                     style: TextStyle(
                                       color: Colors.white,
