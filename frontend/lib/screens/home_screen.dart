@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodsync/screens/activities_screen.dart';
-import './about_page.dart';
-import './mood_input_screen.dart';
+import 'Mood detection/mood_input_screen.dart';
 import './interactive_platform.dart';
 import 'package:moodsync/authenticator.dart';
 
@@ -41,13 +40,6 @@ class HomeScreen extends StatelessWidget{
               subtitle: 'Improve your mood by sharing your story',
               icon: Icons.self_improvement,
               screen: const InteractivePlatform (),
-            ),
-            _homeCard(
-              context,
-              title: 'About',
-              subtitle: 'Learn more about MoodSync',
-              icon: Icons.info_outline,
-              screen: const AboutPage(),
             ),
             _homeCard(
               context,
