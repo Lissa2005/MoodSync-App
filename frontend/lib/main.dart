@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moodsync/screens/side%20panel(home)/about_page.dart';
+import 'package:moodsync/screens/side%20panel(home)/privacy.dart';
 import 'screens/start_up_screens/welcome_screen.dart';
 import 'screens/start_up_screens/signin_screen.dart';
 import 'screens/home_screen.dart';
@@ -35,6 +37,8 @@ class MoodSyncApp extends StatelessWidget {
         '/welcome': (_)=> const WelcomeScreen(),
         '/signin' : (_)=> const SigninScreen(),
         '/home' : (_)=> const HomeScreen(),//bottom navigation
+        '/about': (_) => const AboutPage(),
+        '/privacy': (_) => const PrivacyScreen(),
       },
     );
   }

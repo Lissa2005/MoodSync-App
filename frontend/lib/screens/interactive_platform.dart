@@ -26,69 +26,91 @@ class _InteractivePlatformState extends State<InteractivePlatform> {
       appBar: AppBar(
         title: const Text('Anonymous Stories'),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          // Story input box
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _storyController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    hintText: 'Share your story anonymously...',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: _addStory,
-                  child: const Text('Post Anonymously'),
-                ),
-              ],
+          //  Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/background_design.gif'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
 
-          const Divider(),
 
-          // Stories list
-          Expanded(
-            child: _stories.isEmpty
-                ? const Center(
-              child: Text(
-                'No stories yet.\nBe the first to share.',
-                textAlign: TextAlign.center,
+
+          //  Main Content
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _storyController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Share your story anonymously...',
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: _addStory,
+                      child: const Text('Post Anonymously'),
+                    ),
+                  ],
+                ),
               ),
-            )
-                : ListView.builder(
-              itemCount: _stories.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+
+              const Divider(),
+
+              Expanded(
+                child: _stories.isEmpty
+                    ? const Center(
+                  child: Text(
+                    'No stories yet.\nBe the first to share.',
+                    textAlign: TextAlign.center,
                   ),
-                  child: ListTile(
-                    leading: const Icon(Icons.person_outline),
-                    title: const Text(
-                      'Anonymous',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(_stories[index]),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.comment),
-                      onPressed: () {
-                        _showCommentDialog(context);
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
+                )
+                    : ListView.builder(
+                  itemCount: _stories.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      color: Colors.white.withOpacity(0.9),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: ListTile(
+                        leading: const Icon(Icons.person_outline),
+                        title: const Text(
+                          'Anonymous',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(_stories[index]),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.comment),
+                          onPressed: () {
+                            _showCommentDialog(context);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),
+
+
     );
   }
 
