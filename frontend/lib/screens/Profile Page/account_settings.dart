@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../../widgets/bottom_nav_bar.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
-  final String mood;
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color accentColor;
+  final String? mood;
+  final Color? primaryColor;
+  final Color? secondaryColor;
+  final Color? accentColor;
   
   const AccountSettingsScreen({
     super.key,
@@ -20,6 +20,11 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
+  //default value
+  late Color primaryColor;
+  late Color secondaryColor;
+  late Color accentColor;
+  late String mood;
   // Variables to store user settings
   bool isDarkMode = false;
   bool isAutoPlay = true;
@@ -30,6 +35,16 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   // Lists for dropdown options
   final List<String> languages = ['English', 'Spanish', 'French', 'German', 'Japanese', 'Chinese'];
   final List<String> qualities = ['Low', 'Medium', 'High', 'Very High'];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with provided values or defaults
+    primaryColor = widget.primaryColor ?? Colors.purple;
+    secondaryColor = widget.secondaryColor ?? Colors.deepPurple;
+    accentColor = widget.accentColor ?? Colors.amber;
+    mood = widget.mood ?? 'happy';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +59,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
               const Color(0xFFF8F0FF), 
               const Color(0xFFF0E6FF), 
               const Color(0xFFE8D9FF), 
-              widget.primaryColor.withOpacity(0.2),
+              primaryColor.withOpacity(0.2),
             ],
           ),
         ),
@@ -62,7 +77,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.primaryColor.withOpacity(0.2),
+                      color: primaryColor.withOpacity(0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -71,14 +86,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
+                      icon: Icon(Icons.arrow_back, color: secondaryColor),
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Account Settings',
                       style: TextStyle(
-                        color: widget.secondaryColor,
+                        color: secondaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
@@ -98,7 +113,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       '10:30',
                       style: TextStyle(
                         fontSize: 14,
-                        color: widget.secondaryColor.withOpacity(0.7),
+                        color: secondaryColor.withOpacity(0.7),
                       ),
                     ),
                   ],
@@ -121,7 +136,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: widget.primaryColor,
+                          color: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -132,7 +147,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: widget.primaryColor.withOpacity(0.1),
+                              color:primaryColor.withOpacity(0.1),
                               blurRadius: 10,
                               offset: const Offset(0, 5),
                             ),
@@ -145,13 +160,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               leading: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: widget.primaryColor.withOpacity(0.1),
+                                  color: primaryColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Icon(Icons.lock_outline, color: widget.primaryColor, size: 20),
+                                child: Icon(Icons.lock_outline, color: primaryColor, size: 20),
                               ),
                               title: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.w500)),
-                              trailing: Icon(Icons.arrow_forward_ios, size: 14, color: widget.primaryColor),
+                              trailing: Icon(Icons.arrow_forward_ios, size: 14, color: primaryColor),
                               onTap: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -169,18 +184,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               leading: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: widget.primaryColor.withOpacity(0.1),
+                                  color: primaryColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Icon(Icons.language, color: widget.primaryColor, size: 20),
+                                child: Icon(Icons.language, color: primaryColor, size: 20),
                               ),
                               title: const Text('Language', style: TextStyle(fontWeight: FontWeight.w500)),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(selectedLanguage, style: TextStyle(color: widget.secondaryColor)),
+                                  Text(selectedLanguage, style: TextStyle(color: secondaryColor)),
                                   const SizedBox(width: 8),
-                                  Icon(Icons.arrow_forward_ios, size: 14, color: widget.primaryColor),
+                                  Icon(Icons.arrow_forward_ios, size: 14, color: primaryColor),
                                 ],
                               ),
                               onTap: () {
@@ -238,7 +253,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: widget.primaryColor.withOpacity(0.1),
+                              color: primaryColor.withOpacity(0.1),
                               blurRadius: 10,
                               offset: const Offset(0, 5),
                             ),
@@ -251,10 +266,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               secondary: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: widget.primaryColor.withOpacity(0.1),
+                                  color: primaryColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Icon(Icons.dark_mode_outlined, color: widget.primaryColor, size: 20),
+                                child: Icon(Icons.dark_mode_outlined, color: primaryColor, size: 20),
                               ),
                               title: const Text('Dark Mode', style: TextStyle(fontWeight: FontWeight.w500)),
                               value: isDarkMode,
@@ -263,7 +278,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                   isDarkMode = value;
                                 });
                               },
-                              activeColor: widget.primaryColor,
+                              activeColor: primaryColor,
                             ),
                             
                             const Divider(indent: 60, endIndent: 20),
@@ -273,10 +288,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               secondary: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: widget.primaryColor.withOpacity(0.1),
+                                  color: primaryColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Icon(Icons.play_circle_outline, color: widget.primaryColor, size: 20),
+                                child: Icon(Icons.play_circle_outline, color:primaryColor, size: 20),
                               ),
                               title: const Text('Auto-Play', style: TextStyle(fontWeight: FontWeight.w500)),
                               value: isAutoPlay,
@@ -285,7 +300,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                   isAutoPlay = value;
                                 });
                               },
-                              activeColor: widget.primaryColor,
+                              activeColor: primaryColor,
                             ),
                           ],
                         ),
@@ -299,7 +314,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: widget.primaryColor,
+                          color: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -310,7 +325,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: widget.primaryColor.withOpacity(0.1),
+                              color: primaryColor.withOpacity(0.1),
                               blurRadius: 10,
                               offset: const Offset(0, 5),
                             ),
@@ -324,18 +339,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               leading: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: widget.primaryColor.withOpacity(0.1),
+                                  color: primaryColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Icon(Icons.clean_hands, color: widget.primaryColor, size: 20),
+                                child: Icon(Icons.clean_hands, color: primaryColor, size: 20),
                               ),
                               title: const Text('Clear Cache', style: TextStyle(fontWeight: FontWeight.w500)),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text('$cacheSize MB', style: TextStyle(color: widget.secondaryColor)),
+                                  Text('$cacheSize MB', style: TextStyle(color: secondaryColor)),
                                   const SizedBox(width: 8),
-                                  Icon(Icons.arrow_forward_ios, size: 14, color: widget.primaryColor),
+                                  Icon(Icons.arrow_forward_ios, size: 14, color: primaryColor),
                                 ],
                               ),
                               onTap: () {
@@ -383,18 +398,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               leading: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: widget.primaryColor.withOpacity(0.1),
+                                  color: primaryColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Icon(Icons.download, color: widget.primaryColor, size: 20),
+                                child: Icon(Icons.download, color: primaryColor, size: 20),
                               ),
                               title: const Text('Download Quality', style: TextStyle(fontWeight: FontWeight.w500)),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(downloadQuality, style: TextStyle(color: widget.secondaryColor)),
+                                  Text(downloadQuality, style: TextStyle(color: secondaryColor)),
                                   const SizedBox(width: 8),
-                                  Icon(Icons.arrow_forward_ios, size: 14, color: widget.primaryColor),
+                                  Icon(Icons.arrow_forward_ios, size: 14, color: primaryColor),
                                 ],
                               ),
                               onTap: () {
@@ -412,7 +427,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                             return ListTile(
                                               title: Text(qualities[index]),
                                               trailing: downloadQuality == qualities[index]
-                                                  ? Icon(Icons.check, color: widget.primaryColor)
+                                                  ? Icon(Icons.check, color: primaryColor)
                                                   : null,
                                               onTap: () {
                                                 setState(() {
@@ -441,7 +456,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: widget.primaryColor,
+                          color: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -452,7 +467,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: widget.primaryColor.withOpacity(0.1),
+                              color: primaryColor.withOpacity(0.1),
                               blurRadius: 10,
                               offset: const Offset(0, 5),
                             ),
@@ -462,10 +477,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           leading: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: widget.primaryColor.withOpacity(0.1),
+                              color: primaryColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Icon(Icons.music_note, color: widget.primaryColor, size: 20),
+                            child: Icon(Icons.music_note, color: primaryColor, size: 20),
                           ),
                           title: const Text('YouTube Music', style: TextStyle(fontWeight: FontWeight.w500)),
                           trailing: Row(
@@ -512,7 +527,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
-        selectedColor: widget.primaryColor,
+        selectedColor: primaryColor,
         onTap: (index) {
       
         },
