@@ -3,17 +3,17 @@ import 'dart:io';
 import '../../widgets/bottom_nav_bar.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  final String mood;
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color accentColor;
+  final String? mood;
+  final Color? primaryColor;
+  final Color? secondaryColor;
+  final Color? accentColor;
   
   const EditProfileScreen({
     super.key,
-    required this.mood,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.accentColor,
+    this.mood,
+    this.primaryColor,
+    this.secondaryColor,
+    this.accentColor,
   });
 
   @override
@@ -21,6 +21,12 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  // late variables
+  late Color primaryColor;
+  late Color secondaryColor;
+  late Color accentColor;
+  late String mood;
+
   final _formKey = GlobalKey<FormState>();
   
   late TextEditingController _fullNameController;
@@ -33,6 +39,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
+    // Initialize with provided values or defaults
+    primaryColor = widget.primaryColor ?? Colors.purple;
+    secondaryColor = widget.secondaryColor ?? Colors.deepPurple;
+    accentColor = widget.accentColor ?? Colors.amber;
+    mood = widget.mood ?? 'happy';
+    //
     _fullNameController = TextEditingController(text: 'Sarah Johnson');
     _emailController = TextEditingController(text: 'sarah.j@email.com');
     _usernameController = TextEditingController(text: '@sarah_vibes');
@@ -121,6 +133,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +148,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const Color(0xFFF8F0FF), // Very Light Lavender (almost white)
               const Color(0xFFF0E6FF), // Light Lavender
               const Color(0xFFE8D9FF), // Soft Lavender
-              widget.primaryColor.withOpacity(0.3), // Your primary color with low opacity
+              primaryColor.withOpacity(0.3), // Your primary color with low opacity
             ],
           ),
         ),
@@ -152,7 +166,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.primaryColor.withOpacity(0.2),
+                      color: primaryColor.withOpacity(0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -161,14 +175,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
+                      icon: Icon(Icons.arrow_back, color: secondaryColor),
                       onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Edit Profile',
                       style: TextStyle(
-                        color: widget.secondaryColor,
+                        color: secondaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
@@ -196,17 +210,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     shape: BoxShape.circle,
                                     gradient: RadialGradient(
                                       colors: [
-                                        widget.primaryColor.withOpacity(0.2),
-                                        widget.accentColor.withOpacity(0.1),
+                                        primaryColor.withOpacity(0.2),
+                                        accentColor.withOpacity(0.1),
                                       ],
                                     ),
                                     border: Border.all(
-                                      color: widget.primaryColor,
+                                      color: primaryColor,
                                       width: 3,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: widget.primaryColor.withOpacity(0.3),
+                                        color: primaryColor.withOpacity(0.3),
                                         blurRadius: 15,
                                         spreadRadius: 2,
                                       ),
@@ -221,7 +235,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         ? Icon(
                                             Icons.person,
                                             size: 70,
-                                            color: widget.secondaryColor,
+                                            color: secondaryColor,
                                           )
                                         : null,
                                   ),
@@ -237,7 +251,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     borderRadius: BorderRadius.circular(25),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: widget.primaryColor.withOpacity(0.1),
+                                        color: primaryColor.withOpacity(0.1),
                                         blurRadius: 5,
                                       ),
                                     ],
@@ -253,13 +267,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     },
                                     icon: Icon(
                                       Icons.camera_alt,
-                                      color: widget.primaryColor,
+                                      color: primaryColor,
                                       size: 18,
                                     ),
                                     label: Text(
                                       'Change Photo',
                                       style: TextStyle(
-                                        color: widget.secondaryColor,
+                                        color: secondaryColor,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -279,7 +293,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: widget.primaryColor.withOpacity(0.2),
+                                  color: primaryColor.withOpacity(0.2),
                                   blurRadius: 15,
                                   offset: const Offset(0, 5),
                                 ),
@@ -292,13 +306,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                     labelText: 'Full Name',
                                     labelStyle: TextStyle(
-                                      color: widget.secondaryColor,
+                                      color: secondaryColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
                                     prefixIcon: Icon(
                                       Icons.person_outline,
-                                      color: widget.primaryColor,
+                                      color: primaryColor,
                                       size: 20,
                                     ),
                                     filled: true,
@@ -310,14 +324,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor,
+                                        color: primaryColor,
                                         width: 2,
                                       ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor.withOpacity(0.2),
+                                        color: primaryColor.withOpacity(0.2),
                                         width: 1,
                                       ),
                                     ),
@@ -338,13 +352,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                     labelText: 'Email',
                                     labelStyle: TextStyle(
-                                      color: widget.secondaryColor,
+                                      color: secondaryColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
                                     prefixIcon: Icon(
                                       Icons.email_outlined,
-                                      color: widget.primaryColor,
+                                      color: primaryColor,
                                       size: 20,
                                     ),
                                     filled: true,
@@ -356,14 +370,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor,
+                                        color: primaryColor,
                                         width: 2,
                                       ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor.withOpacity(0.2),
+                                        color: primaryColor.withOpacity(0.2),
                                         width: 1,
                                       ),
                                     ),
@@ -386,13 +400,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                     labelText: 'Username',
                                     labelStyle: TextStyle(
-                                      color: widget.secondaryColor,
+                                      color: secondaryColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
                                     prefixIcon: Icon(
                                       Icons.alternate_email,
-                                      color: widget.primaryColor,
+                                      color: primaryColor,
                                       size: 20,
                                     ),
                                     filled: true,
@@ -404,14 +418,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor,
+                                        color: primaryColor,
                                         width: 2,
                                       ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor.withOpacity(0.2),
+                                        color: primaryColor.withOpacity(0.2),
                                         width: 1,
                                       ),
                                     ),
@@ -432,7 +446,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                     labelText: 'Bio',
                                     labelStyle: TextStyle(
-                                      color: widget.secondaryColor,
+                                      color:secondaryColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -441,7 +455,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       padding: const EdgeInsets.only(bottom: 50),
                                       child: Icon(
                                         Icons.info_outline,
-                                        color: widget.primaryColor,
+                                        color: primaryColor,
                                         size: 20,
                                       ),
                                     ),
@@ -454,14 +468,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor,
+                                        color: primaryColor,
                                         width: 2,
                                       ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: widget.primaryColor.withOpacity(0.2),
+                                        color: primaryColor.withOpacity(0.2),
                                         width: 1,
                                       ),
                                     ),
@@ -481,13 +495,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               borderRadius: BorderRadius.circular(30),
                               gradient: LinearGradient(
                                 colors: [
-                                  widget.primaryColor,
-                                  widget.secondaryColor,
+                                  primaryColor,
+                                  secondaryColor,
                                 ],
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: widget.primaryColor.withOpacity(0.4),
+                                  color: primaryColor.withOpacity(0.4),
                                   blurRadius: 10,
                                   offset: const Offset(0, 5),
                                 ),
@@ -552,7 +566,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
-        selectedColor: widget.primaryColor,
+        selectedColor: primaryColor,
         onTap: _onNavBarTap,
       ),
     );
