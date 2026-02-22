@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'music_playlist_screen.dart';
 import 'music_player_screen.dart';
-import '../widgets/bottom_nav_bar.dart'; 
+import '../../widgets/bottom_nav_bar.dart'; 
 
 class MusicScreen extends StatefulWidget {
   final String mood;
