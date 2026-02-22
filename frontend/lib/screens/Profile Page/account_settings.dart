@@ -9,10 +9,10 @@ class AccountSettingsScreen extends StatefulWidget {
   
   const AccountSettingsScreen({
     super.key,
-    required this.mood,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.accentColor,
+    this.mood,
+    this.primaryColor,
+    this.secondaryColor,
+    this.accentColor,
   });
 
   @override

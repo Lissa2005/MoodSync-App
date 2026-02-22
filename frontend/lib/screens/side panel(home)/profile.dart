@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodsync/screens/Profile Page/account_settings.dart';
-import 'package:moodsync/screens/Profile Page/edit_profile.dart';
-import 'package:moodsync/screens/Profile Page/notification.dart';
-import 'package:moodsync/screens/side panel(home)/help.dart';
-import 'package:moodsync/screens/side panel(home)/privacy.dart';
 import 'package:moodsync/authenticator.dart';
 
 class ProfileScreen extends StatelessWidget {

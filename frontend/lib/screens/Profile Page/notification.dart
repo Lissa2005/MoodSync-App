@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import '../../widgets/bottom_nav_bar.dart';
 
 class NotificationScreen extends StatefulWidget {
-  final String mood;
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color accentColor;
+  final String? mood;
+  final Color? primaryColor;
+  final Color? secondaryColor;
+  final Color? accentColor;
   
   const NotificationScreen({
     super.key,
-    required this.mood,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.accentColor,
+    this.mood,
+    this.primaryColor,
+    this.secondaryColor,
+    this.accentColor,
   });
 
   @override
@@ -20,6 +20,12 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  // late variables
+  late Color primaryColor;
+  late Color secondaryColor;
+  late Color accentColor;
+  late String mood;
+
   // push notification settings
   bool pushNewMusic = true;
   bool pushCommunityStories = true;
@@ -37,6 +43,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
   final List<String> soundOptions = ['Default', 'Chime', 'Bell', 'Soft', 'None'];
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize with provided values or defaults
+    primaryColor = widget.primaryColor ?? Colors.purple;
+    secondaryColor = widget.secondaryColor ?? Colors.deepPurple;
+    accentColor = widget.accentColor ?? Colors.amber;
+    mood = widget.mood ?? 'happy';
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -49,7 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               const Color(0xFFF8F0FF), 
               const Color(0xFFF0E6FF), 
               const Color(0xFFE8D9FF), 
-              widget.primaryColor.withOpacity(0.2),
+              primaryColor.withOpacity(0.2),
             ],
           ),
         ),
@@ -67,7 +83,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.primaryColor.withOpacity(0.2),
+                      color: primaryColor.withOpacity(0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -78,14 +94,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Row(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
+                          icon: Icon(Icons.arrow_back, color: secondaryColor),
                           onPressed: () => Navigator.pop(context),
                         ),
                         const SizedBox(width: 8),
                         Text(
                           'Notifications',
                           style: TextStyle(
-                            color: widget.secondaryColor,
+                            color: secondaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 22,
                           ),
@@ -101,7 +117,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             '10:30',
                             style: TextStyle(
                               fontSize: 14,
-                              color: widget.secondaryColor.withOpacity(0.7),
+                              color: secondaryColor.withOpacity(0.7),
                             ),
                           ),
                         ],
@@ -127,7 +143,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: widget.primaryColor,
+                          color: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -184,7 +200,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: widget.primaryColor,
+                          color: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -227,7 +243,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: widget.primaryColor,
+                          color: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -240,14 +256,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             leading: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: widget.primaryColor.withOpacity(0.1),
+                                color: primaryColor.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Icon(Icons.volume_up, color: widget.primaryColor, size: 20),
+                              child: Icon(Icons.volume_up, color: primaryColor, size: 20),
                             ),
                             title: const Text('Notification Sound', style: TextStyle(fontWeight: FontWeight.w500)),
                             subtitle: Text(selectedSound),
-                            trailing: Icon(Icons.arrow_forward_ios, size: 14, color: widget.primaryColor),
+                            trailing: Icon(Icons.arrow_forward_ios, size: 14, color: primaryColor),
                             onTap: () {
                               _showSoundDialog();
                             },
@@ -260,10 +276,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             secondary: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: widget.primaryColor.withOpacity(0.1),
+                                color: primaryColor.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Icon(Icons.vibration, color: widget.primaryColor, size: 20),
+                              child: Icon(Icons.vibration, color:primaryColor, size: 20),
                             ),
                             title: const Text('Vibration', style: TextStyle(fontWeight: FontWeight.w500)),
                             value: vibrationEnabled,
@@ -272,7 +288,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 vibrationEnabled = value;
                               });
                             },
-                            activeColor: widget.primaryColor,
+                            activeColor: primaryColor,
                           ),
                         ],
                       ),
@@ -288,7 +304,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
-        selectedColor: widget.primaryColor,
+        selectedColor: primaryColor,
         onTap: (index) {
           
         },
@@ -304,7 +320,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: widget.primaryColor.withOpacity(0.1),
+            color: primaryColor.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -328,16 +344,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
       secondary: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: widget.primaryColor.withOpacity(0.1),
+          color: primaryColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Icon(icon, color: widget.primaryColor, size: 20),
+        child: Icon(icon, color: primaryColor, size: 20),
       ),
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
       subtitle: Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
       value: value,
       onChanged: onChanged,
-      activeColor: widget.primaryColor,
+      activeColor: primaryColor,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     );
   }
@@ -358,7 +374,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 return ListTile(
                   title: Text(soundOptions[index]),
                   trailing: selectedSound == soundOptions[index]
-                      ? Icon(Icons.check, color: widget.primaryColor)
+                      ? Icon(Icons.check, color: primaryColor)
                       : null,
                   onTap: () {
                     setState(() {
@@ -380,7 +396,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60),
       child: Divider(
-        color: widget.primaryColor.withOpacity(0.2),
+        color: primaryColor.withOpacity(0.2),
         height: 1,
       ),
     );
