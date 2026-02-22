@@ -1,25 +1,13 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from app.core.config import settings
+from app.core import logging
 
-app = FastAPI(
-    title="MoodSync API",
-    description="AI-powered mood detection backend",
-    version="1.0.0"
-)
+app = FastAPI(title=settings.PROJECT_NAME)
 
-# CORS setup (Flutter + Web + ML access)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-@app.get("/")
-def root():
-    return {"status": "MoodSync backend running 🚀"}
-
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
+@app.get("/config-test")
+def config_test():
+    return {
+        "environment": settings.ENVIRONMENT,
+        "algorithm": settings.ALGORITHM
+    }
