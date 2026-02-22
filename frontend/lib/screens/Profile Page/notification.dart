@@ -73,45 +73,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),
                   ],
                 ),
-                child: Column(
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Notifications',
-                          style: TextStyle(
-                            color: widget.secondaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                          ),
-                        ),
-                      ],
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    // time
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, bottom: 5),
-                      child: Row(
-                        children: [
-                          Text(
-                            '10:30',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: widget.secondaryColor.withOpacity(0.7),
-                            ),
-                          ),
-                        ],
+                    const SizedBox(width: 8),
+                    Text(
+                      'Notifications',
+                      style: TextStyle(
+                        color: widget.secondaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
                       ),
                     ),
                   ],
                 ),
               ),
               
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               
               // main content with notification settings
               Expanded(
