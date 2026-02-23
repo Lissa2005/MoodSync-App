@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import '../../widgets/bottom_nav_bar.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
-  final String? mood;
-  final Color? primaryColor;
-  final Color? secondaryColor;
-  final Color? accentColor;
+  final String mood;
+  final Color primaryColor;
+  final Color secondaryColor;
+  final Color accentColor;
   
   const AccountSettingsScreen({
     super.key,
-    this.mood,
-    this.primaryColor,
-    this.secondaryColor,
-    this.accentColor,
+    required this.mood,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.accentColor,
   });
 
   @override
