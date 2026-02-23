@@ -121,6 +121,7 @@ class HomeScreen extends StatelessWidget{
         ),
       ),
 
+      //home page
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

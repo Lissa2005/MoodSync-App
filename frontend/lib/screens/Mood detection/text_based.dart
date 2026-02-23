@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodsync/screens/recommendation_screen.dart';
 
 class MoodManualInputPage extends StatefulWidget {
   const MoodManualInputPage({super.key});
@@ -13,35 +14,28 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
   // Custom color constants
   static const Color sunshineYellow = Color(0xFFFFD93D);
   static const Color warmOrange = Color(0xFFFF8A5C);
-  static const Color softGold = Color(0xFFF9E076);
 
   static const Color softBlue = Color(0xFF6C9EBF);
   static const Color dustyLavender = Color(0xFF9B9FB5);
-  static const Color mistyGray = Color(0xFFC7D3DD);
 
   static const Color deepRed = Color(0xFFD14D4D);
   static const Color burntOrange = Color(0xFFC45D42);
-  static const Color darkBurgundy = Color(0xFF8B3A3A);
+
 
   static const Color sageGreen = Color(0xFF8FBC94);
   static const Color softTeal = Color(0xFFA5D6D9);
-  static const Color mistyMint = Color(0xFFC5E0D4);
 
   static const Color softLavender = Color(0xFFB8A9C9);
   static const Color mutedPurple = Color(0xFF9B8BB0);
-  static const Color lightGray = Color(0xFFD9D0DE);
 
   static const Color terracotta = Color(0xFFC96E6E);
   static const Color dustyRose = Color(0xFFB85C5C);
-  static const Color warmBeige = Color(0xFFE8C7B5);
 
   static const Color electricPurple = Color(0xFF9B5DE5);
   static const Color brightFuchsia = Color(0xFFF15BB5);
-  static const Color vibrantBlue = Color(0xFF00BBF9);
 
   static const Color warmGray = Color(0xFFBEBEBE);
   static const Color softBeige = Color(0xFFF5F0E1);
-  static const Color mutedTaupe = Color(0xFFC7B8A5);
 
   // List of moods with their properties and custom colors
   final List<Map<String, dynamic>> _moods = [
@@ -50,7 +44,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😊',
       'primaryColor': sunshineYellow,
       'secondaryColor': warmOrange,
-      'accentColor': softGold,
       'description': 'Feeling joyful and positive'
     },
     {
@@ -58,7 +51,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😢',
       'primaryColor': softBlue,
       'secondaryColor': dustyLavender,
-      'accentColor': mistyGray,
       'description': 'Feeling down or sorrowful'
     },
     {
@@ -66,7 +58,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😠',
       'primaryColor': deepRed,
       'secondaryColor': burntOrange,
-      'accentColor': darkBurgundy,
       'description': 'Feeling frustrated or annoyed'
     },
     {
@@ -74,7 +65,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😌',
       'primaryColor': sageGreen,
       'secondaryColor': softTeal,
-      'accentColor': mistyMint,
       'description': 'Feeling peaceful and relaxed'
     },
     {
@@ -82,7 +72,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😰',
       'primaryColor': softLavender,
       'secondaryColor': mutedPurple,
-      'accentColor': lightGray,
       'description': 'Feeling worried or nervous'
     },
     {
@@ -90,7 +79,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😤',
       'primaryColor': terracotta,
       'secondaryColor': dustyRose,
-      'accentColor': warmBeige,
       'description': 'Feeling irritated or stuck'
     },
     {
@@ -98,7 +86,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😲',
       'primaryColor': electricPurple,
       'secondaryColor': brightFuchsia,
-      'accentColor': vibrantBlue,
       'description': 'Feeling shocked or amazed'
     },
     {
@@ -106,7 +93,6 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
       'emoji': '😐',
       'primaryColor': warmGray,
       'secondaryColor': softBeige,
-      'accentColor': mutedTaupe,
       'description': 'Feeling neither good nor bad'
     },
   ];
@@ -117,8 +103,7 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
   // Helper getter for current mood's secondary color
   Color get _currentSecondaryColor => _moods[_selectedMoodIndex]['secondaryColor'];
 
-  // Helper getter for current mood's accent color
-  Color get _currentAccentColor => _moods[_selectedMoodIndex]['accentColor'];
+
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +273,7 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
     bool isSelected = _selectedMoodIndex == index;
     Color moodPrimaryColor = _moods[index]['primaryColor'];
     Color moodSecondaryColor = _moods[index]['secondaryColor'];
-    Color moodAccentColor = _moods[index]['accentColor'];
+
 
     return GestureDetector(
       onTap: () {
@@ -421,8 +406,12 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context); // Return to main mood screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const RecommendationScreen(mood: 'Happy'),
+                ),
+              );
             },
             style: TextButton.styleFrom(
               foregroundColor: _currentPrimaryColor,

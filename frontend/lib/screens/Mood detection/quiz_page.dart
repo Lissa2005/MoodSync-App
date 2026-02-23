@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodsync/screens/recommendation_screen.dart';
 
 
 class Question {
@@ -60,7 +61,21 @@ class _MoodQuizPageState extends State<MoodQuizPage> {
       builder: (context) => AlertDialog(
         title: const Text("Mood Result"),
         content: Text("Your dominant mood today is: $finalMood"),
-        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text("OK"))],
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => RecommendationScreen(
+                      mood:finalMood
+                    ),
+                ),
+              );
+            },
+            child: const Text("OK"),
+          ),
+        ],
       ),
     );
   }
@@ -103,6 +118,7 @@ class _MoodQuizPageState extends State<MoodQuizPage> {
               },
             ),
           ),
+          //other functions between q
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(

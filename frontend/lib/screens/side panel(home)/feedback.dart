@@ -60,6 +60,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     );
   }
 
+  // star rating widget
   Widget _buildRatingStars() {
     return Row(
       children: List.generate(5, (index) {
@@ -78,6 +79,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     );
   }
 
+  //the form body
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,6 +189,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               ),
             ),
             const SizedBox(height: 10),
+
+            //message
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
