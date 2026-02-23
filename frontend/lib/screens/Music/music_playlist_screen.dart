@@ -315,6 +315,80 @@ class _MusicPlaylistScreenState extends State<MusicPlaylistScreen> {
               childCount: playlistSongs.length,
             ),
           ),
+          
+          // Currently playing bar at bottom
+          SliverToBoxAdapter(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: widget.primaryColor.withOpacity(0.1),
+                border: Border(
+                  top: BorderSide(
+                    color: widget.accentColor.withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: widget.primaryColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.music_note, color: widget.primaryColor, size: 20),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          playlistSongs[0]['title']!,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: widget.secondaryColor,
+                          ),
+                        ),
+                        Text(
+                          playlistSongs[0]['artist']!,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.play_arrow,
+                      color: widget.primaryColor,
+                      size: 28,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MusicPlayerScreen(
+                            mood: widget.mood,
+                            primaryColor: widget.primaryColor,
+                            secondaryColor: widget.secondaryColor,
+                            accentColor: widget.accentColor,
+                            song: playlistSongs[0],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavBar(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/bottom_nav_bar.dart';
+import 'change_password.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   final String? mood;
@@ -20,19 +21,14 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  //default value
-  late Color primaryColor;
-  late Color secondaryColor;
-  late Color accentColor;
-  late String mood;
-  // Variables to store user settings
+  // variables for settings options
   bool isDarkMode = false;
   bool isAutoPlay = true;
   String selectedLanguage = 'English';
   String downloadQuality = 'High';
   int cacheSize = 245;
 
-  // Lists for dropdown options
+  // list of options for language and download quality
   final List<String> languages = ['English', 'Spanish', 'French', 'German', 'Japanese', 'Chinese'];
   final List<String> qualities = ['Low', 'Medium', 'High', 'Very High'];
 
@@ -66,7 +62,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Custom App Bar
+              // custom app bar
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
@@ -96,24 +92,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         color: secondaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: 10),
-              
-              // Time display
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    Text(
-                      '10:30',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: secondaryColor.withOpacity(0.7),
                       ),
                     ),
                   ],
@@ -168,10 +146,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               title: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.w500)),
                               trailing: Icon(Icons.arrow_forward_ios, size: 14, color: primaryColor),
                               onTap: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Change Password coming soon!'),
-                                    behavior: SnackBarBehavior.floating,
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChangePasswordScreen(
+                                      mood: widget.mood,
+                                      primaryColor: widget.primaryColor,
+                                      secondaryColor: widget.secondaryColor,
+                                      accentColor: widget.accentColor,
+                                    ),
                                   ),
                                 );
                               },

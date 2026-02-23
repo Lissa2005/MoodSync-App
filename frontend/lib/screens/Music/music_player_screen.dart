@@ -63,9 +63,9 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
     return Scaffold(
       backgroundColor: widget.primaryColor.withOpacity(0.95),
       body: SafeArea(
-        child: SingleChildScrollView(  
+        child: SingleChildScrollView(  // Changed from Column to SingleChildScrollView
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 20), 
+            padding: const EdgeInsets.only(bottom: 20), // Add padding at bottom
             child: Column(
               children: [
                 // Header

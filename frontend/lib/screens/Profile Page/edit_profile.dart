@@ -145,17 +145,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              const Color(0xFFF8F0FF), // Very Light Lavender (almost white)
-              const Color(0xFFF0E6FF), // Light Lavender
-              const Color(0xFFE8D9FF), // Soft Lavender
-              primaryColor.withOpacity(0.3), // Your primary color with low opacity
+              const Color(0xFFF8F0FF), 
+              const Color(0xFFF0E6FF), 
+              const Color(0xFFE8D9FF), 
+              widget.primaryColor.withOpacity(0.3), 
             ],
           ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              // Custom App Bar with gradient
+              // app bar
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
@@ -199,7 +199,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          // Profile Photo Section with light background
+                          
+                          // profile picture
                           Center(
                             child: Column(
                               children: [
@@ -285,7 +286,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           
                           const SizedBox(height: 30),
                           
-                          // Form Container with semi-transparent white
+                          // form container
                           Container(
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
@@ -487,7 +488,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           
                           const SizedBox(height: 30),
                           
-                          // Save Changes Button
+                          // save changes
                           Container(
                             width: double.infinity,
                             height: 55,
@@ -530,7 +531,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           
                           const SizedBox(height: 15),
                           
-                          // Delete Account Button
+                          // delete account
                           TextButton(
                             onPressed: _deleteAccount,
                             style: TextButton.styleFrom(
