@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodsync/screens/Music/music_screen.dart';
+import 'package:moodsync/screens/music/music_screen.dart';
 import 'package:moodsync/screens/food/food_screen.dart';
 import 'package:moodsync/screens/interactive_platform.dart';
 import 'package:moodsync/screens/activities_screen.dart';
