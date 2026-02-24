@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import '../../widgets/bottom_nav_bar.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
-  final String mood;
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color accentColor;
+  final String? mood;
+  final Color? primaryColor;
+  final Color? secondaryColor;
+  final Color? accentColor;
   
   const AccountSettingsScreen({
     super.key,
-    required this.mood,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.accentColor,
+    this.mood,
+    this.primaryColor,
+    this.secondaryColor,
+    this.accentColor,
   });
 
   @override
@@ -213,7 +213,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                             return ListTile(
                                               title: Text(languages[index]),
                                               trailing: selectedLanguage == languages[index]
-                                                  ? Icon(Icons.check, color: widget.primaryColor)
+                                                  ? Icon(Icons.check, color: primaryColor)
                                                   : null,
                                               onTap: () {
                                                 setState(() {
@@ -242,7 +242,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: widget.primaryColor,
+                          color: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -374,13 +374,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               SnackBar(
                                                 content: const Text('Cache cleared successfully'),
-                                                backgroundColor: widget.primaryColor,
+                                                backgroundColor: primaryColor,
                                                 behavior: SnackBarBehavior.floating,
                                               ),
                                             );
                                           },
                                           style: TextButton.styleFrom(
-                                            foregroundColor: widget.primaryColor,
+                                            foregroundColor: primaryColor,
                                           ),
                                           child: const Text('Clear'),
                                         ),
@@ -502,7 +502,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              Icon(Icons.arrow_forward_ios, size: 14, color: widget.primaryColor),
+                              Icon(Icons.arrow_forward_ios, size: 14, color: primaryColor),
                             ],
                           ),
                           onTap: () {

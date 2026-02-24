@@ -46,10 +46,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void initState() {
     super.initState();
     // Initialize with provided values or defaults
-    primaryColor = widget.primaryColor ?? Colors.purple;
-    secondaryColor = widget.secondaryColor ?? Colors.deepPurple;
-    accentColor = widget.accentColor ?? Colors.amber;
-    mood = widget.mood ?? 'happy';
+    primaryColor = primaryColor ?? Colors.purple;
+    secondaryColor = secondaryColor ?? Colors.deepPurple;
+    accentColor = accentColor ?? Colors.amber;
+    mood = mood ?? 'happy';
   }
 
   @override
