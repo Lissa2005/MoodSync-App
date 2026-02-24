@@ -145,17 +145,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-<<<<<<< HEAD
+
+
               const Color(0xFFF8F0FF), // Very Light Lavender (almost white)
               const Color(0xFFF0E6FF), // Light Lavender
               const Color(0xFFE8D9FF), // Soft Lavender
               primaryColor.withOpacity(0.3), // Your primary color with low opacity
-=======
+
               const Color(0xFFF8F0FF), 
               const Color(0xFFF0E6FF), 
               const Color(0xFFE8D9FF), 
-              widget.primaryColor.withOpacity(0.3), 
->>>>>>> 1c70a3cb60a20a37f2d22ee7fdd7550c14d1a2e3
+              primaryColor.withOpacity(0.3),
+
             ],
           ),
         ),

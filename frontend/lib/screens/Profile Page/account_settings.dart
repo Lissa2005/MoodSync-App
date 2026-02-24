@@ -21,16 +21,16 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-<<<<<<< HEAD
+
+
   //default value
   late Color primaryColor;
   late Color secondaryColor;
   late Color accentColor;
   late String mood;
-  // Variables to store user settings
-=======
+
   // variables for settings options
->>>>>>> 1c70a3cb60a20a37f2d22ee7fdd7550c14d1a2e3
+
   bool isDarkMode = false;
   bool isAutoPlay = true;
   String selectedLanguage = 'English';
@@ -107,7 +107,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                 ),
               ),
               
-<<<<<<< HEAD
+
               const SizedBox(height: 10),
               
               // Time display
@@ -126,8 +126,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                 ),
               ),
               
-=======
->>>>>>> 1c70a3cb60a20a37f2d22ee7fdd7550c14d1a2e3
+
               const SizedBox(height: 20),
               
               // Main Content
@@ -180,10 +179,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ChangePasswordScreen(
-                                      mood: widget.mood,
-                                      primaryColor: widget.primaryColor,
-                                      secondaryColor: widget.secondaryColor,
-                                      accentColor: widget.accentColor,
+                                      mood: mood,
+                                      primaryColor: primaryColor,
+                                      secondaryColor: secondaryColor,
+                                      accentColor: accentColor,
                                     ),
                                   ),
                                 );
