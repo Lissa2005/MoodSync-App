@@ -89,8 +89,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),
                   ],
                 ),
-                child: Column(
+                child: Row(
                   children: [
+<<<<<<< HEAD
                     Row(
                       children: [
                         IconButton(
@@ -121,13 +122,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             ),
                           ),
                         ],
+=======
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Notifications',
+                      style: TextStyle(
+                        color: widget.secondaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+>>>>>>> 1c70a3cb60a20a37f2d22ee7fdd7550c14d1a2e3
                       ),
                     ),
                   ],
                 ),
               ),
               
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               
               // main content with notification settings
               Expanded(
