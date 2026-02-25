@@ -117,10 +117,10 @@ class _MusicScreenState extends State<MusicScreen> {
   void initState() {
     super.initState();
     // Initialize with provided values or defaults
-    primaryColor = primaryColor ?? Colors.purple;
-    secondaryColor = secondaryColor ?? Colors.deepPurple;
-    accentColor = accentColor ?? Colors.amber;
-    mood = mood ?? 'happy';
+    primaryColor = primaryColor ;
+    secondaryColor = secondaryColor ;
+    accentColor = accentColor ;
+    mood = mood ;
   }
 
   @override

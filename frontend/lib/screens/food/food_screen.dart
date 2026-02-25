@@ -167,16 +167,16 @@ class _FoodScreenState extends State<FoodScreen> {
   void initState() {
     super.initState();
     // Initialize with provided values or defaults
-    primaryColor = primaryColor ?? Colors.purple;
-    secondaryColor = secondaryColor ?? Colors.deepPurple;
-    accentColor = accentColor ?? Colors.amber;
-    mood = mood ?? 'happy';
+    primaryColor = primaryColor ;
+    secondaryColor = secondaryColor ;
+    accentColor = accentColor ;
+    mood = mood ;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor.withOpacity(0.1),
+      backgroundColor: primaryColor.withValues(alpha: 0.1),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -391,7 +391,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                     Container(
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: primaryColor.withOpacity(0.2),
+                                        color: primaryColor.withValues(alpha: 0.2),
                                         borderRadius: const BorderRadius.vertical(
                                           top: Radius.circular(12),
                                         ),
