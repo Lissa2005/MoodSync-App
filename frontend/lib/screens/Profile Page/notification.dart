@@ -123,19 +123,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ),
                         ],
 
-                        IconButton(
-                          icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Notifications',
-                          style: TextStyle(
-                            color: widget.secondaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
-                          ),
-                        ),
                       )
                     )
                   ],

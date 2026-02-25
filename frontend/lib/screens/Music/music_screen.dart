@@ -4,17 +4,17 @@ import 'music_player_screen.dart';
 import '../../widgets/bottom_nav_bar.dart'; 
 
 class MusicScreen extends StatefulWidget {
-  final String mood;
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color accentColor;
+  final String? mood;
+  final Color? primaryColor;
+  final Color? secondaryColor;
+  final Color? accentColor;
   
   const MusicScreen({
     super.key,
-    required this.mood,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.accentColor,
+    this.mood,
+    this.primaryColor,
+    this.secondaryColor,
+    this.accentColor,
   }) ;
 
   @override
@@ -22,6 +22,11 @@ class MusicScreen extends StatefulWidget {
 }
 
 class _MusicScreenState extends State<MusicScreen> {
+  late Color primaryColor;
+  late Color secondaryColor;
+  late Color accentColor;
+  late String mood;
+
   bool isPlaying = false;
   
   final Map<String, List<Map<String, String>>> moodPlaylists = {
@@ -109,9 +114,19 @@ class _MusicScreenState extends State<MusicScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize with provided values or defaults
+    primaryColor = primaryColor ?? Colors.purple;
+    secondaryColor = secondaryColor ?? Colors.deepPurple;
+    accentColor = accentColor ?? Colors.amber;
+    mood = mood ?? 'happy';
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.primaryColor.withOpacity(0.1),
+      backgroundColor: primaryColor.withOpacity(0.1),
       body: SafeArea(
         child: Column(
           children: [
@@ -129,7 +144,7 @@ class _MusicScreenState extends State<MusicScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            '${widget.mood[0].toUpperCase()}${widget.mood.substring(1)} Mood',
+                            '${mood[0].toUpperCase()}${mood.substring(1)} Mood',
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -152,7 +167,7 @@ class _MusicScreenState extends State<MusicScreen> {
                             '10:30',
                             style: TextStyle(
                               fontSize: 14,
-                              color: widget.secondaryColor,
+                              color: secondaryColor,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -160,7 +175,7 @@ class _MusicScreenState extends State<MusicScreen> {
                             width: 4,
                             height: 4,
                             decoration: BoxDecoration(
-                              color: widget.secondaryColor,
+                              color: secondaryColor,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -169,7 +184,7 @@ class _MusicScreenState extends State<MusicScreen> {
                             'Uplifting vibes for you',
                             style: TextStyle(
                               fontSize: 14,
-                              color: widget.secondaryColor,
+                              color: secondaryColor,
                             ),
                           ),
                         ],
@@ -186,14 +201,14 @@ class _MusicScreenState extends State<MusicScreen> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            widget.primaryColor,
-                            widget.secondaryColor,
+                            primaryColor,
+                            secondaryColor,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: widget.primaryColor.withOpacity(0.3),
+                            color:primaryColor.withOpacity(0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),
@@ -223,7 +238,7 @@ class _MusicScreenState extends State<MusicScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      moodPlaylists[widget.mood]?[0]['name'] ?? 'Sunshine Vibes',
+                                      moodPlaylists[mood]?[0]['name'] ?? 'Sunshine Vibes',
                                       style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -232,7 +247,7 @@ class _MusicScreenState extends State<MusicScreen> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      moodPlaylists[widget.mood]?[0]['songs'] ?? '24 songs • 1h 45m',
+                                      moodPlaylists[mood]?[0]['songs'] ?? '24 songs • 1h 45m',
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.white.withOpacity(0.8),
@@ -259,14 +274,14 @@ class _MusicScreenState extends State<MusicScreen> {
                                   children: [
                                     Icon(
                                       isPlaying ? Icons.pause : Icons.play_arrow,
-                                      color: widget.primaryColor,
+                                      color: primaryColor,
                                       size: 20,
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
                                       isPlaying ? 'PAUSED' : 'PLAY ALL',
                                       style: TextStyle(
-                                        color: widget.primaryColor,
+                                        color: primaryColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                       ),
@@ -305,13 +320,13 @@ class _MusicScreenState extends State<MusicScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: widget.secondaryColor,
+                              color: secondaryColor,
                             ),
                           ),
                           Text(
                             'See All',
                             style: TextStyle(
-                              color: widget.accentColor,
+                              color:accentColor,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -326,19 +341,19 @@ class _MusicScreenState extends State<MusicScreen> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: moodPlaylists[widget.mood]?.length ?? 3,
+                        itemCount: moodPlaylists[mood]?.length ?? 3,
                         itemBuilder: (context, index) {
-                          final playlist = moodPlaylists[widget.mood]![index];
+                          final playlist = moodPlaylists[mood]![index];
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => MusicPlaylistScreen(
-                                    mood: widget.mood,
-                                    primaryColor: widget.primaryColor,
-                                    secondaryColor: widget.secondaryColor,
-                                    accentColor: widget.accentColor,
+                                    mood: mood,
+                                    primaryColor: primaryColor,
+                                    secondaryColor: secondaryColor,
+                                    accentColor: accentColor,
                                     playlistName: playlist['name']!,
                                     playlistDetails: playlist['songs']!,
                                   ),
@@ -355,10 +370,10 @@ class _MusicScreenState extends State<MusicScreen> {
                                     width: 140,
                                     height: 80,
                                     decoration: BoxDecoration(
-                                      color: widget.primaryColor.withOpacity(0.3),
+                                      color: primaryColor.withOpacity(0.3),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: widget.accentColor,
+                                        color: accentColor,
                                         width: 1,
                                       ),
                                     ),
@@ -408,13 +423,13 @@ class _MusicScreenState extends State<MusicScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: widget.secondaryColor,
+                              color: secondaryColor,
                             ),
                           ),
                           const Spacer(),
                           Icon(
                             Icons.shuffle,
-                            color: widget.accentColor,
+                            color: accentColor,
                             size: 20,
                           ),
                         ],
@@ -427,9 +442,9 @@ class _MusicScreenState extends State<MusicScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: tracklists[widget.mood]?.length ?? 4,
+                      itemCount: tracklists[mood]?.length ?? 4,
                       itemBuilder: (context, index) {
-                        final track = tracklists[widget.mood]?[index] ?? 
+                        final track = tracklists[mood]?[index] ??
                             {'title': 'Song $index', 'artist': 'Artist', 'duration': '3:30'};
                         return Container(
                           margin: const EdgeInsets.only(bottom: 12),
@@ -439,7 +454,7 @@ class _MusicScreenState extends State<MusicScreen> {
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: widget.accentColor.withOpacity(0.2),
+                                  color:accentColor.withOpacity(0.2),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
@@ -447,7 +462,7 @@ class _MusicScreenState extends State<MusicScreen> {
                                     '${index + 1}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: widget.secondaryColor,
+                                      color: secondaryColor,
                                     ),
                                   ),
                                 ),
@@ -504,10 +519,10 @@ class _MusicScreenState extends State<MusicScreen> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: widget.primaryColor.withOpacity(0.1),
+                color: primaryColor.withOpacity(0.1),
                 border: Border(
                   top: BorderSide(
-                    color: widget.accentColor.withOpacity(0.3),
+                    color: accentColor.withOpacity(0.3),
                     width: 1,
                   ),
                 ),
@@ -518,10 +533,10 @@ class _MusicScreenState extends State<MusicScreen> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: widget.primaryColor.withOpacity(0.2),
+                      color: primaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.music_note, color: widget.primaryColor, size: 20),
+                    child: Icon(Icons.music_note, color: primaryColor, size: 20),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -529,15 +544,15 @@ class _MusicScreenState extends State<MusicScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          tracklists[widget.mood]?[0]['title'] ?? 'Happy',
+                          tracklists[mood]?[0]['title'] ?? 'Happy',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
-                            color: widget.secondaryColor,
+                            color: secondaryColor,
                           ),
                         ),
                         Text(
-                          tracklists[widget.mood]?[0]['artist'] ?? 'Pharrell Williams',
+                          tracklists[mood]?[0]['artist'] ?? 'Pharrell Williams',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -549,21 +564,21 @@ class _MusicScreenState extends State<MusicScreen> {
                   IconButton(
                     icon: Icon(
                       Icons.play_arrow,
-                      color: widget.primaryColor,
+                      color: primaryColor,
                       size: 28,
                     ),
                     onPressed: () {
-                      final currentSong = tracklists[widget.mood]?[0] ?? 
+                      final currentSong = tracklists[mood]?[0] ??
                           {'title': 'Happy', 'artist': 'Pharrell Williams', 'duration': '3:53'};
                       
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => MusicPlayerScreen(
-                            mood: widget.mood,
-                            primaryColor: widget.primaryColor,
-                            secondaryColor: widget.secondaryColor,
-                            accentColor: widget.accentColor,
+                            mood: mood,
+                            primaryColor: primaryColor,
+                            secondaryColor: secondaryColor,
+                            accentColor: accentColor,
                             song: currentSong,
                           ),
                         ),
@@ -579,7 +594,7 @@ class _MusicScreenState extends State<MusicScreen> {
       
       bottomNavigationBar: BottomNavBar(
         currentIndex: 1,
-        selectedColor: widget.primaryColor,
+        selectedColor: primaryColor,
         onTap: _onNavBarTap,
       ),
     );
