@@ -143,11 +143,11 @@ class RecommendationScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
               4,
-                  (_) => Container(
+                  (index) => Container(
                 width: 14,
                 height: 14,
                 decoration: BoxDecoration(
-                  color: Colors.primaries[_ % Colors.primaries.length],
+                  color: Colors.primaries[index % Colors.primaries.length],
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),

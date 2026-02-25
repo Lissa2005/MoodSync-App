@@ -107,9 +107,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(
+                      const Center(
                         child: Column(
-                          children: const [
+                          children: [
                             Icon(Icons.chat_bubble_outline, size: 36),
                             SizedBox(height: 10),
                             Text(

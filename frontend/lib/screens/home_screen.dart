@@ -49,11 +49,11 @@ class HomeScreen extends StatelessWidget{
               ),
             ),
 
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
+            _buildDrawerItem(
+              icon: Icons.home,
+              label: 'Home',
               onTap: () {
-                Navigator.pop(context); // close drawer
+                Navigator.pop(context);
               },
             ),
 
