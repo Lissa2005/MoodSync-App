@@ -176,7 +176,7 @@ class _FoodScreenState extends State<FoodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor.withValues(alpha: 0.1),
+      backgroundColor: primaryColor.withOpacity(0.1),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -391,7 +391,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                     Container(
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: primaryColor.withValues(alpha: 0.2),
+                                        color: primaryColor.withOpacity( 0.2),
                                         borderRadius: const BorderRadius.vertical(
                                           top: Radius.circular(12),
                                         ),
