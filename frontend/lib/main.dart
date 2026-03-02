@@ -6,6 +6,7 @@ import 'package:moodsync/screens/side%20panel(home)/about_page.dart';
 import 'package:moodsync/screens/side%20panel(home)/help.dart';
 import 'package:moodsync/screens/side%20panel(home)/privacy.dart';
 import 'package:moodsync/screens/side%20panel(home)/profile.dart';
+import 'package:moodsync/screens/start_up_screens/splash_screen.dart';
 import 'screens/start_up_screens/welcome_screen.dart';
 import 'screens/start_up_screens/signin_screen.dart';
 import 'screens/home_screen.dart';
@@ -36,9 +37,10 @@ class MoodSyncApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/welcome',
+      initialRoute: '/splash',
       //the path
       routes: {
+        '/splash': (_) => const SplashScreen(),
         '/welcome': (_) => const WelcomeScreen(),
         '/signin': (_) => const SigninScreen(),
         '/home': (_) => const HomeScreen(), //bottom navigation
