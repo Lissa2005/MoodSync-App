@@ -35,6 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   http: ^1.6.0
+  #required package for voice based mood detection
+  speech_to_text: ^6.6.0
+
 
 dev_dependencies:
   flutter_test:
