@@ -89,12 +89,7 @@ class RecommendationScreen extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const InteractivePlatform(
-                    mood: mood,
-                    primaryColor: moodColor.primary,
-                    secondaryColor: moodColor.secondary,
-                    accentColor: moodColor.accent,
-                  ),
+                  builder: (_) => const InteractivePlatform(),
                 ),
               ),
             ),
@@ -108,12 +103,7 @@ class RecommendationScreen extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const ActivitiesScreen(
-                    mood: mood,
-                    primaryColor: moodColor.primary,
-                    secondaryColor: moodColor.secondary,
-                    accentColor: moodColor.accent,
-                  ),
+                  builder: (_) => const ActivitiesScreen(),
                 ),
               ),
             ),
