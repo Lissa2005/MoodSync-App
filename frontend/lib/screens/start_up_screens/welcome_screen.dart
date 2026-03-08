@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moodsync/screens/start_up_screens/signin_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -13,9 +12,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   int _currentPage = 0;
 
   void _goToSignIn() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const SigninScreen()),
+    Navigator.pushReplacementNamed(
+      context, '/signin'
     );
   }
 
@@ -119,7 +117,7 @@ class _WelcomePage extends StatelessWidget {
         children: [
           //the app logo
           Image.asset(
-            'assets/images/logo.jpeg',
+            'assets/images/app_logo.jpeg',
             height: 220,
           ),
           const SizedBox(height: 40),
