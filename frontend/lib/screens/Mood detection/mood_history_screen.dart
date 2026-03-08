@@ -95,6 +95,73 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
     },
   ];
 
+  final Map<String, Map<String, dynamic>> dayDetails = {
+    'Feb 25': {
+      'date': 'Feb 25',
+      'day': 'Monday',
+      'mood': 'Happy',
+      'emoji': '😊',
+      'color': const Color(0xFFFFD93D),
+      'music': {
+        'playlist': 'Happy Vibes Playlist',
+        'songCount': 5,
+        'duration': '20 min',
+        'songs': ['Happy', 'Good Life', 'Walking On Sunshine']
+      },
+      'food': ['Sunshine Smoothie', 'Happy Tacos'],
+      'activities': ['Meditation (10 min)', 'Played Crossword'],
+      'note': 'Felt great today! Had fun with activities.'
+    },
+    'Feb 24': {
+      'date': 'Feb 24',
+      'day': 'Sunday',
+      'mood': 'Calm',
+      'emoji': '😌',
+      'color': const Color(0xFF8FBC94),
+      'music': {
+        'playlist': 'Zen Garden',
+        'songCount': 8,
+        'duration': '32 min',
+        'songs': ['Ocean Waves', 'Forest Rain', 'Peaceful Piano']
+      },
+      'food': ['Green Tea', 'Vegetable Soup'],
+      'activities': ['Yoga (20 min)', 'Reading'],
+      'note': 'Relaxing Sunday. Perfect for self-care.'
+    },
+    'Feb 23': {
+      'date': 'Feb 23',
+      'day': 'Saturday',
+      'mood': 'Happy',
+      'emoji': '😊',
+      'color': const Color(0xFFFFD93D),
+      'music': {
+        'playlist': 'Party Mix',
+        'songCount': 12,
+        'duration': '45 min',
+        'songs': ['Uptown Funk', 'Happy', 'Can\'t Stop The Feeling']
+      },
+      'food': ['Pizza', 'Ice Cream'],
+      'activities': ['Dancing', 'Movie Night'],
+      'note': 'Great Saturday with friends!'
+    },
+    'Feb 22': {
+      'date': 'Feb 22',
+      'day': 'Friday',
+      'mood': 'Neutral',
+      'emoji': '😐',
+      'color': const Color(0xFFBEBEBE),
+      'music': {
+        'playlist': 'Background Beats',
+        'songCount': 10,
+        'duration': '38 min',
+        'songs': ['Lo-fi Beats', 'Jazz', 'Ambient']
+      },
+      'food': ['Sandwich', 'Coffee'],
+      'activities': ['Work', 'Grocery Shopping'],
+      'note': 'Just another regular day.'
+    },
+  };
+
   // mood count
   Map<String, int> get moodStats {
     Map<String, int> stats = {};
@@ -140,6 +207,268 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
       });
     }
     return days;
+  }
+
+  void _showDayDetails(Map<String, dynamic> dayData) {
+    String dateKey = dayData['date'];
+    Map<String, dynamic>? details = dayDetails[dateKey];
+    
+    if (details == null) return;
+    
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header with date and mood
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '📅 ${details['date']}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            details['day'],
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: details['color'].withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: details['color'],
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              details['emoji'],
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              details['mood'],
+                              style: TextStyle(
+                                color: details['color'],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Music Section
+                  if (details['music'] != null)
+                    _buildDetailSection(
+                      icon: Icons.music_note,
+                      title: 'Music Recommended',
+                      color: details['color'],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            details['music']['playlist'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            '${details['music']['songCount']} songs • ${details['music']['duration']}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 8,
+                            children: (details['music']['songs'] as List)
+                                .take(3)
+                                .map((song) => Chip(
+                                      label: Text(song),
+                                      backgroundColor:
+                                          details['color'].withOpacity(0.1),
+                                      labelStyle: TextStyle(
+                                        color: details['color'],
+                                        fontSize: 12,
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Food Section
+                  if (details['food'] != null)
+                    _buildDetailSection(
+                      icon: Icons.restaurant,
+                      title: 'Food Recommended',
+                      color: details['color'],
+                      child: Wrap(
+                        spacing: 8,
+                        children: (details['food'] as List).map((item) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: details['color'].withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              item,
+                              style: TextStyle(
+                                color: details['color'],
+                                fontSize: 14,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Activities Section
+                  if (details['activities'] != null)
+                    _buildDetailSection(
+                      icon: Icons.self_improvement,
+                      title: 'Activities Done',
+                      color: details['color'],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: (details['activities'] as List)
+                            .map((activity) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 6),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check_circle,
+                                        size: 16,
+                                        color: details['color'],
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(activity),
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Notes Section
+                  if (details['note'] != null)
+                    _buildDetailSection(
+                      icon: Icons.note,
+                      title: 'Notes',
+                      color: details['color'],
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: details['color'].withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          details['note'],
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Close button
+                  Center(
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: TextButton.styleFrom(
+                        foregroundColor: details['color'],
+                      ),
+                      child: const Text('Close'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailSection({
+    required IconData icon,
+    required String title,
+    required Color color,
+    required Widget child,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 20, color: color),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        child,
+      ],
+    );
   }
 
   void _onNavBarTap(int index) {
