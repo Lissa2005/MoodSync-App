@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'music_playlist_screen.dart';
 import 'music_player_screen.dart';
-import '../../widgets/bottom_nav_bar.dart'; 
+import '../../widgets/bottom_nav_bar.dart';
+import 'package:moodsync/widgets/mood_theme.dart';
 
 class MusicScreen extends StatefulWidget {
   final String? mood;
@@ -11,7 +12,7 @@ class MusicScreen extends StatefulWidget {
   
   const MusicScreen({
     super.key,
-    this.mood,
+    required this.mood,
     this.primaryColor,
     this.secondaryColor,
     this.accentColor,
@@ -125,8 +126,9 @@ class _MusicScreenState extends State<MusicScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final moodColor = MoodTheme.getMoodColors(mood);
     return Scaffold(
-      backgroundColor: primaryColor.withOpacity(0.1),
+      backgroundColor: moodColor.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -167,7 +169,7 @@ class _MusicScreenState extends State<MusicScreen> {
                             '10:30',
                             style: TextStyle(
                               fontSize: 14,
-                              color: secondaryColor,
+                              color: moodColor.secondary,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -175,7 +177,7 @@ class _MusicScreenState extends State<MusicScreen> {
                             width: 4,
                             height: 4,
                             decoration: BoxDecoration(
-                              color: secondaryColor,
+                              color: moodColor.secondary,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -184,7 +186,7 @@ class _MusicScreenState extends State<MusicScreen> {
                             'Uplifting vibes for you',
                             style: TextStyle(
                               fontSize: 14,
-                              color: secondaryColor,
+                              color: moodColor.secondary,
                             ),
                           ),
                         ],
@@ -201,14 +203,14 @@ class _MusicScreenState extends State<MusicScreen> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            primaryColor,
-                            secondaryColor,
+                            moodColor.primary,
+                            moodColor.secondary,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color:primaryColor.withOpacity(0.3),
+                            color:moodColor.primary.withOpacity(0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),

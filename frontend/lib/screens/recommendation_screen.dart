@@ -3,6 +3,7 @@ import 'package:moodsync/screens/Music/music_screen.dart';
 import 'package:moodsync/screens/food/food_screen.dart';
 import 'package:moodsync/screens/interactive_platform.dart';
 import 'package:moodsync/screens/activities_screen.dart';
+import 'package:moodsync/widgets/mood_theme.dart';
 
 class RecommendationScreen extends StatelessWidget {
   final String mood;
@@ -14,13 +15,14 @@ class RecommendationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moodColor = MoodTheme.getMoodColors(mood);
     return Scaffold(
-      backgroundColor: const Color(0xFFEAE6FF),
+      backgroundColor: moodColor.secondary,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: moodColor.primary,
         elevation: 0,
-        title: const Text(
-          'Your mood!',
+        title:  Text(
+          "Your mood! -$mood ",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -29,7 +31,7 @@ class RecommendationScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _moodCard(),
+            _moodCard(moodColor),
             const SizedBox(height: 16),
 
             _sectionTitle('Choose Your Color Palette'),
@@ -40,36 +42,40 @@ class RecommendationScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
             _linkedSection(
+              moodColor,
               context,
               title: 'Music',
               subtitle: 'Sunshine Vibes\n24 songs • 1h 45m',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const MusicScreen()),
+                MaterialPageRoute(builder: (_) =>  MusicScreen(mood: mood,)),
               ),
             ),
 
             _linkedSection(
+              moodColor,
               context,
               title: 'Food',
               subtitle: 'Grilled Salmon\n★★★★★\nVegan Cake',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const FoodScreen()),
+                MaterialPageRoute(builder: (_) =>  FoodScreen(mood:  mood,)),
               ),
             ),
 
             _linkedSection(
+              moodColor,
               context,
               title: 'Stories',
               subtitle: '"Whispers of the Heart"\nUplifting reads',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const InteractivePlatform()),
+                MaterialPageRoute(builder: (_) =>  InteractivePlatform()),
               ),
             ),
 
             _linkedSection(
+              moodColor,
               context,
               title: 'Activities',
               subtitle: 'Chess • Positivity Quiz\n15 min',
@@ -86,11 +92,11 @@ class RecommendationScreen extends StatelessWidget {
 
   // ---------------- UI COMPONENTS ----------------
 
-  Widget _moodCard() {
+  Widget _moodCard(moodColors) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFD7D3FF),
+        color: moodColors.accent,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -168,6 +174,7 @@ class RecommendationScreen extends StatelessWidget {
   }
 
   Widget _linkedSection(
+      MoodColors moodColors,
       BuildContext context, {
         required String title,
         required String subtitle,
@@ -176,7 +183,7 @@ class RecommendationScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        tileColor: const Color(0xFFD7D3FF),
+        tileColor: moodColors.accent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
