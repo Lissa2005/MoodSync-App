@@ -250,7 +250,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                             ),
                           ),
                           Text(
-                            details['day'],
+                            'day placeholder',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],
