@@ -209,7 +209,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
     return days;
   }
 
-  void _showDayDetails(Map<String, dynamic> dayData) {
+  void showDayDetails(Map<String, dynamic> dayData) {
     String dateKey = dayData['date'];
     Map<String, dynamic>? details = dayDetails[dateKey];
     
@@ -242,9 +242,9 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '📅 ${details['date']}',
-                            style: const TextStyle(
+                          const Text(
+                            '📅',
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -254,6 +254,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
