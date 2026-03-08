@@ -23,7 +23,7 @@ class RecommendationScreen extends StatelessWidget {
         elevation: 0,
         title:  Text(
           "Your mood! -$mood ",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -70,7 +70,7 @@ class RecommendationScreen extends StatelessWidget {
               subtitle: '"Whispers of the Heart"\nUplifting reads',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) =>  InteractivePlatform()),
+                MaterialPageRoute(builder: (_) => const InteractivePlatform()),
               ),
             ),
 
