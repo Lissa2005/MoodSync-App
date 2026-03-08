@@ -242,19 +242,18 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            '📅',
-                            style: TextStyle(
+                          Text(
+                            '📅 ${details['date']}',
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'day placeholder',
+                            details['day'],
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -683,7 +682,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                         ),
                         const SizedBox(height: 10),
 
-                        // calender grid
+                        // calender grid with tap functionality
                         GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -697,18 +696,45 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                           itemCount: 28,
                           itemBuilder: (context, index) {
                             final dayData = calendarDays[index];
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: dayData['color'].withOpacity(0.2),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '${dayData['day']}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: dayData['color'],
+                            // Find matching date in allmoodHistory
+                            String? dateKey;
+                            if (index < allmoodHistory.length) {
+                              dateKey = allmoodHistory[index]['date'];
+                            }
+                            
+                            return GestureDetector(
+                              onTap: () {
+                                if (dateKey != null) {
+                                  // Find the day data
+                                  var dayEntry = allmoodHistory.firstWhere(
+                                    (d) => d['date'] == dateKey,
+                                    orElse: () => {},
+                                  );
+                                  if (dayEntry.isNotEmpty) {
+                                    showDayDetails(dayEntry);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('No data for this day'),
+                                        backgroundColor: widget.primaryColor,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: dayData['color'].withOpacity(0.2),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${dayData['day']}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: dayData['color'],
+                                    ),
                                   ),
                                 ),
                               ),
