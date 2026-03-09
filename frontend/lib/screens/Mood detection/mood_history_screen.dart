@@ -243,7 +243,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '📅 ${details['date']}',
+                            '📅 ${details['date'] ?? ''}',
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -264,24 +264,24 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: details['color'].withOpacity(0.2),
+                          color: (details['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: details['color'],
+                            color: details['color'] ?? Colors.grey,
                             width: 1,
                           ),
                         ),
                         child: Row(
                           children: [
                             Text(
-                              details['emoji'],
+                              details['emoji'] ?? '😊',
                               style: const TextStyle(fontSize: 20),
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              details['mood'],
+                              details['mood'] ?? '',
                               style: TextStyle(
-                                color: details['color'],
+                                color: details['color'] ?? Colors.grey,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -298,35 +298,35 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                     _buildDetailSection(
                       icon: Icons.music_note,
                       title: 'Music Recommended',
-                      color: details['color'],
+                      color: details['color'] ?? Colors.grey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            details['music']['playlist'],
+                            details['music']['playlist'] ?? '',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
                           Text(
-                            '${details['music']['songCount']} songs • ${details['music']['duration']}',
-                            style: TextStyle(
+                            '${details['music']['songCount'] ?? 0} songs • ${details['music']['duration'] ?? ''}',
+                            style: const TextStyle(
                               fontSize: 14,
-                              color: Colors.grey[600],
+                              color: Colors.grey,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Wrap(
                             spacing: 8,
-                            children: (details['music']['songs'] as List)
+                            children: ((details['music']['songs'] as List?) ?? [])
                                 .take(3)
                                 .map((song) => Chip(
-                                      label: Text(song),
+                                      label: Text(song?.toString() ?? ''),
                                       backgroundColor:
-                                          details['color'].withOpacity(0.1),
+                                          (details['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
                                       labelStyle: TextStyle(
-                                        color: details['color'],
+                                        color: details['color'] ?? Colors.grey,
                                         fontSize: 12,
                                       ),
                                     ))
@@ -343,23 +343,23 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                     _buildDetailSection(
                       icon: Icons.restaurant,
                       title: 'Food Recommended',
-                      color: details['color'],
+                      color: details['color'] ?? Colors.grey,
                       child: Wrap(
                         spacing: 8,
-                        children: (details['food'] as List).map((item) {
+                        children: ((details['food'] as List?) ?? []).map((item) {
                           return Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: details['color'].withOpacity(0.1),
+                              color: (details['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              item,
+                              item?.toString() ?? '',
                               style: TextStyle(
-                                color: details['color'],
+                                color: details['color'] ?? Colors.grey,
                                 fontSize: 14,
                               ),
                             ),
@@ -375,10 +375,10 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                     _buildDetailSection(
                       icon: Icons.self_improvement,
                       title: 'Activities Done',
-                      color: details['color'],
+                      color: details['color'] ?? Colors.grey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: (details['activities'] as List)
+                        children: ((details['activities'] as List?) ?? [])
                             .map((activity) => Padding(
                                   padding: const EdgeInsets.only(bottom: 6),
                                   child: Row(
@@ -386,10 +386,10 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                                       Icon(
                                         Icons.check_circle,
                                         size: 16,
-                                        color: details['color'],
+                                        color: details['color'] ?? Colors.grey,
                                       ),
                                       const SizedBox(width: 8),
-                                      Text(activity),
+                                      Text(activity?.toString() ?? ''),
                                     ],
                                   ),
                                 ))
@@ -404,15 +404,15 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                     _buildDetailSection(
                       icon: Icons.note,
                       title: 'Notes',
-                      color: details['color'],
+                      color: details['color'] ?? Colors.grey,
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: details['color'].withOpacity(0.05),
+                          color: (details['color'] as Color?)?.withOpacity(0.05) ?? Colors.grey.withOpacity(0.05),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          details['note'],
+                          details['note'] ?? '',
                           style: const TextStyle(
                             fontSize: 14,
                             fontStyle: FontStyle.italic,
@@ -428,7 +428,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                     child: TextButton(
                       onPressed: () => Navigator.pop(context),
                       style: TextButton.styleFrom(
-                        foregroundColor: details['color'],
+                        foregroundColor: details['color'] ?? Colors.grey,
                       ),
                       child: const Text('Close'),
                     ),
@@ -715,7 +715,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: const Text('Next month'),
+                                        content: const Text('No data for this day'),
                                         backgroundColor: widget.primaryColor,
                                       ),
                                     );
@@ -724,16 +724,16 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: dayData['color'].withOpacity(0.2),
+                                  color: (dayData['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
                                   child: Text(
-                                    '${dayData['day']}',
+                                    '${dayData['day'] ?? ''}',
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
-                                      color: dayData['color'],
+                                      color: dayData['color'] ?? Colors.grey,
                                     ),
                                   ),
                                 ),
@@ -786,12 +786,12 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                             width: 50,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: entry['color'].withOpacity(0.2),
+                              color: (entry['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
                               child: Text(
-                                entry['emoji'],
+                                entry['emoji'] ?? '😊',
                                 style: const TextStyle(fontSize: 24),
                               ),
                             ),
@@ -802,15 +802,15 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  entry['date'],
-                                  style: TextStyle(
+                                  entry['date'] ?? '',
+                                  style: const TextStyle(
                                     fontSize: 12,
-                                    color: Colors.grey[600],
+                                    color: Colors.grey,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  entry['day'],
+                                  entry['day'] ?? '',
                                   style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -823,13 +823,13 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: entry['color'].withOpacity(0.1),
+                              color: (entry['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              entry['mood'],
+                              entry['mood'] ?? '',
                               style: TextStyle(
-                                color: entry['color'],
+                                color: entry['color'] ?? Colors.grey,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -921,9 +921,9 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
         const SizedBox(width: 4),
         Text(
           mood,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 10,
-            color: Colors.grey[700],
+            color: Colors.grey,
           ),
         ),
       ],
