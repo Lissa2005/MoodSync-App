@@ -42,7 +42,7 @@ This project was developed as part of the **Software Development Group Project (
 
 ## Team
 
-- M.R.G. Mangalaaru – W2153574  
+- M.R.G. Mangalaari – W2153574  
 - Suha Riza M – W2121334  
 - Chethumi Onela George – W2157783  
 - M.M.G.P. Marasinghe – W2121381  
