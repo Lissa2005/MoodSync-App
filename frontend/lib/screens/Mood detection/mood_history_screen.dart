@@ -251,9 +251,9 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                           ),
                           Text(
                             details['day'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
-                              color: Colors.grey[600],
+                              color: Colors.grey,
                             ),
                           ),
                         ],
