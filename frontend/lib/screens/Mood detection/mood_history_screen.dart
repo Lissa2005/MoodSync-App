@@ -715,7 +715,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('No data for this day'),
+                                        content: const Text('Next month'),
                                         backgroundColor: widget.primaryColor,
                                       ),
                                     );
