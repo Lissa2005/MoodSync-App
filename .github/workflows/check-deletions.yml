@@ -1,0 +1,38 @@
+name: Prevent Deletions
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  check-deletions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for deleted files
+        id: check_files
+        run: |
+          # Get list of deleted files between PR branch and base branch
+          DELETED_FILES=$(git diff --name-only --diff-filter=D origin/${{ github.base_ref }}...HEAD)
+          
+          if [ -n "$DELETED_FILES" ]; then
+            echo "DELETED_FOUND=true" >> $GITHUB_ENV
+            echo "Deleted files found: $DELETED_FILES"
+          else
+            echo "DELETED_FOUND=false" >> $GITHUB_ENV
+          fi
+
+      - name: Enforce Approval Label
+        if: env.DELETED_FOUND == 'true'
+        run: |
+          # Check if the 'deletion-approved' label is present on the PR
+          LABELS="${{ join(github.event.pull_request.labels.*.name, ',') }}"
+          if [[ ! "$LABELS" =~ "deletion-approved" ]]; then
+            echo "Error: Deletions detected but not approved."
+            echo "Please ask an admin to add the 'deletion-approved' label to this PR."
+            exit 1
+          fi
+          echo "Deletion approved by label."
