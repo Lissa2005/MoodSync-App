@@ -25,7 +25,7 @@ class FoodScreen extends StatefulWidget {
 }
 
 class _FoodScreenState extends State<FoodScreen> {
-  //default value
+  // default value
   late Color primaryColor;
   late Color secondaryColor;
   late Color accentColor;
@@ -122,7 +122,7 @@ class _FoodScreenState extends State<FoodScreen> {
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
       case 2:
-        // in food screen
+        // already in food screen
         break;
       case 3:
         ScaffoldMessenger.of(context).showSnackBar(
@@ -410,7 +410,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                       ),
                                     ),
                                     
-                                    //save icon
+                                    // save icon
                                     Positioned(
                                       top: 4,
                                       right: 4,
