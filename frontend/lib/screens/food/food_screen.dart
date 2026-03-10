@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'allergies_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import 'recipe_detail_screen.dart';
+import 'package:moodsync/widgets/mood_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:moodsync/provider/mood_provider.dart';
 
 class FoodScreen extends StatefulWidget {
   final String? mood;
@@ -175,8 +178,11 @@ class _FoodScreenState extends State<FoodScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mood = Provider.of<MoodProvider>(context).mood;
+    final moodColor = MoodTheme.getMoodColors(mood);
+
     return Scaffold(
-      backgroundColor: primaryColor.withOpacity(0.1),
+      backgroundColor: primaryColor.withOpacity(0.08),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
