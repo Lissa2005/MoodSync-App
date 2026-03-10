@@ -3,6 +3,8 @@ import 'music_playlist_screen.dart';
 import 'music_player_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import 'package:moodsync/widgets/mood_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:moodsync/provider/mood_provider.dart';
 
 class MusicScreen extends StatefulWidget {
   final String? mood;
@@ -161,6 +163,7 @@ class _MusicScreenState extends State<MusicScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mood = Provider.of<MoodProvider>(context).mood;
     final moodColor = MoodTheme.getMoodColors(mood);
     return Scaffold(
       backgroundColor: Colors.white,
