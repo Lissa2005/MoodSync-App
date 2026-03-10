@@ -200,7 +200,7 @@ class ActivitiesScreen extends StatelessWidget{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.star, color: Colors.yellow, size: 16),
+                  const  Icon(Icons.star, color: Colors.yellow, size: 16),
                   const SizedBox(width: 4),
                   Text(
                     rating.toStringAsFixed(1),
