@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'music_playlist_screen.dart';
 import 'music_player_screen.dart';
+import 'search_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import 'package:moodsync/widgets/mood_theme.dart';
 import 'package:provider/provider.dart';
@@ -198,6 +199,22 @@ class _MusicScreenState extends State<MusicScreen> {
                             ),
                           ),
                           const Spacer(),
+                          IconButton(
+                            icon: const Icon(Icons.refresh, color: Colors.black87),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SearchScreen(
+                                    mood: currentMood,
+                                    primaryColor: moodColor.primary,
+                                    secondaryColor: moodColor.secondary,
+                                    accentColor: moodColor.accent,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                           const Icon(Icons.search, color: Colors.black87),
                           const SizedBox(width: 16),
                           const Icon(Icons.more_vert, color: Colors.black87),
