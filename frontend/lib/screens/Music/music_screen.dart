@@ -89,6 +89,41 @@ class _MusicScreenState extends State<MusicScreen> {
       {'title': 'Hurt', 'artist': 'Johnny Cash', 'duration': '3:38'},
       {'title': 'Yesterday', 'artist': 'The Beatles', 'duration': '2:05'},
     ],
+    'angry': [
+      {'title': 'Break Stuff', 'artist': 'Limp Bizkit', 'duration': '2:46'},
+      {'title': 'Killing In The Name', 'artist': 'Rage Against The Machine', 'duration': '5:14'},
+      {'title': 'Bodies', 'artist': 'Drowning Pool', 'duration': '3:24'},
+      {'title': 'Down With The Sickness', 'artist': 'Disturbed', 'duration': '4:38'},
+    ],
+    'calm': [
+      {'title': 'Weightless', 'artist': 'Marconi Union', 'duration': '8:00'},
+      {'title': 'Clair de Lune', 'artist': 'Claude Debussy', 'duration': '5:00'},
+      {'title': 'Spiegel im Spiegel', 'artist': 'Arvo Pärt', 'duration': '10:00'},
+      {'title': 'River Flows In You', 'artist': 'Yiruma', 'duration': '3:30'},
+    ],
+    'anxious': [
+      {'title': 'Breathe Me', 'artist': 'Sia', 'duration': '4:35'},
+      {'title': 'Mad World', 'artist': 'Tears for Fears', 'duration': '3:30'},
+      {'title': 'Creep', 'artist': 'Radiohead', 'duration': '3:56'},
+      {'title': 'Everybody Hurts', 'artist': 'R.E.M.', 'duration': '5:20'},
+    ],
+    'frustrated': [
+      {'title': 'Let It Go', 'artist': 'James Bay', 'duration': '4:15'},
+      {'title': 'Release', 'artist': 'Pearl Jam', 'duration': '3:50'},
+      {'title': 'Breathe Out', 'artist': 'Linkin Park', 'duration': '3:45'},
+      {'title': 'I Will Survive', 'artist': 'Gloria Gaynor', 'duration': '3:18'},
+    ],
+    'surprised': [
+      {'title': 'Discovery', 'artist': 'Daft Punk', 'duration': '3:30'},
+      {'title': 'New Finds', 'artist': 'Tame Impala', 'duration': '4:00'},
+      {'title': 'Exciting', 'artist': 'MGMT', 'duration': '3:45'},
+      {'title': 'Electric Feel', 'artist': 'MGMT', 'duration': '3:50'},
+    ],
+    'neutral': [
+      {'title': 'Daily Mix', 'artist': 'Various Artists', 'duration': '2h30m'},
+      {'title': 'Chill Vibes', 'artist': 'Various Artists', 'duration': '1h45m'},
+      {'title': 'Background', 'artist': 'Various Artists', 'duration': '1h20m'},
+    ],
   };
 
   void _onNavBarTap(int index) {
@@ -131,8 +166,22 @@ class _MusicScreenState extends State<MusicScreen> {
     final mood = Provider.of<MoodProvider>(context).mood;
     final moodColor = MoodTheme.getMoodColors(mood);
     return Scaffold(
-      backgroundColor: moodColor.primary,
-      body: SafeArea(
+      backgroundColor: Colors.white,
+      body:Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              moodColor.primary.withOpacity(0.15),
+              moodColor.secondary.withOpacity(0.10),
+              moodColor.accent.withOpacity(0.20),
+              Colors.white,
+            ],
+            stops: const [0.0, 0.3, 0.7,  1.0],
+          ),
+        ),
+        child: SafeArea(
         child: Column(
           children: [
             Expanded(
@@ -346,9 +395,9 @@ class _MusicScreenState extends State<MusicScreen> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: moodPlaylists[mood]?.length ?? 3,
+                        itemCount: moodPlaylists[mood.toLowerCase()]?.length ?? 3,
                         itemBuilder: (context, index) {
-                          final playlist = moodPlaylists[mood]![index];
+                          final playlist = moodPlaylists[mood.toLowerCase()]?[index] ?? {'name': 'Playlist', 'songs': '10 songs'};
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -447,11 +496,26 @@ class _MusicScreenState extends State<MusicScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: tracklists[mood]?.length ?? 4,
+                      itemCount: tracklists[mood.toLowerCase()]?.length ?? 4,
                       itemBuilder: (context, index) {
-                        final track = tracklists[mood]?[index] ??
+                        final track = tracklists[mood.toLowerCase()]?[index] ?? 
                             {'title': 'Song $index', 'artist': 'Artist', 'duration': '3:30'};
-                        return Container(
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MusicPlayerScreen(
+                                  mood: mood,
+                                  primaryColor: primaryColor,
+                                  secondaryColor: secondaryColor,
+                                  accentColor: accentColor,
+                                  song: track,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
                           margin: const EdgeInsets.only(bottom: 12),
                           child: Row(
                             children: [
@@ -509,6 +573,7 @@ class _MusicScreenState extends State<MusicScreen> {
                                 size: 16,
                               ),
                             ],
+                          ),
                           ),
                         );
                       },
@@ -594,7 +659,8 @@ class _MusicScreenState extends State<MusicScreen> {
               ),
             ),
           ],
-        ),
+          ),
+          ),
       ),
       
       bottomNavigationBar: BottomNavBar(
