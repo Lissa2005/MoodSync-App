@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:moodsync/screens/Profile%20Page/account_settings.dart';
 import 'package:moodsync/screens/Profile%20Page/edit_profile.dart';
 import 'package:moodsync/screens/Profile%20Page/notification.dart';
-import 'package:moodsync/screens/recommendation_screen.dart';
 import 'package:moodsync/screens/side%20panel(home)/about_page.dart';
 import 'package:moodsync/screens/side%20panel(home)/feedback.dart';
 import 'package:moodsync/screens/side%20panel(home)/help.dart';
