@@ -3,6 +3,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
 
+permissions:
+  pull-requests: write  # Required to post comments
+
 jobs:
   check-deletions:
     runs-on: ubuntu-latest
@@ -15,24 +18,36 @@ jobs:
       - name: Check for deleted files
         id: check_files
         run: |
-          # Get list of deleted files between PR branch and base branch
           DELETED_FILES=$(git diff --name-only --diff-filter=D origin/${{ github.base_ref }}...HEAD)
-          
           if [ -n "$DELETED_FILES" ]; then
             echo "DELETED_FOUND=true" >> $GITHUB_ENV
-            echo "Deleted files found: $DELETED_FILES"
+            # Format file list for the comment
+            echo "FILES_LIST<<EOF" >> $GITHUB_ENV
+            echo "$DELETED_FILES" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
           else
             echo "DELETED_FOUND=false" >> $GITHUB_ENV
           fi
 
+      - name: Comment and Tag Admins
+        if: env.DELETED_FOUND == 'true' && !contains(github.event.pull_request.labels.*.name, 'deletion-approved')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const files = process.env.FILES_LIST;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `⚠️ **Attention @admins**\n\nFile deletions detected in this PR:\n\`\`\`\n${files}\n\`\`\`\nThis PR cannot be merged until the **deletion-approved** label is added.`
+            })
+
       - name: Enforce Approval Label
         if: env.DELETED_FOUND == 'true'
         run: |
-          # Check if the 'deletion-approved' label is present on the PR
           LABELS="${{ join(github.event.pull_request.labels.*.name, ',') }}"
           if [[ ! "$LABELS" =~ "deletion-approved" ]]; then
             echo "Error: Deletions detected but not approved."
-            echo "Please ask an admin to add the 'deletion-approved' label to this PR."
             exit 1
           fi
           echo "Deletion approved by label."
