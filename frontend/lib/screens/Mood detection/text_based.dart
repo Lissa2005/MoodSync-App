@@ -49,7 +49,7 @@ class _MoodManualInputPageState extends State<MoodManualInputPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => RecommendationScreen(mood: detectedMood),
+            builder: (_) => const RecommendationScreen(),
           ),
         );
       } else {
