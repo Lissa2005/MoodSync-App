@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ActivitiesScreen extends StatelessWidget{
+class ActivitiesScreen extends StatelessWidget {
   const ActivitiesScreen({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Activities & Games'),
@@ -34,7 +34,7 @@ class ActivitiesScreen extends StatelessWidget{
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
               children: [
-                 _gameCard(
+                _gameCard(
                   context,
                   title: 'Chess',
                   icon: Icons.casino,
@@ -72,8 +72,8 @@ class ActivitiesScreen extends StatelessWidget{
                   rating: 4.0,
                   onTap: () {
                     _showComingSoon(context);
-                    },
-                    ),
+                  },
+                ),
                 _gameCard(
                   context,
                   title: 'Breathing Game',
@@ -82,8 +82,8 @@ class ActivitiesScreen extends StatelessWidget{
                   rating: 4.5,
                   onTap: () {
                     _showComingSoon(context);
-                    },
-                    ),
+                  },
+                ),
                 _gameCard(
                   context,
                   title: 'Mood Quiz',
@@ -92,8 +92,8 @@ class ActivitiesScreen extends StatelessWidget{
                   rating: 4.0,
                   onTap: () {
                     _showComingSoon(context);
-                    },
-                    ),
+                  },
+                ),
                 _gameCard(
                   context,
                   title: 'Puzzle',
@@ -102,72 +102,72 @@ class ActivitiesScreen extends StatelessWidget{
                   rating: 4.5,
                   onTap: () {
                     _showComingSoon(context);
-                    },
-                    ),
-                    ], 
-                    ),
+                  },
+                ),
+              ],
+            ),
 
-                    const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-                    //quizzes section
-                    const Text(
-                      'Quizzes',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      ),
-                      const SizedBox(height: 16),
+            //quizzes section
+            const Text(
+              'Quizzes',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
 
-                      //quizzes grid
-                      _buildQuizCategory(context, 'generalknowledge'),
-                      _buildQuizCategory(context, 'science'),
-                      _buildQuizCategory(context, 'history'),
-                      _buildQuizCategory(context, 'literature'),
+            //quizzes grid
+            _buildQuizCategory(context, 'Generalknowledge'),
+            _buildQuizCategory(context, 'Science'),
+            _buildQuizCategory(context, 'History'),
+            _buildQuizCategory(context, 'Literature'),
 
-                      const SizedBox(height: 30),
+            const SizedBox(height: 30),
 
-                      //reading section
-                      const Text(
-                        'Reading Materials',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16), 
+            //reading section
+            const Text(
+              'Reading Materials',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
 
-                      //books section
-                      _buildBookCard(
-                        title: 'The great Gatsby',
-                        genre: 'fiction',
-                        rating: 4.5,
-                        duration: '5h 30m',
-                      ),
-                      const SizedBox(height: 12),
+            //books section
+            _buildBookCard(
+              title: 'The great Gatsby',
+              genre: 'fiction',
+              rating: 4.5,
+              duration: '5h 30m',
+            ),
+            const SizedBox(height: 12),
 
-                      _buildBookCard(
-                        title: 'Sapiens',
-                        genre: 'non-fiction',
-                        rating: 4.7,
-                        duration: '6h 45m',
-                      ),
-                      const SizedBox(height: 20),
+            _buildBookCard(
+              title: 'Sapiens',
+              genre: 'non-fiction',
+              rating: 4.7,
+              duration: '6h 45m',
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
- 
- //game card widget
+
+  //game card widget
   Widget _gameCard(
-      BuildContext context, {
-        required String title,
-        required IconData icon,
-        required String description,
-        required double rating,
-        required VoidCallback onTap,
-      }) {
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required String description,
+    required double rating,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -200,11 +200,12 @@ class ActivitiesScreen extends StatelessWidget{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const  Icon(Icons.star, color: Colors.yellow, size: 16),
+                  const Icon(Icons.star, color: Colors.yellow, size: 16),
                   const SizedBox(width: 4),
                   Text(
                     rating.toStringAsFixed(1),
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -314,7 +315,9 @@ class ActivitiesScreen extends StatelessWidget{
                     Row(
                       children: List.generate(5, (index) {
                         return Icon(
-                          index < rating.floor() ? Icons.star : Icons.star_border,
+                          index < rating.floor()
+                              ? Icons.star
+                              : Icons.star_border,
                           color: Colors.amber,
                           size: 14,
                         );
