@@ -170,10 +170,10 @@ class _FoodScreenState extends State<FoodScreen> {
   void initState() {
     super.initState();
     // Initialize with provided values or defaults
-    primaryColor = primaryColor ;
-    secondaryColor = secondaryColor ;
-    accentColor = accentColor ;
-    mood = mood ;
+    primaryColor = widget.primaryColor ?? const Color(0xFFFFD93D);
+    secondaryColor = widget.secondaryColor ?? const Color(0xFFFF8A5C);
+    accentColor = widget.accentColor ?? const Color(0xFFF9E076);
+    mood = widget.mood ?? 'happy';
   }
 
   @override
@@ -255,7 +255,7 @@ class _FoodScreenState extends State<FoodScreen> {
                               );
                               if (result != null) {
                                 setState(() {
-                                  activeAllergens = result;
+                                  activeAllergens = Map<String, bool>.from(result);
                                 });
                               }
                             },
@@ -288,7 +288,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                     deleteIcon: Icon(
                                       Icons.close,
                                       size: 16,
-                                      color: widget.primaryColor,
+                                      color: primaryColor,
                                     ),
                                     onDeleted: () {
                                       setState(() {
@@ -397,7 +397,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                     Container(
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: primaryColor.withOpacity( 0.2),
+                                        color: primaryColor.withOpacity(0.2),
                                         borderRadius: const BorderRadius.vertical(
                                           top: Radius.circular(12),
                                         ),
@@ -410,7 +410,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                       ),
                                     ),
                                     
-                                    //save icon
+                                    // save icon
                                     Positioned(
                                       top: 4,
                                       right: 4,
@@ -433,9 +433,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                             dish['isSaved'] 
                                                 ? Icons.bookmark 
                                                 : Icons.bookmark_border,
-                                            color: dish['isSaved'] 
-                                                ? primaryColor
-                                                : Colors.grey,
+                                            color: dish['isSaved'] ? primaryColor : Colors.grey,
                                             size: 16,
                                           ),
                                         ),
@@ -475,12 +473,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                   ),
                                   decoration: const BoxDecoration(
                                     color: Colors.red,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                   child: const Text(
                                     '⚠️',
@@ -502,12 +495,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                   ),
                                   decoration: const BoxDecoration(
                                     color: Colors.green,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                   child: const Text(
                                     '✓ Safe',
@@ -677,7 +665,6 @@ class _FoodScreenState extends State<FoodScreen> {
                                         ),
                                       ),
                                       
-
                                       // save icon
                                       GestureDetector(
                                         onTap: () => _toggleSave(index, false),
@@ -687,14 +674,11 @@ class _FoodScreenState extends State<FoodScreen> {
                                             recipe['isSaved'] 
                                                 ? Icons.bookmark 
                                                 : Icons.bookmark_border,
-                                            color: recipe['isSaved'] 
-                                                ? widget.primaryColor 
-                                                : Colors.grey,
+                                            color: recipe['isSaved'] ? primaryColor : Colors.grey,
                                             size: 18,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(width: 8),
                                     ],
                                   ),
                                   const SizedBox(height: 4),
