@@ -21,8 +21,8 @@ class RecommendationScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: moodColor.primary,
         elevation: 0,
-        title:  Text(
-          "Your mood! -$mood ",
+        title: Text(
+          "Your mood! - $mood ",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -41,6 +41,8 @@ class RecommendationScreen extends StatelessWidget {
             _customizeButton(),
 
             const SizedBox(height: 24),
+            
+            // Music Section
             _linkedSection(
               moodColor,
               context,
@@ -48,10 +50,18 @@ class RecommendationScreen extends StatelessWidget {
               subtitle: 'Sunshine Vibes\n24 songs • 1h 45m',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) =>  MusicScreen(mood: mood,)),
+                MaterialPageRoute(
+                  builder: (_) => MusicScreen(
+                    mood: mood,
+                    primaryColor: moodColor.primary,
+                    secondaryColor: moodColor.secondary,
+                    accentColor: moodColor.accent,
+                  ),
+                ),
               ),
             ),
 
+            // Food Section
             _linkedSection(
               moodColor,
               context,
@@ -59,10 +69,18 @@ class RecommendationScreen extends StatelessWidget {
               subtitle: 'Grilled Salmon\n★★★★★\nVegan Cake',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) =>  FoodScreen(mood:  mood,)),
+                MaterialPageRoute(
+                  builder: (_) => FoodScreen(
+                    mood: mood,
+                    primaryColor: moodColor.primary,
+                    secondaryColor: moodColor.secondary,
+                    accentColor: moodColor.accent,
+                  ),
+                ),
               ),
             ),
 
+            // Stories Section
             _linkedSection(
               moodColor,
               context,
@@ -70,10 +88,13 @@ class RecommendationScreen extends StatelessWidget {
               subtitle: '"Whispers of the Heart"\nUplifting reads',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const InteractivePlatform()),
+                MaterialPageRoute(
+                  builder: (_) => const InteractivePlatform(),
+                ),
               ),
             ),
 
+            // Activities Section
             _linkedSection(
               moodColor,
               context,
@@ -81,7 +102,9 @@ class RecommendationScreen extends StatelessWidget {
               subtitle: 'Chess • Positivity Quiz\n15 min',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const ActivitiesScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const ActivitiesScreen(),
+                ),
               ),
             ),
           ],
@@ -149,7 +172,7 @@ class RecommendationScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
               4,
-                  (index) => Container(
+              (index) => Container(
                 width: 14,
                 height: 14,
                 decoration: BoxDecoration(
@@ -174,12 +197,12 @@ class RecommendationScreen extends StatelessWidget {
   }
 
   Widget _linkedSection(
-      MoodColors moodColors,
-      BuildContext context, {
-        required String title,
-        required String subtitle,
-        required VoidCallback onTap,
-      }) {
+    MoodColors moodColors,
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
