@@ -1,22 +1,20 @@
+from typing import Generator  # <--- Add this import
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session # Added Session for type hinting
+from typing import Generator
+from sqlalchemy.orm import sessionmaker, Session
 from app.core.config import settings
 
-# Create the database engine
 engine = create_engine(settings.DATABASE_URL)
 
-# Create a session factory
 SessionLocal = sessionmaker(
-    # Removed autocommit=False (not needed in 2.0)
     autoflush=False, 
     bind=engine
 )
 
-# Dependency to get a database session
-def get_db() -> Session:
+# Change 'Session' to 'Generator[Session, None, None]'
+def get_db() -> Generator[Session, None, None]:
     """
-    Creates a new SQLAlchemy session for a single request and 
-    ensures it is closed after the request is finished.
+    Creates a new SQLAlchemy session for a single request.
     """
     db = SessionLocal()
     try:
