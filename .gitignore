@@ -7,11 +7,13 @@ __pycache__/
 *$py.class
 *.so
 
+# virtual environments
 venv/
 env/
 .venv/
 .Python
 
+# packaging
 build/
 dist/
 downloads/
@@ -28,6 +30,9 @@ pip-log.txt
 *.keras
 *.h5
 *.pkl
+*.pt
+*.pth
+*.joblib
 
 models/
 preprocessed_audio_data/
@@ -38,7 +43,6 @@ datasets/
 # ==============================
 
 .ipynb_checkpoints/
-*.ipynb_checkpoints
 
 # ==============================
 # FLUTTER / DART
@@ -48,6 +52,8 @@ datasets/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
+.pub-cache/
+.pub/
 
 build/
 
@@ -57,6 +63,7 @@ build/
 
 .idea/
 .vscode/
+*.iml
 
 *.swp
 *.swo
@@ -68,6 +75,7 @@ build/
 
 .env
 .env.*
+!.env.example
 
 # ==============================
 # LOGS
