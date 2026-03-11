@@ -1,26 +1,19 @@
 import logging
-from app.core.config import settings
-
-# Determine log level based on environment
-LOG_LEVEL = logging.INFO if settings.ENVIRONMENT == "production" else logging.DEBUG
+# We import the get_settings function instead of the 'settings' instance
+# to avoid loading everything at the top level
+from app.core.config import get_settings
 
 def setup_logging():
-    """
-    Initializes the global logging configuration.
-    """
+    settings = get_settings()
+    
+    log_level = logging.INFO if settings.ENVIRONMENT == "production" else logging.DEBUG
+
     logging.basicConfig(
-        level=LOG_LEVEL,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[
-            logging.StreamHandler()  # Outputs to terminal
-        ]
+        level=log_level,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        force=True # Ensures it overrides any previous config
     )
+    return logging.getLogger(__name__)
 
-def get_logger(name: str):
-    """
-    Returns a logger instance for a specific module.
-    """
-    return logging.getLogger(name)
-
-# Initialize when this module is imported
-setup_logging()
+# Initialize it
+logger = setup_logging()

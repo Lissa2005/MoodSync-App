@@ -1,4 +1,92 @@
-venv/
-.env
+# ==============================
+# PYTHON / FASTAPI
+# ==============================
+
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+
+# virtual environments
+venv/
+env/
+.venv/
+.Python
+
+# packaging
+build/
+dist/
+downloads/
+
+*.egg-info/
+.installed.cfg
+*.egg
+pip-log.txt
+
+# ==============================
+# MACHINE LEARNING
+# ==============================
+
+*.keras
+*.h5
+*.pkl
+*.pt
+*.pth
+*.joblib
+
+models/
+preprocessed_audio_data/
+datasets/
+
+# ==============================
+# JUPYTER
+# ==============================
+
+.ipynb_checkpoints/
+
+# ==============================
+# FLUTTER / DART
+# ==============================
+
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+
+build/
+
+# ==============================
+# IDE / EDITORS
+# ==============================
+
+.idea/
+.vscode/
+*.iml
+
+*.swp
+*.swo
+*~
+
+# ==============================
+# ENVIRONMENT VARIABLES
+# ==============================
+
+.env
+.env.*
+!.env.example
+
+# ==============================
+# LOGS
+# ==============================
+
+*.log
+logs/
+
+# ==============================
+# OS FILES
+# ==============================
+
+.DS_Store
+Thumbs.db
