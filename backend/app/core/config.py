@@ -28,3 +28,10 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.APP_ENV.lower() == "production" or self.ENVIRONMENT.lower() == "production"
+
+# 1. Create the settings instance
+settings = Settings()
+
+# 2. Create the function your main.py is looking for
+def get_settings():
+    return settings

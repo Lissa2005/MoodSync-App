@@ -1,29 +1,25 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Float, Text
 from sqlalchemy.sql import func
-from app.db.base import Base
-
+from app.db.base import Base # Ensure this matches your project structure
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-
-    email = Column(String(255), unique=True, index=True, nullable=False)
-
-    hashed_password = Column(String(255), nullable=False)
-
-    first_name = Column(String(100), nullable=False)
-    last_name = Column(String(100), nullable=False)
-
-    age = Column(Integer, nullable=True)
-
-    role = Column(String(50), default="user")
-    is_active = Column(Boolean, default=True)
-
+    user_id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
+    username = Column(String(50), unique=True, nullable=False, index=True)
+    email = Column(String(100), unique=True, nullable=False, index=True)
+    age = Column(Integer)
+    password_hash = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        onupdate=func.now(),
-    )
 
+class Mood(Base):
+    __tablename__ = "moods"
+
+    mood_id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False)
+    mood_score = Column(Integer)
+    mood_label = Column(String(50))
+    mood_note = Column(Text)
+    recorded_at = Column(DateTime(timezone=True), server_default=func.now())
