@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodsync/screens/recommendation_screen.dart';
-
+import 'package:moodsync/provider/mood_provider.dart';
+import 'package:provider/provider.dart';
 
 class Question {
   final String text;
@@ -64,12 +65,14 @@ class _MoodQuizPageState extends State<MoodQuizPage> {
         actions: [
           TextButton(
             onPressed: () {
+              // Store mood globally
+              Provider.of<MoodProvider>(context, listen: false)
+                  .setMood(finalMood.toLowerCase());
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => RecommendationScreen(
-                      mood:finalMood
-                    ),
+                    builder: (_) => const RecommendationScreen(),
                 ),
               );
             },
