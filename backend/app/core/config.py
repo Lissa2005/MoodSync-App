@@ -3,6 +3,7 @@ from functools import lru_cache
 
 
 class Settings(BaseSettings):
+
     # Database
     DATABASE_URL: str
 
@@ -18,8 +19,9 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+        extra = "ignore"  # IMPORTANT FIX
 
-    # 🔹 Production-aware property
+    # Production-aware property
     @property
     def is_production(self) -> bool:
         return self.ENVIRONMENT.lower() == "production"
