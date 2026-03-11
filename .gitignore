@@ -1,62 +1,85 @@
-# Python
+# ==============================
+# PYTHON / FASTAPI
+# ==============================
+
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-dist/
-build/
-*.egg-info/
-pip-wheel-metadata/
 
-# Virtual environments
 venv/
 env/
-ENV/
 .venv/
+.Python
 
-# Machine Learning
-datasets/
-data/
-*.h5
+build/
+dist/
+downloads/
+
+*.egg-info/
+.installed.cfg
+*.egg
+pip-log.txt
+
+# ==============================
+# MACHINE LEARNING
+# ==============================
+
 *.keras
-*.pt
-*.pth
+*.h5
 *.pkl
-*.joblib
-ml/outputs/
 
-# Jupyter
+models/
+preprocessed_audio_data/
+datasets/
+
+# ==============================
+# JUPYTER
+# ==============================
+
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Flutter
+# ==============================
+# FLUTTER / DART
+# ==============================
+
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
-.pub-cache/
+
 build/
-.metadata
 
-# Node
-node_modules/
-npm-debug.log*
-yarn-error.log*
+# ==============================
+# IDE / EDITORS
+# ==============================
 
-# IDE
 .idea/
 .vscode/
 
-# Environment
-.env
-.env.local
-.env.*.local
+*.swp
+*.swo
+*~
 
-# Logs
+# ==============================
+# ENVIRONMENT VARIABLES
+# ==============================
+
+.env
+.env.*
+!.env.example
+
+# ==============================
+# LOGS
+# ==============================
+
 *.log
 logs/
 
-# OS
+# ==============================
+# OS FILES
+# ==============================
+
 .DS_Store
 Thumbs.db
