@@ -4,17 +4,17 @@ import 'package:moodsync/screens/food/food_screen.dart';
 import 'package:moodsync/screens/interactive_platform.dart';
 import 'package:moodsync/screens/activities_screen.dart';
 import 'package:moodsync/widgets/mood_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:moodsync/provider/mood_provider.dart';
 
 class RecommendationScreen extends StatelessWidget {
-  final String mood;
-
   const RecommendationScreen({
     super.key,
-    required this.mood,
   });
 
   @override
   Widget build(BuildContext context) {
+    final mood = Provider.of<MoodProvider>(context).mood;
     final moodColor = MoodTheme.getMoodColors(mood);
     return Scaffold(
       backgroundColor: moodColor.secondary,
@@ -22,7 +22,7 @@ class RecommendationScreen extends StatelessWidget {
         backgroundColor: moodColor.primary,
         elevation: 0,
         title: Text(
-          "Your mood! - $mood ",
+          "Your mood!  $mood ",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -31,7 +31,7 @@ class RecommendationScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _moodCard(moodColor),
+            _moodCard(moodColor, mood),
             const SizedBox(height: 16),
 
             _sectionTitle('Choose Your Color Palette'),
@@ -115,7 +115,7 @@ class RecommendationScreen extends StatelessWidget {
 
   // ---------------- UI COMPONENTS ----------------
 
-  Widget _moodCard(moodColors) {
+  Widget _moodCard(moodColors, String mood) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -124,10 +124,10 @@ class RecommendationScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.sentiment_satisfied, size: 40, color: Colors.green),
-          const SizedBox(width: 12),
+          const Icon(Icons.sentiment_satisfied, size: 40, color: Colors.black),
+          const SizedBox(width: 18),
           Text(
-            'You are feeling : $mood',
+            'You are feeling : ${mood.toUpperCase()}',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ],

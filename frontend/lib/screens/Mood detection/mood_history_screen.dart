@@ -95,6 +95,73 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
     },
   ];
 
+  final Map<String, Map<String, dynamic>> dayDetails = {
+    'Feb 25': {
+      'date': 'Feb 25',
+      'day': 'Monday',
+      'mood': 'Happy',
+      'emoji': '😊',
+      'color': const Color(0xFFFFD93D),
+      'music': {
+        'playlist': 'Happy Vibes Playlist',
+        'songCount': 5,
+        'duration': '20 min',
+        'songs': ['Happy', 'Good Life', 'Walking On Sunshine']
+      },
+      'food': ['Sunshine Smoothie', 'Happy Tacos'],
+      'activities': ['Meditation (10 min)', 'Played Crossword'],
+      'note': 'Felt great today! Had fun with activities.'
+    },
+    'Feb 24': {
+      'date': 'Feb 24',
+      'day': 'Sunday',
+      'mood': 'Calm',
+      'emoji': '😌',
+      'color': const Color(0xFF8FBC94),
+      'music': {
+        'playlist': 'Zen Garden',
+        'songCount': 8,
+        'duration': '32 min',
+        'songs': ['Ocean Waves', 'Forest Rain', 'Peaceful Piano']
+      },
+      'food': ['Green Tea', 'Vegetable Soup'],
+      'activities': ['Yoga (20 min)', 'Reading'],
+      'note': 'Relaxing Sunday. Perfect for self-care.'
+    },
+    'Feb 23': {
+      'date': 'Feb 23',
+      'day': 'Saturday',
+      'mood': 'Happy',
+      'emoji': '😊',
+      'color': const Color(0xFFFFD93D),
+      'music': {
+        'playlist': 'Party Mix',
+        'songCount': 12,
+        'duration': '45 min',
+        'songs': ['Uptown Funk', 'Happy', 'Can\'t Stop The Feeling']
+      },
+      'food': ['Pizza', 'Ice Cream'],
+      'activities': ['Dancing', 'Movie Night'],
+      'note': 'Great Saturday with friends!'
+    },
+    'Feb 22': {
+      'date': 'Feb 22',
+      'day': 'Friday',
+      'mood': 'Neutral',
+      'emoji': '😐',
+      'color': const Color(0xFFBEBEBE),
+      'music': {
+        'playlist': 'Background Beats',
+        'songCount': 10,
+        'duration': '38 min',
+        'songs': ['Lo-fi Beats', 'Jazz', 'Ambient']
+      },
+      'food': ['Sandwich', 'Coffee'],
+      'activities': ['Work', 'Grocery Shopping'],
+      'note': 'Just another regular day.'
+    },
+  };
+
   // mood count
   Map<String, int> get moodStats {
     Map<String, int> stats = {};
@@ -140,6 +207,268 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
       });
     }
     return days;
+  }
+
+  void showDayDetails(Map<String, dynamic> dayData) {
+    String dateKey = dayData['date'];
+    Map<String, dynamic>? details = dayDetails[dateKey];
+    
+    if (details == null) return;
+    
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header with date and mood
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '📅 ${details['date'] ?? ''}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            details['day'] ?? '',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: (details['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: details['color'] ?? Colors.grey,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              details['emoji'] ?? '😊',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              details['mood'] ?? '',
+                              style: TextStyle(
+                                color: details['color'] ?? Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Music Section
+                  if (details['music'] != null)
+                    _buildDetailSection(
+                      icon: Icons.music_note,
+                      title: 'Music Recommended',
+                      color: details['color'] ?? Colors.grey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            details['music']['playlist'] ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            '${details['music']['songCount'] ?? 0} songs • ${details['music']['duration'] ?? ''}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 8,
+                            children: ((details['music']['songs'] as List?) ?? [])
+                                .take(3)
+                                .map((song) => Chip(
+                                      label: Text(song?.toString() ?? ''),
+                                      backgroundColor:
+                                          (details['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
+                                      labelStyle: TextStyle(
+                                        color: details['color'] ?? Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Food Section
+                  if (details['food'] != null)
+                    _buildDetailSection(
+                      icon: Icons.restaurant,
+                      title: 'Food Recommended',
+                      color: details['color'] ?? Colors.grey,
+                      child: Wrap(
+                        spacing: 8,
+                        children: ((details['food'] as List?) ?? []).map((item) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: (details['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              item?.toString() ?? '',
+                              style: TextStyle(
+                                color: details['color'] ?? Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Activities Section
+                  if (details['activities'] != null)
+                    _buildDetailSection(
+                      icon: Icons.self_improvement,
+                      title: 'Activities Done',
+                      color: details['color'] ?? Colors.grey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: ((details['activities'] as List?) ?? [])
+                            .map((activity) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 6),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check_circle,
+                                        size: 16,
+                                        color: details['color'] ?? Colors.grey,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(activity?.toString() ?? ''),
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Notes Section
+                  if (details['note'] != null)
+                    _buildDetailSection(
+                      icon: Icons.note,
+                      title: 'Notes',
+                      color: details['color'] ?? Colors.grey,
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: (details['color'] as Color?)?.withOpacity(0.05) ?? Colors.grey.withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          details['note'] ?? '',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Close button
+                  Center(
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: TextButton.styleFrom(
+                        foregroundColor: details['color'] ?? Colors.grey,
+                      ),
+                      child: const Text('Close'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailSection({
+    required IconData icon,
+    required String title,
+    required Color color,
+    required Widget child,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 20, color: color),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        child,
+      ],
+    );
   }
 
   void _onNavBarTap(int index) {
@@ -353,7 +682,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                         ),
                         const SizedBox(height: 10),
 
-                        // calender grid
+                        // calender grid with tap functionality
                         GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -367,18 +696,45 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                           itemCount: 28,
                           itemBuilder: (context, index) {
                             final dayData = calendarDays[index];
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: dayData['color'].withOpacity(0.2),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '${dayData['day']}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: dayData['color'],
+                            // Find matching date in allmoodHistory
+                            String? dateKey;
+                            if (index < allmoodHistory.length) {
+                              dateKey = allmoodHistory[index]['date'];
+                            }
+                            
+                            return GestureDetector(
+                              onTap: () {
+                                if (dateKey != null) {
+                                  // Find the day data
+                                  var dayEntry = allmoodHistory.firstWhere(
+                                    (d) => d['date'] == dateKey,
+                                    orElse: () => {},
+                                  );
+                                  if (dayEntry.isNotEmpty) {
+                                    showDayDetails(dayEntry);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: const Text('No data for this day'),
+                                        backgroundColor: widget.primaryColor,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: (dayData['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${dayData['day'] ?? ''}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: dayData['color'] ?? Colors.grey,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -430,12 +786,12 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                             width: 50,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: entry['color'].withOpacity(0.2),
+                              color: (entry['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
                               child: Text(
-                                entry['emoji'],
+                                entry['emoji'] ?? '😊',
                                 style: const TextStyle(fontSize: 24),
                               ),
                             ),
@@ -446,15 +802,15 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  entry['date'],
-                                  style: TextStyle(
+                                  entry['date'] ?? '',
+                                  style: const TextStyle(
                                     fontSize: 12,
-                                    color: Colors.grey[600],
+                                    color: Colors.grey,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  entry['day'],
+                                  entry['day'] ?? '',
                                   style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -467,13 +823,13 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: entry['color'].withOpacity(0.1),
+                              color: (entry['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              entry['mood'],
+                              entry['mood'] ?? '',
                               style: TextStyle(
-                                color: entry['color'],
+                                color: entry['color'] ?? Colors.grey,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -565,9 +921,9 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
         const SizedBox(width: 4),
         Text(
           mood,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 10,
-            color: Colors.grey[700],
+            color: Colors.grey,
           ),
         ),
       ],

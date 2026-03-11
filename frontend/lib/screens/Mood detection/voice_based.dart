@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:moodsync/screens/recommendation_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:moodsync/provider/mood_provider.dart';
 
 class VoiceBasedPage extends StatefulWidget {
   const VoiceBasedPage({super.key});
@@ -61,10 +63,15 @@ class _VoiceBasedPageState extends State<VoiceBasedPage> {
         final data = jsonDecode(response.body);
         final detectedMood = data["emotion"];
 
+        // store mood globally
+        Provider.of<MoodProvider>(context, listen: false)
+            .setMood(detectedMood);
+
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => RecommendationScreen(mood: detectedMood),
+            builder: (_) => const RecommendationScreen(),
           ),
         );
       } else {

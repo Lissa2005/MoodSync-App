@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'allergies_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import 'recipe_detail_screen.dart';
+import 'package:moodsync/widgets/mood_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:moodsync/provider/mood_provider.dart';
 
 class FoodScreen extends StatefulWidget {
   final String? mood;
@@ -22,7 +25,7 @@ class FoodScreen extends StatefulWidget {
 }
 
 class _FoodScreenState extends State<FoodScreen> {
-  //default value
+  // default value
   late Color primaryColor;
   late Color secondaryColor;
   late Color accentColor;
@@ -119,7 +122,7 @@ class _FoodScreenState extends State<FoodScreen> {
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
       case 2:
-        // in food screen
+        // already in food screen
         break;
       case 3:
         ScaffoldMessenger.of(context).showSnackBar(
@@ -166,17 +169,20 @@ class _FoodScreenState extends State<FoodScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize with provided values or defaults
-    primaryColor = primaryColor ;
-    secondaryColor = secondaryColor ;
-    accentColor = accentColor ;
-    mood = mood ;
   }
 
   @override
   Widget build(BuildContext context) {
+
+    //get mood from provider
+    final moodProvider = Provider.of<MoodProvider>(context);
+    final currentMood = moodProvider.mood;
+
+    //get colors from mood theme
+    final moodColor = MoodTheme.getMoodColors(currentMood);
+
     return Scaffold(
-      backgroundColor: primaryColor.withOpacity(0.1),
+      backgroundColor: moodColor.primary.withOpacity(0.08),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -198,7 +204,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: secondaryColor,
+                        color: moodColor.secondary,
                       ),
                     ),
                   ],
@@ -231,7 +237,7 @@ class _FoodScreenState extends State<FoodScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: secondaryColor,
+                              color: moodColor.secondary,
                             ),
                           ),
                           TextButton(
@@ -240,10 +246,10 @@ class _FoodScreenState extends State<FoodScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AllergiesScreen(
-                                    mood: mood,
-                                    primaryColor: primaryColor,
-                                    secondaryColor: secondaryColor,
-                                    accentColor: accentColor,
+                                    mood: moodProvider.mood,
+                                    primaryColor: moodColor.primary,
+                                    secondaryColor: moodColor.secondary,
+                                    accentColor: moodColor.accent,
                                   ),
                                 ),
                               );
@@ -254,7 +260,7 @@ class _FoodScreenState extends State<FoodScreen> {
                               }
                             },
                             style: TextButton.styleFrom(
-                              foregroundColor: primaryColor,
+                              foregroundColor: moodColor.primary,
                             ),
                             child: const Text('Manage'),
                           ),
@@ -278,11 +284,11 @@ class _FoodScreenState extends State<FoodScreen> {
                               .where((e) => e.value)
                               .map((e) => Chip(
                                     label: Text(e.key),
-                                    backgroundColor: primaryColor.withOpacity(0.1),
+                                    backgroundColor: moodColor.primary.withOpacity(0.1),
                                     deleteIcon: Icon(
                                       Icons.close,
                                       size: 16,
-                                      color: widget.primaryColor,
+                                      color: moodColor.primary,
                                     ),
                                     onDeleted: () {
                                       setState(() {
@@ -318,7 +324,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: secondaryColor,
+                        color: moodColor.secondary,
                       ),
                     ),
                     TextButton(
@@ -326,7 +332,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       child: Text(
                         'See All',
                         style: TextStyle(
-                          color: accentColor,
+                          color: moodColor.accent,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -358,9 +364,9 @@ class _FoodScreenState extends State<FoodScreen> {
                           MaterialPageRoute(
                             builder: (context) => RecipeDetailScreen(
                               recipe: dish,
-                              primaryColor: primaryColor,
-                              secondaryColor: secondaryColor,
-                              accentColor: accentColor,
+                              primaryColor: moodColor.primary,
+                              secondaryColor: moodColor.secondary,
+                              accentColor: moodColor.accent,
                             ),
                           ),
                         );
@@ -391,7 +397,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                     Container(
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: primaryColor.withOpacity( 0.2),
+                                        color: moodColor.primary.withOpacity( 0.2),
                                         borderRadius: const BorderRadius.vertical(
                                           top: Radius.circular(12),
                                         ),
@@ -404,7 +410,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                       ),
                                     ),
                                     
-                                    //save icon
+                                    // save icon
                                     Positioned(
                                       top: 4,
                                       right: 4,
@@ -428,7 +434,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                                 ? Icons.bookmark 
                                                 : Icons.bookmark_border,
                                             color: dish['isSaved'] 
-                                                ? primaryColor
+                                                ? moodColor.primary
                                                 : Colors.grey,
                                             size: 16,
                                           ),
@@ -528,7 +534,7 @@ class _FoodScreenState extends State<FoodScreen> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: secondaryColor,
+                    color: moodColor.secondary,
                   ),
                 ),
                 
@@ -547,10 +553,10 @@ class _FoodScreenState extends State<FoodScreen> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: accentColor.withOpacity(0.2),
+                          color: moodColor.accent.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: accentColor,
+                            color: moodColor.accent,
                             width: 1,
                           ),
                         ),
@@ -558,7 +564,7 @@ class _FoodScreenState extends State<FoodScreen> {
                           child: Text(
                             categories[index],
                             style: TextStyle(
-                              color: secondaryColor,
+                              color: moodColor.secondary,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -579,7 +585,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: secondaryColor,
+                        color: moodColor.secondary,
                       ),
                     ),
                     TextButton(
@@ -587,7 +593,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       child: Text(
                         'See All',
                         style: TextStyle(
-                          color: accentColor,
+                          color: moodColor.accent,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -613,9 +619,9 @@ class _FoodScreenState extends State<FoodScreen> {
                           MaterialPageRoute(
                             builder: (context) => RecipeDetailScreen(
                               recipe: recipe,
-                              primaryColor: primaryColor,
-                              secondaryColor: secondaryColor,
-                              accentColor: accentColor,
+                              primaryColor: moodColor.primary,
+                              secondaryColor: moodColor.secondary,
+                              accentColor: moodColor.accent,
                             ),
                           ),
                         );
@@ -644,7 +650,7 @@ class _FoodScreenState extends State<FoodScreen> {
                               width: 60,
                               height: 60,
                               decoration: BoxDecoration(
-                                color: primaryColor.withOpacity(0.2),
+                                color: moodColor.primary.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Center(
@@ -682,7 +688,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                                 ? Icons.bookmark 
                                                 : Icons.bookmark_border,
                                             color: recipe['isSaved'] 
-                                                ? widget.primaryColor 
+                                                ? moodColor.primary
                                                 : Colors.grey,
                                             size: 18,
                                           ),
@@ -780,7 +786,7 @@ class _FoodScreenState extends State<FoodScreen> {
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 2, 
-        selectedColor: primaryColor,
+        selectedColor: moodColor.primary,
         onTap: _onNavBarTap,
       ),
     );
