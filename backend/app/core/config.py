@@ -1,37 +1,31 @@
-from pydantic_settings import BaseSettings
 from functools import lru_cache
-
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    # Database
+    # Database (Matches DATABASE_URL in .env)
     DATABASE_URL: str
 
-    # Security
-    SECRET_KEY: str
+    # Security (Updated to match JWT_SECRET in .env)
+    JWT_SECRET: str 
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
-    # App
-    PROJECT_NAME: str = "MoodSync Backend"
-    ENVIRONMENT: str = "development"
+    # App (Matches APP_NAME and APP_ENV in .env)
+    APP_NAME: str = "MoodSync Backend"
+    APP_ENV: str = "development"
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+        extra="ignore"
+    )
 
-    # 🔹 Production-aware property
     @property
     def is_production(self) -> bool:
-        return self.ENVIRONMENT.lower() == "production"
-
-    @property
-    def is_development(self) -> bool:
-        return self.ENVIRONMENT.lower() == "development"
-
+        return self.APP_ENV.lower() == "production"
 
 @lru_cache()
 def get_settings():
     return Settings()
-
 
 settings = get_settings()
