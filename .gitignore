@@ -16,12 +16,17 @@ env/
 # packaging
 build/
 dist/
-downloads/
-
 *.egg-info/
 .installed.cfg
 *.egg
 pip-log.txt
+
+# ==============================
+# DATABASE
+# ==============================
+
+*.db
+*.sqlite3
 
 # ==============================
 # MACHINE LEARNING
@@ -35,8 +40,8 @@ pip-log.txt
 *.joblib
 
 models/
-preprocessed_audio_data/
 datasets/
+preprocessed_audio_data/
 
 # ==============================
 # JUPYTER
@@ -54,7 +59,6 @@ datasets/
 .packages
 .pub-cache/
 .pub/
-
 build/
 
 # ==============================
@@ -64,7 +68,6 @@ build/
 .idea/
 .vscode/
 *.iml
-
 *.swp
 *.swo
 *~
@@ -91,5 +94,9 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Firebase Service Account Key
+# ==============================
+# FIREBASE
+# ==============================
+
+firebase/
 service-account.json
