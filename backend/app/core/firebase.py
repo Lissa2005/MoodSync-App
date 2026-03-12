@@ -5,8 +5,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-SERVICE_ACCOUNT_PATH = os.getenv(
-    "FIREBASE_CREDENTIALS",
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+
+SERVICE_ACCOUNT_PATH = os.path.join(
+    BASE_DIR,
+    "firebase",
     "service-account.json"
 )
 
@@ -16,7 +19,6 @@ if not firebase_admin._apps:
 
 
 def verify_firebase_token(id_token: str):
-    """Verify Firebase ID token sent by the client."""
     try:
         decoded_token = auth.verify_id_token(id_token)
         return decoded_token
