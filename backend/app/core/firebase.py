@@ -1,20 +1,27 @@
 import firebase_admin
-from firebase_admin import credentials, messaging, auth
+from firebase_admin import credentials, auth
 import os
+import logging
 
-# Path to the JSON file you downloaded from Firebase Console
-# Make sure this matches your actual filename in the root folder
-SERVICE_ACCOUNT_PATH = "service-account.json"
+logger = logging.getLogger(__name__)
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+
+SERVICE_ACCOUNT_PATH = os.path.join(
+    BASE_DIR,
+    "firebase",
+    "service-account.json"
+)
 
 if not firebase_admin._apps:
     cred = credentials.Certificate(SERVICE_ACCOUNT_PATH)
     firebase_admin.initialize_app(cred)
 
+
 def verify_firebase_token(id_token: str):
-    """Verifies a token sent from the Flutter app."""
     try:
         decoded_token = auth.verify_id_token(id_token)
         return decoded_token
     except Exception as e:
-        print(f"Firebase Token Error: {e}")
+        logger.error(f"Firebase Token Error: {e}")
         return None
