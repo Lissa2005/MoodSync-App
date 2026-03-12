@@ -90,3 +90,6 @@ logs/
 
 .DS_Store
 Thumbs.db
+
+# Firebase Service Account Key
+service-account.json
