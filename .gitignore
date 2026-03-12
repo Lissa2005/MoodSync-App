@@ -1,4 +1,102 @@
-venv/
-.env
+# ==============================
+# PYTHON / FASTAPI
+# ==============================
+
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+
+# virtual environments
+venv/
+env/
+.venv/
+.Python
+
+# packaging
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-log.txt
+
+# ==============================
+# DATABASE
+# ==============================
+
+*.db
+*.sqlite3
+
+# ==============================
+# MACHINE LEARNING
+# ==============================
+
+*.keras
+*.h5
+*.pkl
+*.pt
+*.pth
+*.joblib
+
+models/
+datasets/
+preprocessed_audio_data/
+
+# ==============================
+# JUPYTER
+# ==============================
+
+.ipynb_checkpoints/
+
+# ==============================
+# FLUTTER / DART
+# ==============================
+
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# ==============================
+# IDE / EDITORS
+# ==============================
+
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# ==============================
+# ENVIRONMENT VARIABLES
+# ==============================
+
+.env
+.env.*
+!.env.example
+
+# ==============================
+# LOGS
+# ==============================
+
+*.log
+logs/
+
+# ==============================
+# OS FILES
+# ==============================
+
+.DS_Store
+Thumbs.db
+
+# ==============================
+# FIREBASE
+# ==============================
+
+firebase/
+service-account.json
