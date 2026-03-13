@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823979938069",
+    "project_id": "moodsync-117b9",
+    "storage_bucket": "moodsync-117b9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823979938069:android:c0636e10ab648aca2dd91c",
+        "android_client_info": {
+          "package_name": "com.moodsyncai.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823979938069-e0sv66pv6ri1kn4spkil86lrgafn8o4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdNoulnhuKFqlJus0MtRi_W-PZszJtPe0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823979938069-e0sv66pv6ri1kn4spkil86lrgafn8o4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
