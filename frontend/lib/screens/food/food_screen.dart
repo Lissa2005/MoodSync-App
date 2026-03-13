@@ -25,7 +25,7 @@ class FoodScreen extends StatefulWidget {
 }
 
 class _FoodScreenState extends State<FoodScreen> {
-  //default value
+  // default value
   late Color primaryColor;
   late Color secondaryColor;
   late Color accentColor;
@@ -122,7 +122,7 @@ class _FoodScreenState extends State<FoodScreen> {
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
       case 2:
-        // in food screen
+        // already in food screen
         break;
       case 3:
         ScaffoldMessenger.of(context).showSnackBar(
@@ -169,17 +169,17 @@ class _FoodScreenState extends State<FoodScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize with provided values or defaults
-    primaryColor = primaryColor ;
-    secondaryColor = secondaryColor ;
-    accentColor = accentColor ;
-    mood = mood ;
   }
 
   @override
   Widget build(BuildContext context) {
-    final mood = Provider.of<MoodProvider>(context).mood;
-    final moodColor = MoodTheme.getMoodColors(mood);
+
+    //get mood from provider
+    final moodProvider = Provider.of<MoodProvider>(context);
+    final currentMood = moodProvider.mood;
+
+    //get colors from mood theme
+    final moodColor = MoodTheme.getMoodColors(currentMood);
 
     return Scaffold(
       backgroundColor: moodColor.primary.withOpacity(0.08),
@@ -246,7 +246,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AllergiesScreen(
-                                    mood: mood,
+                                    mood: moodProvider.mood,
                                     primaryColor: moodColor.primary,
                                     secondaryColor: moodColor.secondary,
                                     accentColor: moodColor.accent,
@@ -410,7 +410,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                       ),
                                     ),
                                     
-                                    //save icon
+                                    // save icon
                                     Positioned(
                                       top: 4,
                                       right: 4,
@@ -434,7 +434,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                                 ? Icons.bookmark 
                                                 : Icons.bookmark_border,
                                             color: dish['isSaved'] 
-                                                ? primaryColor
+                                                ? moodColor.primary
                                                 : Colors.grey,
                                             size: 16,
                                           ),
@@ -688,7 +688,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                                 ? Icons.bookmark 
                                                 : Icons.bookmark_border,
                                             color: recipe['isSaved'] 
-                                                ? widget.primaryColor 
+                                                ? moodColor.primary
                                                 : Colors.grey,
                                             size: 18,
                                           ),
