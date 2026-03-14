@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import '../../widgets/bottom_nav_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:moodsync/provider/mood_provider.dart';
+import 'package:moodsync/widgets/mood_theme.dart';
 
 class SimpleMoodHistoryScreen extends StatefulWidget {
-  final String mood;
-  final Color primaryColor;
-  final Color secondaryColor;
-  final Color accentColor;
+  final String? mood;
+  final Color? primaryColor;
+  final Color? secondaryColor;
+  final Color? accentColor;
 
   const SimpleMoodHistoryScreen({
     super.key,
-    required this.mood,
-    required this.primaryColor,
-    required this.secondaryColor,
-    required this.accentColor,
+    this.mood,
+    this.primaryColor,
+    this.secondaryColor,
+    this.accentColor,
   });
 
   @override
@@ -25,79 +28,82 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
   String selectedFilter = 'Week';
   final List<String> weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
-  int currentMonth = 3;
-  int currentYear = 2025;
+  //current date
+  DateTime currentDate = DateTime.now();
+  late int currentMonth;
+  late int currentYear;
 
-  // sample mood history data
+  //track selected date for details
+  DateTime? selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    currentMonth = currentDate.month;
+    currentYear = currentDate.year;
+  }
+
+  // mood history data
   final List<Map<String, dynamic>> allmoodHistory = [
     {
-      'date': 'Feb 25',
-      'day': 'Monday',
+      'date': DateTime.now().subtract(const Duration(days: 1)),
+      'day': 'Yesterday',
       'mood': 'Happy',
       'emoji': '😊',
       'color': const Color(0xFFFFD93D)
     },
     {
-      'date': 'Feb 24',
-      'day': 'Sunday',
+      'date': DateTime.now().subtract(const Duration(days: 2)),
+      'day': '2 days ago',
       'mood': 'Calm',
       'emoji': '😌',
       'color': const Color(0xFF8FBC94)
     },
     {
-      'date': 'Feb 23',
-      'day': 'Saturday',
-      'mood': 'Happy',
-      'emoji': '😊',
-      'color': const Color(0xFFFFD93D)
-    },
-    {
-      'date': 'Feb 22',
-      'day': 'Friday',
+      'date': DateTime.now().subtract(const Duration(days: 3)),
+      'day': '3 days ago',
       'mood': 'Neutral',
       'emoji': '😐',
       'color': const Color(0xFFBEBEBE)
     },
     {
-      'date': 'Feb 21',
-      'day': 'Thursday',
+      'date': DateTime.now().subtract(const Duration(days: 4)),
+      'day': '4 days ago',
       'mood': 'Happy',
       'emoji': '😊',
       'color': const Color(0xFFFFD93D)
     },
     {
-      'date': 'Feb 20',
-      'day': 'Wednesday',
+      'date': DateTime.now().subtract(const Duration(days: 5)),
+      'day': '5 days ago',
       'mood': 'Sad',
       'emoji': '😔',
       'color': const Color(0xFF6C9EBF)
     },
     {
-      'date': 'Feb 19',
-      'day': 'Tuesday',
+      'date': DateTime.now().subtract(const Duration(days: 6)),
+      'day': '6 days ago',
       'mood': 'Calm',
       'emoji': '😌',
       'color': const Color(0xFF8FBC94)
     },
     {
-      'date': 'Feb 18',
-      'day': 'Monday',
-      'mood': 'Happy',
-      'emoji': '😊',
-      'color': const Color(0xFFFFD93D)
-    },
-    {
-      'date': 'Feb 17',
-      'day': 'Sunday',
+      'date': DateTime.now().subtract(const Duration(days: 7)),
+      'day': '1 week ago',
       'mood': 'Anxious',
       'emoji': '😰',
       'color': const Color(0xFFB8A9C9)
     },
   ];
 
+  //detailed data for each date
   final Map<String, Map<String, dynamic>> dayDetails = {
-    'Feb 25': {
-      'date': 'Feb 25',
+    // yesterday
+    DateTime.now()
+        .subtract(const Duration(days: 1))
+        .toIso8601String()
+        .split('T')[0]: {
+      'date': 'Yesterday',
       'day': 'Monday',
       'mood': 'Happy',
       'emoji': '😊',
@@ -110,10 +116,14 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
       },
       'food': ['Sunshine Smoothie', 'Happy Tacos'],
       'activities': ['Meditation (10 min)', 'Played Crossword'],
-      'note': 'Felt great today! Had fun with activities.'
     },
-    'Feb 24': {
-      'date': 'Feb 24',
+
+    // 2 days ago
+    DateTime.now()
+        .subtract(const Duration(days: 2))
+        .toIso8601String()
+        .split('T')[0]: {
+      'date': '2 days ago',
       'day': 'Sunday',
       'mood': 'Calm',
       'emoji': '😌',
@@ -126,27 +136,15 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
       },
       'food': ['Green Tea', 'Vegetable Soup'],
       'activities': ['Yoga (20 min)', 'Reading'],
-      'note': 'Relaxing Sunday. Perfect for self-care.'
     },
-    'Feb 23': {
-      'date': 'Feb 23',
+
+    // 3 days ago
+    DateTime.now()
+        .subtract(const Duration(days: 3))
+        .toIso8601String()
+        .split('T')[0]: {
+      'date': '3 days ago',
       'day': 'Saturday',
-      'mood': 'Happy',
-      'emoji': '😊',
-      'color': const Color(0xFFFFD93D),
-      'music': {
-        'playlist': 'Party Mix',
-        'songCount': 12,
-        'duration': '45 min',
-        'songs': ['Uptown Funk', 'Happy', 'Can\'t Stop The Feeling']
-      },
-      'food': ['Pizza', 'Ice Cream'],
-      'activities': ['Dancing', 'Movie Night'],
-      'note': 'Great Saturday with friends!'
-    },
-    'Feb 22': {
-      'date': 'Feb 22',
-      'day': 'Friday',
       'mood': 'Neutral',
       'emoji': '😐',
       'color': const Color(0xFFBEBEBE),
@@ -158,7 +156,6 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
       },
       'food': ['Sandwich', 'Coffee'],
       'activities': ['Work', 'Grocery Shopping'],
-      'note': 'Just another regular day.'
     },
   };
 
@@ -172,317 +169,125 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
     return stats;
   }
 
-  // get filtered data based on selected time
+  // get filtered data based on selected time - SHOW ONLY 3 DAYS
   List<Map<String, dynamic>> get filteredHistory {
-    if (selectedFilter == 'Week') {
-      return allmoodHistory.take(7).toList();
-    } else if (selectedFilter == 'Month') {
-      return allmoodHistory.take(9).toList();
-    } else {
-      return allmoodHistory;
-    }
+    return allmoodHistory.take(3).toList(); // Only show last 3 days
   }
 
-  // mini calender
+  // calender for current month
   List<Map<String, dynamic>> get calendarDays {
-    // 28 days for calendar 
     List<Map<String, dynamic>> days = [];
-    List<String> moods = ['Happy', 'Calm', 'Neutral', 'Sad', 'Anxious'];
-    List<Color> moodColors = [
-      const Color(0xFFFFD93D),
-      const Color(0xFF8FBC94),
-      const Color(0xFFBEBEBE),
-      const Color(0xFF6C9EBF),
-      const Color(0xFFB8A9C9),
-    ];
 
-    for (int i = 1; i <= 28; i++) {
-      // sample pattern
-      int moodIndex = (i + 2) % moods.length;
+    //first day of month and total days
+    DateTime firstDayOfMonth = DateTime(currentYear, currentMonth, 1);
+    int daysInMonth = DateTime(currentYear, currentMonth + 1, 0).day;
+    int firstWeekday = firstDayOfMonth.weekday;
+
+    //add empty cells for days before month starts
+    for (int i = 1; i < firstWeekday; i++) {
       days.add({
-        'day': i,
-        'mood': moods[moodIndex],
-        'color': moodColors[moodIndex],
-        'hasData': true,
+        'day': null,
+        'mood': null,
+        'color': Colors.grey,
+        'hasData': false,
       });
     }
+
+    // add actual days
+    for (int i = 1; i <= daysInMonth; i++) {
+      DateTime currentDay = DateTime(currentYear, currentMonth, i);
+
+      //check if theis day has mood data
+      var moodEntry = allmoodHistory.firstWhere(
+        (entry) {
+          DateTime entryDate = entry['date'] as DateTime;
+          return entryDate.year == currentDay.year &&
+              entryDate.month == currentDay.month &&
+              entryDate.day == currentDay.day;
+        },
+        orElse: () => {},
+      );
+
+      Color dayColor;
+      String? moodName;
+
+      if (moodEntry.isNotEmpty) {
+        dayColor = moodEntry['color'] ?? Colors.grey;
+        moodName = moodEntry['mood'];
+      } else {
+        dayColor = Colors.grey.shade300;
+        moodName = null;
+      }
+
+      days.add({
+        'day': i,
+        'mood': moodName,
+        'color': dayColor,
+        'hasData': moodEntry.isNotEmpty,
+        'fullDate': currentDay,
+      });
+    }
+
     return days;
   }
 
+  // show day details
   void showDayDetails(Map<String, dynamic> dayData) {
-    String dateKey = dayData['date'];
-    Map<String, dynamic>? details = dayDetails[dateKey];
-    
-    if (details == null) return;
-    
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Header with date and mood
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '📅 ${details['date'] ?? ''}',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            details['day'] ?? '',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: (details['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: details['color'] ?? Colors.grey,
-                            width: 1,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              details['emoji'] ?? '😊',
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              details['mood'] ?? '',
-                              style: TextStyle(
-                                color: details['color'] ?? Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 20),
-                  
-                  // Music Section
-                  if (details['music'] != null)
-                    _buildDetailSection(
-                      icon: Icons.music_note,
-                      title: 'Music Recommended',
-                      color: details['color'] ?? Colors.grey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            details['music']['playlist'] ?? '',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '${details['music']['songCount'] ?? 0} songs • ${details['music']['duration'] ?? ''}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            spacing: 8,
-                            children: ((details['music']['songs'] as List?) ?? [])
-                                .take(3)
-                                .map((song) => Chip(
-                                      label: Text(song?.toString() ?? ''),
-                                      backgroundColor:
-                                          (details['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
-                                      labelStyle: TextStyle(
-                                        color: details['color'] ?? Colors.grey,
-                                        fontSize: 12,
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Food Section
-                  if (details['food'] != null)
-                    _buildDetailSection(
-                      icon: Icons.restaurant,
-                      title: 'Food Recommended',
-                      color: details['color'] ?? Colors.grey,
-                      child: Wrap(
-                        spacing: 8,
-                        children: ((details['food'] as List?) ?? []).map((item) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: (details['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              item?.toString() ?? '',
-                              style: TextStyle(
-                                color: details['color'] ?? Colors.grey,
-                                fontSize: 14,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Activities Section
-                  if (details['activities'] != null)
-                    _buildDetailSection(
-                      icon: Icons.self_improvement,
-                      title: 'Activities Done',
-                      color: details['color'] ?? Colors.grey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: ((details['activities'] as List?) ?? [])
-                            .map((activity) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 6),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle,
-                                        size: 16,
-                                        color: details['color'] ?? Colors.grey,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(activity?.toString() ?? ''),
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Notes Section
-                  if (details['note'] != null)
-                    _buildDetailSection(
-                      icon: Icons.note,
-                      title: 'Notes',
-                      color: details['color'] ?? Colors.grey,
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: (details['color'] as Color?)?.withOpacity(0.05) ?? Colors.grey.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          details['note'] ?? '',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ),
-                    ),
-                  
-                  const SizedBox(height: 20),
-                  
-                  // Close button
-                  Center(
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      style: TextButton.styleFrom(
-                        foregroundColor: details['color'] ?? Colors.grey,
-                      ),
-                      child: const Text('Close'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
+    // find the mood entry for this date
+    DateTime? selectedFullDate = dayData['fullDate'];
+
+    if (selectedFullDate == null) return;
+
+    // create date key in same format as dayDetails
+    String dateKey = selectedFullDate.toIso8601String().split('T')[0];
+
+    var moodEntry = allmoodHistory.firstWhere(
+      (entry) {
+        DateTime entryDate = entry['date'] as DateTime;
+        return entryDate.year == selectedFullDate.year &&
+            entryDate.month == selectedFullDate.month &&
+            entryDate.day == selectedFullDate.day;
       },
+      orElse: () => {},
     );
-  }
 
-  Widget _buildDetailSection({
-    required IconData icon,
-    required String title,
-    required Color color,
-    required Widget child,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(icon, size: 20, color: color),
-            const SizedBox(width: 8),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-          ],
+    if (moodEntry.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('No mood data for this day'),
+          backgroundColor: moodColor.primary,
         ),
-        const SizedBox(height: 10),
-        child,
-      ],
+      );
+      return;
+    }
+
+     // get detailed data from dayDetails map
+     var detailedData = dayDetails[dateKey] ?? moodEntry;
+
+    // navigate to detail page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DayDetailScreen(
+          moodData: detailedData,
+          primaryColor: moodColor.primary,
+          secondaryColor: moodColor.secondary,
+          accentColor: moodColor.accent,
+        ),
+      ),
     );
   }
 
-  void _onNavBarTap(int index) {
-    switch (index) {
-      case 0:
-        Navigator.popUntil(context, (route) => route.isFirst);
-        break;
-      default:
-        break;
-    }
-  }
+  // get mood colour from provider
+  late MoodColors moodColor;
 
   @override
   Widget build(BuildContext context) {
+    // get mood from provider
+    final moodProvider = Provider.of<MoodProvider>(context);
+    final currentMood = moodProvider.mood;
+    moodColor = MoodTheme.getMoodColors(currentMood);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -491,10 +296,9 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              const Color(0xFFF8F0FF),
-              const Color(0xFFF0E6FF),
-              const Color(0xFFE8D9FF),
-              widget.primaryColor.withOpacity(0.2),
+              moodColor.primary.withOpacity(0.1),
+              moodColor.secondary.withOpacity(0.1),
+              Colors.white,
             ],
           ),
         ),
@@ -502,9 +306,10 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // back button
+                // back button with mood-based color
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.9),
                     borderRadius: const BorderRadius.only(
@@ -515,14 +320,15 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_back, color: widget.secondaryColor),
+                        icon:
+                            Icon(Icons.arrow_back, color: moodColor.secondary),
                         onPressed: () => Navigator.pop(context),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Mood History',
                         style: TextStyle(
-                          color: widget.secondaryColor,
+                          color: moodColor.secondary,
                           fontWeight: FontWeight.bold,
                           fontSize: 22,
                         ),
@@ -533,59 +339,9 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
 
                 const SizedBox(height: 10),
 
-                // state history
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Summary',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: widget.secondaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: moodStats.entries.map((entry) {
-                            Color moodColor = _getMoodColor(entry.key);
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: moodColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                    color: moodColor.withOpacity(0.3)),
-                              ),
-                              child: Text(
-                                '${entry.key}: ${entry.value}',
-                                style: TextStyle(
-                                  color: moodColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
                 const SizedBox(height: 20),
 
-                // time filter
+                // time filter with mood colours
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
@@ -601,7 +357,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
 
                 const SizedBox(height: 20),
 
-                // mini calendar
+                // mini calendar with mood colors
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
@@ -611,7 +367,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: widget.primaryColor.withOpacity(0.1),
+                          color: moodColor.primary.withOpacity(0.1),
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -620,45 +376,48 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
-                        // month and year
+                        // month and year with navigation
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'March 2025',
+                              '${_getMonthName(currentMonth)} $currentYear',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: widget.secondaryColor,
+                                color: moodColor.secondary,
                               ),
                             ),
                             Row(
                               children: [
                                 GestureDetector(
                                   onTap: () {
-
-                                    // previous month
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('Previous month')),
-                                    );
+                                    setState(() {
+                                      if (currentMonth == 1) {
+                                        currentMonth = 12;
+                                        currentYear--;
+                                      } else {
+                                        currentMonth--;
+                                      }
+                                    });
                                   },
                                   child: Icon(Icons.chevron_left,
-                                      size: 20, color: widget.primaryColor),
+                                      size: 20, color: moodColor.primary),
                                 ),
                                 const SizedBox(width: 10),
                                 GestureDetector(
                                   onTap: () {
-
-                                    // next month
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('Next month')),
-                                    );
+                                    setState(() {
+                                      if (currentMonth == 12) {
+                                        currentMonth = 1;
+                                        currentYear++;
+                                      } else {
+                                        currentMonth++;
+                                      }
+                                    });
                                   },
                                   child: Icon(Icons.chevron_right,
-                                      size: 20, color: widget.primaryColor),
+                                      size: 20, color: moodColor.primary),
                                 ),
                               ],
                             ),
@@ -666,7 +425,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                         ),
                         const SizedBox(height: 15),
 
-                        // weekday
+                        // weekday headers
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: weekdays.map((day) {
@@ -675,14 +434,14 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: widget.secondaryColor.withOpacity(0.7),
+                                color: moodColor.secondary.withOpacity(0.7),
                               ),
                             );
                           }).toList(),
                         ),
                         const SizedBox(height: 10),
 
-                        // calender grid with tap functionality
+                        // calendar grid with proper tap functionality
                         GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -693,47 +452,37 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
                             crossAxisSpacing: 4,
                             mainAxisSpacing: 4,
                           ),
-                          itemCount: 28,
+                          itemCount: calendarDays.length,
                           itemBuilder: (context, index) {
                             final dayData = calendarDays[index];
-                            // Find matching date in allmoodHistory
-                            String? dateKey;
-                            if (index < allmoodHistory.length) {
-                              dateKey = allmoodHistory[index]['date'];
+
+                            if (dayData['day'] == null) {
+                              return Container();
                             }
-                            
+
                             return GestureDetector(
                               onTap: () {
-                                if (dateKey != null) {
-                                  // Find the day data
-                                  var dayEntry = allmoodHistory.firstWhere(
-                                    (d) => d['date'] == dateKey,
-                                    orElse: () => {},
-                                  );
-                                  if (dayEntry.isNotEmpty) {
-                                    showDayDetails(dayEntry);
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: const Text('No data for this day'),
-                                        backgroundColor: widget.primaryColor,
-                                      ),
-                                    );
-                                  }
+                                if (dayData['hasData'] == true) {
+                                  showDayDetails(dayData);
                                 }
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: (dayData['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
+                                  color: dayData['hasData'] == true
+                                      ? (dayData['color'] as Color)
+                                          .withOpacity(0.2)
+                                      : Colors.grey.withOpacity(0.1),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
                                   child: Text(
-                                    '${dayData['day'] ?? ''}',
+                                    '${dayData['day']}',
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
-                                      color: dayData['color'] ?? Colors.grey,
+                                      color: dayData['hasData'] == true
+                                          ? dayData['color']
+                                          : Colors.grey,
                                     ),
                                   ),
                                 ),
@@ -744,7 +493,7 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
 
                         const SizedBox(height: 10),
 
-                        // legend
+                        // legend with mood colors
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -765,80 +514,123 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
 
                 const SizedBox(height: 20),
 
-                // mood history list
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                // mood history list only 3 days
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: filteredHistory.length,
-                  itemBuilder: (context, index) {
-                    final entry = filteredHistory[index];
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Recent Moods',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: moodColor.secondary,
+                        ),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: (entry['color'] as Color?)?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Text(
-                                entry['emoji'] ?? '😊',
-                                style: const TextStyle(fontSize: 24),
+                      const SizedBox(height: 12),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: filteredHistory.length,
+                        itemBuilder: (context, index) {
+                          final entry = filteredHistory[index];
+                          return GestureDetector(
+                            onTap: () {
+                              // create a dayData object for this entry
+                              DateTime entryDate = entry['date'] as DateTime;
+                              Map<String, dynamic> dayData = {
+                                'day': entryDate.day,
+                                'color': entry['color'],
+                                'hasData': true,
+                                'fullDate': entryDate,
+                              };
+                              showDayDetails(dayData);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: moodColor.primary.withOpacity(0.1),
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: (entry['color'] as Color)
+                                          .withOpacity(0.2),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        entry['emoji'] ?? '😊',
+                                        style: const TextStyle(fontSize: 24),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _formatDate(
+                                              entry['date'] as DateTime),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          entry['day'] ?? '',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: moodColor.secondary,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: (entry['color'] as Color)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      entry['mood'] ?? '',
+                                      style: TextStyle(
+                                        color: entry['color'],
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  entry['date'] ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  entry['day'] ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: (entry['color'] as Color?)?.withOpacity(0.1) ?? Colors.grey.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              entry['mood'] ?? '',
-                              style: TextStyle(
-                                color: entry['color'] ?? Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 ),
+
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -846,30 +638,50 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
-        selectedColor: widget.primaryColor,
+        selectedColor: moodColor.primary,
         onTap: _onNavBarTap,
       ),
     );
   }
 
-  Color _getMoodColor(String mood) {
-    switch (mood) {
-      case 'Happy':
-        return const Color(0xFFFFD93D);
-      case 'Calm':
-        return const Color(0xFF8FBC94);
-      case 'Neutral':
-        return const Color(0xFFBEBEBE);
-      case 'Sad':
-        return const Color(0xFF6C9EBF);
-      case 'Anxious':
-        return const Color(0xFFB8A9C9);
+  // helper method to get month name
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'January';
+      case 2:
+        return 'February';
+      case 3:
+        return 'March';
+      case 4:
+        return 'April';
+      case 5:
+        return 'May';
+      case 6:
+        return 'June';
+      case 7:
+        return 'July';
+      case 8:
+        return 'August';
+      case 9:
+        return 'September';
+      case 10:
+        return 'October';
+      case 11:
+        return 'November';
+      case 12:
+        return 'December';
       default:
-        return widget.primaryColor;
+        return 'March';
     }
   }
 
-  // filter button widget
+  // helper method to format date
+  String _formatDate(DateTime date) {
+    return '${date.day} ${_getMonthName(date.month)}';
+  }
+
+  // filter button widget with mood colors
   Widget _buildFilterButton(String filterName) {
     bool isSelected = selectedFilter == filterName;
 
@@ -883,19 +695,19 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? widget.primaryColor : Colors.white,
+            color: isSelected ? moodColor.primary : Colors.white,
             borderRadius: BorderRadius.circular(25),
             border: Border.all(
               color: isSelected
-                  ? widget.primaryColor
-                  : widget.primaryColor.withOpacity(0.3),
+                  ? moodColor.primary
+                  : moodColor.primary.withOpacity(0.3),
             ),
           ),
           child: Center(
             child: Text(
               filterName,
               style: TextStyle(
-                color: isSelected ? Colors.white : widget.primaryColor,
+                color: isSelected ? Colors.white : moodColor.primary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -929,4 +741,233 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
       ],
     );
   }
+
+  void _onNavBarTap(int index) {
+    switch (index) {
+      case 0:
+        Navigator.popUntil(context, (route) => route.isFirst);
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+// day detail screen
+class DayDetailScreen extends StatelessWidget {
+  final Map<String, dynamic> moodData;
+  final Color primaryColor;
+  final Color secondaryColor;
+  final Color accentColor;
+
+  const DayDetailScreen({
+    super.key,
+    required this.moodData,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.accentColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Mood Details',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // headrer with date and mood
+            Center(
+              child: Column(
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: (moodData['color'] as Color).withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        moodData['emoji'] ?? '😊',
+                        style: const TextStyle(fontSize: 50),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    moodData['day'] ?? '',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: secondaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    moodData['date'].toString(),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: (moodData['color'] as Color).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      moodData['mood'] ?? '',
+                      style: TextStyle(
+                        color: moodData['color'],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // music section
+            if (moodData['music'] != null)
+              _buildDetailSection(
+                icon: Icons.music_note,
+                title: 'Music Recommended',
+                color: moodData['color'],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      moodData['music']['playlist'] ?? '',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      '${moodData['music']['songCount'] ?? 0} songs',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            const SizedBox(height: 16),
+
+            // food section
+            if (moodData['food'] != null)
+              _buildDetailSection(
+                icon: Icons.restaurant,
+                title: 'Food Recommended',
+                color: moodData['color'],
+                child: Wrap(
+                  spacing: 8,
+                  children: (moodData['food'] as List).map((item) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: (moodData['color'] as Color).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        item,
+                        style: TextStyle(
+                          color: moodData['color'],
+                          fontSize: 14,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+
+            const SizedBox(height: 16),
+
+            // activities section
+            if (moodData['activities'] != null)
+              _buildDetailSection(
+                icon: Icons.self_improvement,
+                title: 'Activities Done',
+                color: moodData['color'],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: (moodData['activities'] as List)
+                      .map((activity) => Padding(
+                            padding: const EdgeInsets.only(bottom: 6),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  size: 16,
+                                  color: moodData['color'],
+                                ),
+                                const SizedBox(width: 8),
+                                Text(activity),
+                              ],
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget _buildDetailSection({
+  required IconData icon,
+  required String title,
+  required Color color,
+  required Widget child,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          Icon(icon, size: 20, color: color),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 10),
+      child,
+    ],
+  );
 }
