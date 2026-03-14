@@ -29,9 +29,6 @@ class Settings(BaseSettings):
     FIREBASE_CLIENT_EMAIL: str
     FIREBASE_PRIVATE_KEY: str
 
-    class Config:
-        env_file = ".env"
-
     @property
     def is_production(self) -> bool:
         return self.APP_ENV.lower() == "production" or self.ENVIRONMENT.lower() == "production"
