@@ -6,6 +6,10 @@ from src.text_emotion.model import load_text_model
 from src.text_emotion.tokenizer import load_tokenizer
 
 
+print("GPU available:", torch.cuda.is_available())
+print("GPU:", torch.cuda.get_device_name(0))
+
+
 def tokenize_function(examples, tokenizer):
 
     return tokenizer(
@@ -30,14 +34,14 @@ def train():
     model = load_text_model(num_labels=6)
 
     training_args = TrainingArguments(
-        output_dir="../../models/text_model",
+        output_dir="./models/text_model",
         eval_strategy="epoch",
         learning_rate=2e-5,
         per_device_train_batch_size=16,
         per_device_eval_batch_size=16,
         num_train_epochs=3,
         weight_decay=0.01,
-        logging_dir="../../logs",
+        logging_dir="./logs",
     )
 
     trainer = Trainer(
@@ -49,7 +53,7 @@ def train():
 
     trainer.train()
 
-    trainer.save_model("models/text_emotion_model")
+    trainer.save_model("./models/text_emotion_model")
 
 
 if __name__ == "__main__":
