@@ -21,7 +21,12 @@ if not firebase_admin._apps:
 def verify_firebase_token(id_token: str):
     try:
         decoded_token = auth.verify_id_token(id_token)
-        return decoded_token
+
+        return {
+            "uid": decoded_token.get("uid"),
+            "email": decoded_token.get("email")
+        }
+
     except Exception as e:
         logger.error(f"Firebase Token Error: {e}")
         return None
