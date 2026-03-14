@@ -31,7 +31,7 @@ def train():
 
     training_args = TrainingArguments(
         output_dir="../../models/text_model",
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         learning_rate=2e-5,
         per_device_train_batch_size=16,
         per_device_eval_batch_size=16,
@@ -45,12 +45,11 @@ def train():
         args=training_args,
         train_dataset=tokenized_dataset["train"],
         eval_dataset=tokenized_dataset["validation"],
-        tokenizer=tokenizer,
     )
 
     trainer.train()
 
-    trainer.save_model("../../models/text_emotion_model")
+    trainer.save_model("models/text_emotion_model")
 
 
 if __name__ == "__main__":
