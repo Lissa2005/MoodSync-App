@@ -1,15 +1,15 @@
 import torch
-from transformers import TrainingArguments, Trainer
 from datasets import Dataset
+from transformers import TrainingArguments, Trainer
 
 from src.speech_emotion.dataset import load_ravdess
-from src.speech_emotion.preprocess import extract_features
+from src.speech_emotion.preprocess import load_audio
 from src.speech_emotion.model import model, processor
 
 
 def preprocess(batch):
 
-    audio = extract_features(batch["path"])
+    audio = load_audio(batch["path"])
 
     inputs = processor(
         audio,
@@ -19,6 +19,7 @@ def preprocess(batch):
     )
 
     batch["input_values"] = inputs.input_values[0]
+    batch["labels"] = batch["label"]
 
     return batch
 
@@ -31,14 +32,24 @@ def train():
 
     dataset = dataset.map(preprocess)
 
+    dataset = dataset.remove_columns(["path", "emotion", "label"])
+
     training_args = TrainingArguments(
-        output_dir="models/speech_emotion_model",
-        per_device_train_batch_size=2,
-        gradient_accumulation_steps=4,
+
+        output_dir="./models/speech_emotion_model",
+
+        per_device_train_batch_size=1,
+
+        gradient_accumulation_steps=8,
+
         num_train_epochs=10,
+
         logging_steps=10,
-        save_steps=500,
-        fp16=True
+
+        save_steps=200,
+
+        fp16=torch.cuda.is_available(),
+
     )
 
     trainer = Trainer(
@@ -49,4 +60,6 @@ def train():
 
     trainer.train()
 
-    trainer.save_model("models/speech_emotion_model")
+    trainer.save_model("./models/speech_emotion_model")
+
+    processor.save_pretrained("./models/speech_emotion_model")
