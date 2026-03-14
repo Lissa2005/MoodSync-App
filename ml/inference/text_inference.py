@@ -5,7 +5,7 @@ from transformers import DistilBertForSequenceClassification
 from src.common.emotion_mapper import map_emotion
 
 
-model_path = "ml/models/text_emotion_model"
+model_path = "models/text_emotion_model"
 
 tokenizer = DistilBertTokenizer.from_pretrained(model_path)
 

@@ -55,6 +55,8 @@ def train():
 
     trainer.save_model("./models/text_emotion_model")
 
+    tokenizer.save_pretrained("./models/text_emotion_model")
+
 
 if __name__ == "__main__":
     train()
