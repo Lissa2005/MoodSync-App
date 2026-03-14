@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:moodsync/screens/Music/music_screen.dart';
+import 'package:moodsync/screens/color_palette.dart';
 import 'package:moodsync/screens/food/food_screen.dart';
 import 'package:moodsync/screens/interactive_platform.dart';
 import 'package:moodsync/screens/activities_screen.dart';
 import 'package:moodsync/widgets/mood_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:moodsync/provider/mood_provider.dart';
+
 
 class RecommendationScreen extends StatelessWidget {
   const RecommendationScreen({
@@ -23,7 +25,7 @@ class RecommendationScreen extends StatelessWidget {
         elevation: 0,
         title: Text(
           "Your mood!  $mood ",
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style:titleStyle ,
         ),
         centerTitle: true,
       ),
@@ -38,7 +40,7 @@ class RecommendationScreen extends StatelessWidget {
             _paletteRow(),
 
             const SizedBox(height: 16),
-            _customizeButton(),
+            _customizeButton(context),
 
             const SizedBox(height: 24),
             
@@ -115,6 +117,8 @@ class RecommendationScreen extends StatelessWidget {
 
   // ---------------- UI COMPONENTS ----------------
 
+
+
   Widget _moodCard(moodColors, String mood) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -128,7 +132,7 @@ class RecommendationScreen extends StatelessWidget {
           const SizedBox(width: 18),
           Text(
             'You are feeling : ${mood.toUpperCase()}',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            style: sectionStyle,
           ),
         ],
       ),
@@ -140,7 +144,7 @@ class RecommendationScreen extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: sectionStyle,
       ),
     );
   }
@@ -166,7 +170,10 @@ class RecommendationScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(title, style: const TextStyle(fontSize: 12)),
+          Text(title, style: const TextStyle(color: Colors.black87,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,)
+          ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -189,9 +196,27 @@ class RecommendationScreen extends StatelessWidget {
     );
   }
 
-  Widget _customizeButton() {
+  Widget _customizeButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white.withOpacity(0.2),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      onPressed: () async{
+        final selectedColor = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const ColorPaletteScreen(),
+          ),
+        );
+
+        if (selectedColor != null) {
+          print(selectedColor);
+        }
+      },
       child: const Text('Customize your own'),
     );
   }
@@ -210,11 +235,29 @@ class RecommendationScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(subtitle),
+        title: Text(title, style: sectionStyle ),
+        subtitle: Text(subtitle, style: subtitleStyle,),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: onTap,
       ),
     );
   }
 }
+
+//text style
+const TextStyle titleStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+);
+
+const TextStyle subtitleStyle = TextStyle(
+  color: Colors.white70,
+  fontSize: 14,
+);
+
+const TextStyle sectionStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+);
