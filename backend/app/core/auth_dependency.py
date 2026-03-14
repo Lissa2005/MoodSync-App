@@ -1,0 +1,16 @@
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPBearer
+from app.core.firebase import verify_firebase_token
+
+security = HTTPBearer()
+
+def get_current_user(token=Depends(security)):
+    user = verify_firebase_token(token.credentials)
+
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid Firebase token"
+        )
+
+    return user
