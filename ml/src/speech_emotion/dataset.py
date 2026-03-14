@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-RAVDESS_PATH = "dataset/speech_emotion/RAVDESS"
+RAVDESS_PATH = "datasets/speech_emotion/RAVDESS"
 
 emotion_map = {
     "01": "Neutral",
@@ -12,6 +12,17 @@ emotion_map = {
     "06": "Anxious",
     "07": "Frustrated",
     "08": "Surprised"
+}
+
+label_map = {
+    "Neutral": 0,
+    "Calm": 1,
+    "Happy": 2,
+    "Sad": 3,
+    "Angry": 4,
+    "Anxious": 5,
+    "Frustrated": 6,
+    "Surprised": 7
 }
 
 
@@ -33,11 +44,14 @@ def load_ravdess():
 
                 emotion = emotion_map.get(emotion_code)
 
+                label = label_map[emotion]
+
                 file_path = os.path.join(actor_path, file)
 
                 data.append({
                     "path": file_path,
-                    "emotion": emotion
+                    "emotion": emotion,
+                    "label": label
                 })
 
     return pd.DataFrame(data)
