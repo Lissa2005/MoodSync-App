@@ -254,15 +254,15 @@ class _SimpleMoodHistoryScreenState extends State<SimpleMoodHistoryScreen> {
     if (moodEntry.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('No mood data for this day'),
+          content: const Text('No mood data for this day'),
           backgroundColor: moodColor.primary,
         ),
       );
       return;
     }
 
-     // get detailed data from dayDetails
-    var detailedData = dayDetails[dateKey] ?? moodEntry;
+     // get detailed data from dayDetails map
+     var detailedData = dayDetails[dateKey] ?? moodEntry;
 
     // navigate to detail page
     Navigator.push(
