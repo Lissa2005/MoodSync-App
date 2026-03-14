@@ -214,7 +214,7 @@ class RecommendationScreen extends StatelessWidget {
         );
 
         if (selectedColor != null) {
-          print(selectedColor);
+          debugPrint(selectedColor);
         }
       },
       child: const Text('Customize your own'),
