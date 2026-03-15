@@ -1,25 +1,25 @@
-from typing import Generator
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from app.core.config import settings
+from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
 
-# Create database engine
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 engine = create_engine(
-    settings.DATABASE_URL,
-    pool_pre_ping=True  # prevents connection drops with Neon
+    DATABASE_URL,
+    pool_pre_ping=True
 )
 
-# Create session factory
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine
 )
 
-def get_db() -> Generator[Session, None, None]:
-    """
-    Creates a new SQLAlchemy session for a single request.
-    """
+# Dependency for FastAPI routes
+def get_db():
     db = SessionLocal()
     try:
         yield db
