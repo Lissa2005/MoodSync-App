@@ -4,7 +4,8 @@ on:
     branches:
       - "**"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -20,6 +21,7 @@ jobs:
             backend:
               - 'backend/**'
               - '.github/workflows/backend-ci.yml'
+
   backend-test:
     needs: changes
     runs-on: ubuntu-latest
@@ -39,6 +41,7 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: python -m pytest backend
+
   skip-logic:
     needs: changes
     runs-on: ubuntu-latest
