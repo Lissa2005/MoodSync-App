@@ -1,56 +1,43 @@
 from fastapi import FastAPI
-import firebase_admin
-from firebase_admin import credentials
-from app.core.config import settings
-from app.core.logger_setup import get_logger
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import create_engine
+from dotenv import load_dotenv
+from datetime import datetime
+import os
 
-# --- DATABASE IMPORTS ---
-from app.db.session import engine
-from app.db.base import Base
-# ------------------------
+load_dotenv()
 
-# Create logger
-logger = get_logger(__name__)
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 
-# Create FastAPI app
-app = FastAPI(title=settings.APP_NAME)
+app = FastAPI(title="MoodSync API")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+from app.routes import activities, moods
+
+app.include_router(activities.router)
+app.include_router(moods.router)
 
 @app.on_event("startup")
-async def startup_event():
-    logger.info(f"Starting {settings.APP_NAME} in {settings.ENVIRONMENT} mode")
-
-    # Create database tables
+def startup():
     try:
-        Base.metadata.create_all(bind=engine)
-        logger.info("Database tables verified/created successfully.")
+        with engine.connect() as connection:
+            print("Database connection successful!")
     except Exception as e:
-        logger.error(f"Database connection failed: {e}")
-
-    # 2. --- FIREBASE INITIALIZATION (Auth) ---
-    try:
-        # Check if already initialized to avoid errors during reloads
-        if not firebase_admin._apps:
-            # We use settings from your config.py which reads from .env
-            cred = credentials.Certificate({
-                "project_id": settings.FIREBASE_PROJECT_ID,
-                "client_email": settings.FIREBASE_CLIENT_EMAIL,
-                "private_key": settings.FIREBASE_PRIVATE_KEY.replace('\\n', '\n') if settings.FIREBASE_PRIVATE_KEY else None,
-            })
-            firebase_admin.initialize_app(cred)
-            logger.info("Firebase Admin SDK initialized successfully.")
-    except Exception as e:
-        logger.error(f"Firebase initialization failed: {e}")
-
-@app.get("/config-test")
-def config_test():
-    logger.debug("Config test endpoint was called")
-    return {
-        "environment": settings.ENVIRONMENT,
-        "algorithm": settings.ALGORITHM
-    }
-
+        print("Failed to connect to database:")
+        print(e)
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to MoodSync API"}
+    return {"message": "MoodSync backend running"}
+
+@app.get("/health")
+def health():
+    return {"status": "healthy", "time": datetime.now().isoformat()}
