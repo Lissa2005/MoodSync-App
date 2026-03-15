@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.session import get_db
-from app.db.model.moods import Mood
+from app.model.moods import Mood
 
 router = APIRouter()
 
