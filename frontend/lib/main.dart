@@ -1,3 +1,4 @@
+import 'package:supabase_flutter/supabase_flutter.dart'; // Import Supabase Flutter package
 import 'package:flutter/material.dart';
 import 'package:moodsync/screens/Profile%20Page/account_settings.dart';
 import 'package:moodsync/screens/Profile%20Page/edit_profile.dart';
@@ -14,12 +15,20 @@ import 'screens/home_screen.dart';
 import 'package:moodsync/provider/mood_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  // ADDED: Supabase initialization (must be first)
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://xarzyvoenynqdjmzjrru.supabase.co',
+    anonKey: 'sb_publishable_Vx8vNUDuBEWiTz-e48tZyw_tpUPUNAO',
+  );
+  
+  // Your existing code continues exactly as before
   runApp(
-      ChangeNotifierProvider(
-          create: (context) => MoodProvider(),
-          child: const MoodSyncApp(),
-      ),
+    ChangeNotifierProvider(
+      create: (context) => MoodProvider(),
+      child: const MoodSyncApp(),
+    ),
   );
 }
 
@@ -28,7 +37,7 @@ class MoodSyncApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
 
       //Default Theme
@@ -53,15 +62,23 @@ class MoodSyncApp extends StatelessWidget {
         '/signin': (_) => const SigninScreen(),
         '/home': (_) => const HomeScreen(), //bottom navigation
         '/profile': (_) => const ProfileScreen(),
-        '/editProfile':(_) => const EditProfileScreen(),
+        '/editProfile': (_) => const EditProfileScreen(),
         '/about': (_) => const AboutPage(),
         '/privacy': (_) => const PrivacyScreen(),
         '/help': (_) => const HelpScreen(),
-        '/account':(_) => const AccountSettingsScreen(),
-        '/feedback':(_) => const FeedbackScreen(),
-        '/notification': (_)=> const NotificationScreen(),
-
-      }
+        '/account': (_) => const AccountSettingsScreen(),
+        '/feedback': (_) => const FeedbackScreen(),
+        '/notification': (_) => const NotificationScreen(),
+      },
     );
   }
 }
+
+// REMOVED: This duplicate main() function was causing the error
+// Future<void> main() async {
+//   await Supabase.initialize(
+//     url: 'https://nqvakdjobencwzmbogca.supabase.co',
+//     anonKey: 'sb_publishable_zHTCpDWmgxJO2X2KaFXxvQ_3OLCvbv2',
+//   );
+//   runApp(MyApp());
+// }

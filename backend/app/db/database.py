@@ -11,7 +11,8 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 # Create database engine
 engine = create_engine(
     DATABASE_URL,
-    pool_pre_ping=True  # helps prevent dropped connections in cloud DBs
+    pool_pre_ping=True,  # helps prevent dropped connections in cloud DBs
+    pool_recycle=300  # recycle connections after 5 minutes to avoid timeouts
 )
 
 # Create session factory
