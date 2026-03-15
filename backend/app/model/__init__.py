@@ -7,4 +7,4 @@ from .mood_trends import MoodTrend
 from .user_settings import UserSettings
 from .notifications import Notification
 from .community_stories import CommunityStory
-from .story_replies import StoryReply
+from .storyreply import StoryReply
