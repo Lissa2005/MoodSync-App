@@ -8,5 +8,6 @@ processor = Wav2Vec2Processor.from_pretrained(MODEL_NAME)
 
 model = Wav2Vec2ForSequenceClassification.from_pretrained(
     MODEL_NAME,
-    num_labels=8
+    num_labels=8,
+    use_safetensors=True
 )

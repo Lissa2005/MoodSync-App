@@ -40,7 +40,7 @@ def train():
 
         per_device_train_batch_size=1,
 
-        gradient_accumulation_steps=8,
+        gradient_accumulation_steps=16,
 
         num_train_epochs=10,
 
@@ -63,3 +63,6 @@ def train():
     trainer.save_model("./models/speech_emotion_model")
 
     processor.save_pretrained("./models/speech_emotion_model")
+
+if __name__ == "__main__":
+    train()
