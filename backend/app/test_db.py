@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 @pytest.mark.skipif(
-    not os.getenv("DATABASE_URL"),
-    reason="No DATABASE_URL set - skipping live DB tests"
+    os.getenv("CI") == "true",
+    reason="skipping live DB tests in CI environment"
 )
 
 def test_supabase_connection():
