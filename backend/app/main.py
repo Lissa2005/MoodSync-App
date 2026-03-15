@@ -1,56 +1,30 @@
-from fastapi import FastAPI
-import firebase_admin
-from firebase_admin import credentials
-from app.core.config import settings
-from app.core.logger_setup import get_logger
+from sqlalchemy import create_engine
+# from sqlalchemy.pool import NullPool
+from dotenv import load_dotenv
+import os
 
-# --- DATABASE IMPORTS ---
-from app.db.session import engine
-from app.db.base import Base
-# ------------------------
+# Load environment variables from .env
+load_dotenv()
 
-# Create logger
-logger = get_logger(__name__)
+# Fetch variables
+USER = os.getenv("user")
+PASSWORD = os.getenv("password")
+HOST = os.getenv("host")
+PORT = os.getenv("port")
+DBNAME = os.getenv("dbname")
 
-# Create FastAPI app
-app = FastAPI(title=settings.APP_NAME)
+# Construct the SQLAlchemy connection string
+DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
 
+# Create the SQLAlchemy engine
+engine = create_engine(DATABASE_URL)
+# If using Transaction Pooler or Session Pooler, we want to ensure we disable SQLAlchemy client side pooling -
+# https://docs.sqlalchemy.org/en/20/core/pooling.html#switching-pool-implementations
+# engine = create_engine(DATABASE_URL, poolclass=NullPool)
 
-@app.on_event("startup")
-async def startup_event():
-    logger.info(f"Starting {settings.APP_NAME} in {settings.ENVIRONMENT} mode")
-
-    # Create database tables
-    try:
-        Base.metadata.create_all(bind=engine)
-        logger.info("Database tables verified/created successfully.")
-    except Exception as e:
-        logger.error(f"Database connection failed: {e}")
-
-    # 2. --- FIREBASE INITIALIZATION (Auth) ---
-    try:
-        # Check if already initialized to avoid errors during reloads
-        if not firebase_admin._apps:
-            # We use settings from your config.py which reads from .env
-            cred = credentials.Certificate({
-                "project_id": settings.FIREBASE_PROJECT_ID,
-                "client_email": settings.FIREBASE_CLIENT_EMAIL,
-                "private_key": settings.FIREBASE_PRIVATE_KEY.replace('\\n', '\n') if settings.FIREBASE_PRIVATE_KEY else None,
-            })
-            firebase_admin.initialize_app(cred)
-            logger.info("Firebase Admin SDK initialized successfully.")
-    except Exception as e:
-        logger.error(f"Firebase initialization failed: {e}")
-
-@app.get("/config-test")
-def config_test():
-    logger.debug("Config test endpoint was called")
-    return {
-        "environment": settings.ENVIRONMENT,
-        "algorithm": settings.ALGORITHM
-    }
-
-
-@app.get("/")
-def root():
-    return {"message": "Welcome to MoodSync API"}
+# Test the connection
+try:
+    with engine.connect() as connection:
+        print("Connection successful!")
+except Exception as e:
+    print(f"Failed to connect: {e}")
