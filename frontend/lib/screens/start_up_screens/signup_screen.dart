@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -34,6 +35,15 @@ class _SignupScreenState extends State<SignupScreen>{
       curve: Curves.easeInOut,
     );
   }
+
+  //previous page
+  void _previousPage() {
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   //Age check
   void _checkAge() {
     final age = int.tryParse(_ageController.text);
@@ -97,206 +107,279 @@ class _SignupScreenState extends State<SignupScreen>{
     });
   }
 
+  InputDecoration glassInput(String hint) {
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: const TextStyle(color: Colors.white70),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.1),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide.none,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formkey,
-          child: PageView(
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              //page 1
-            _buildPage(
-              title: 'Your Name',
-              children:[
-                // Name
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'First Name'),
-                  validator: (value) =>
-                  value!.isEmpty ? 'Enter first name' : null,
-                ),
-                const SizedBox(height: 10),
-
-                // Surname
-                TextFormField(
-                  controller: _surnameController,
-                  decoration: const InputDecoration(labelText: 'Surname'),
-                  validator: (value) =>
-                  value!.isEmpty ? 'Enter surname' : null,
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(onPressed: _nextPage, child: const Text ('Next')),
-              ],
-            ),
-            //page 2
-            _buildPage(
-              title:'Email Address',
-              children:[
-                //Email
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter an email';
-                    }
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                        return 'Enter a valid email';
-                      }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_emailController.text.isNotEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Verification email sent'),
-                              ),
-                            );
-
-                            // 🔹 Mock verification success
-                            Future.delayed(const Duration(seconds: 2), () {
-                              setState(() {
-                                _emailVerified = true;
-                              });
-                            });
-                          }
-                        },
-                        child: const Text('Verify Email'),
-
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(onPressed: _nextPage, child: const Text ('Next'),
-                ),
-              ],
-            ),
-
-              //page 3
-              _buildPage(
-                title:'your age',
-                children:[
-                  // Age
-                  TextFormField(
-                    controller: _ageController,
-                    decoration: const InputDecoration(labelText: 'Age'),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      final age = int.tryParse(value!);
-                      if (age == null) return 'Enter a valid age';
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(onPressed: _checkAge , child: const Text('Next'),),
+      appBar: AppBar(backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/signin');
+          },
+        ),
+        title: const Text('Sign Up'),
+      ),
+        body: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xE6843CF4),
+                  Color(0xFF9269E4),
+                  Color(0xE6B18DE8),
                 ],
               ),
-                //page 4
-                _buildPage(
-                  title: 'Choose Username',
-                  children: [
-                    // Username
-                    TextFormField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(labelText: 'Username'),
-                      validator: (value) {
-                        if (value!.isEmpty) return 'Enter a username';
-                        if (_registeredUsernames.contains(value.toLowerCase())) {
-                          return 'Username already taken';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(onPressed: _nextPage, child: const Text('Next')),
-                  ],
-                ),
-                //Page 5
-                _buildPage(
-                  title: 'create password',
-                  children: [
-                  // Password
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(labelText: 'Password'),
-                      obscureText: true,
-                      onChanged: _checkPasswordStrength,
-                      validator: (value) {
-                        if (value == null || value.length < 8) {
-                          return 'Password must be at least 8 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 8),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
 
-                    // Strength Meter
-                    LinearProgressIndicator(
-                      value: _passwordStrength,
-                      backgroundColor: Colors.grey[300],
-                      color: _passwordStrength <= 0.25
-                        ? Colors.red
-                        : _passwordStrength <= 0.5
-                        ? Colors.orange
-                        : _passwordStrength <= 0.75
-                        ? Colors.blue
-                        : Colors.green,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Password strength: $_passwordStrengthText',
-                        style: TextStyle(
-                          color: _passwordStrength <= 0.25
-                            ? Colors.red
-                            : _passwordStrength <= 0.5
-                            ? Colors.orange
-                            : _passwordStrength <= 0.75
-                            ? Colors.blue
-                            : Colors.green,
+                  //glass card
+                  child:
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                      child: Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.white.withOpacity(0.1),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.2),
+                          ),
                         ),
-                    ),
-                    const SizedBox(height: 10),
 
-                    // Confirm Password
-                    TextFormField(
-                    controller: _confirmPasswordController,
-                    decoration:
-                    const InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value != _passwordController.text) {
-                        return 'Passwords do not match';
-                      }
-                      return null;
-                    },
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                    onPressed: _createAccount,
-                    child: const Text('Create Account'),
-                    ),
-                  ],
-                ),
+                        child: Form(
+                         key: _formkey,
+                             child: PageView(
+                        controller: _pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          //page 1
+                          _buildPage(
+                            title: 'Your Name',
+                              children:[
+                              // Name
+                              TextFormField(
+                                controller: _nameController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: glassInput("First Name"),
+                              validator: (value) =>
+                              value!.isEmpty ? 'Enter first name' : null,
+                              ),
+                              const SizedBox(height: 10),
 
-            ],
-          ),
+                              // Surname
+                              TextFormField(
+                                  controller: _surnameController,
+                                  style: const TextStyle(color: Colors.white),
+                                  decoration: glassInput("Surname"),
+                                  validator: (value) => value!.isEmpty ? 'Enter surname' : null,
+                              ),
+                              const SizedBox(height: 10),
+                              ElevatedButton(onPressed: _nextPage, child: const Text ('Next')
+                              ),
+                            ],
+                          ),
+                           //page 2
+                          _buildPage(
+                            title:'Email Address',
+                              children:[
+                               //Email
+                              TextFormField(
+                                controller: _emailController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: glassInput("Email"),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter an email';
+                                  }
+                                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                    return 'Enter a valid email';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 10),
 
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          if (_emailController.text.isNotEmpty) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text('Verification email sent'),
+                                              ),
+                                            );
+
+                                            // 🔹 Mock verification success
+                                            Future.delayed(const Duration(seconds: 2), () {
+                                                setState(() {
+                                                  _emailVerified = true;
+                                                });
+                                            });
+                                          }
+                                        },
+                                        child: const Text('Verify Email'),
+
+                                       ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: _previousPage,
+                                        child: const Text('Previous'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: _nextPage,
+                                        child: const Text('Next'),
+                                      ),
+                                    ],
+                                )
+                              ],
+                           ),
+
+                          //page 3
+                          _buildPage(
+                            title:'your age',
+                            children:[
+                            // Age
+                            TextFormField(
+                              controller: _ageController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: glassInput("Age"),
+                              keyboardType: TextInputType.number,
+                            validator: (value) {
+                              final age = int.tryParse(value!);
+                              if (age == null) return 'Enter a valid age';
+                              return null;
+                            },
+                            ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(onPressed: _checkAge , child: const Text('Next'),),
+                            ],
+                          ),
+
+                          //page 4
+                          _buildPage(
+                            title: 'Choose Username',
+                            children: [
+                              // Username
+                              TextFormField(
+                                controller: _usernameController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: glassInput("Username"),
+                                validator: (value) {
+                                  if (value!.isEmpty) return 'Enter a username';
+                                    if (_registeredUsernames.contains(value.toLowerCase())) {
+                                      return 'Username already taken';
+                                    }
+                                    return null;
+                                    },
+                              ),
+                              const SizedBox(height: 10),
+                              ElevatedButton(onPressed: _nextPage, child: const Text('Next')),
+                            ],
+                          ),
+
+                          //Page 5
+                          _buildPage(
+                            title: 'create password',
+                            children: [
+                              // Password
+                              TextFormField(
+                                controller: _passwordController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: glassInput("Password"),
+                                onChanged: _checkPasswordStrength,
+                                validator: (value) {
+                                  if (value == null || value.length < 8) {
+                                    return 'Password must be at least 8 characters';
+                                  }
+                                  return null;
+                                  },
+                              ),
+                              const SizedBox(height: 8),
+
+                              // Strength Meter
+                              LinearProgressIndicator(
+                                value: _passwordStrength,
+                                backgroundColor: Colors.grey[300],
+                                color: _passwordStrength <= 0.25
+                              ? Colors.red
+                                : _passwordStrength <= 0.5
+                              ? Colors.orange
+                                : _passwordStrength <= 0.75
+                              ? Colors.blue
+                                : Colors.green,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Password strength: $_passwordStrengthText',
+                              style: TextStyle(
+                              color: _passwordStrength <= 0.25
+                              ? Colors.red
+                                : _passwordStrength <= 0.5
+                              ? Colors.orange
+                                : _passwordStrength <= 0.75
+                              ? Colors.blue
+                                : Colors.green,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+
+                            // Confirm Password
+                            TextFormField(
+                            controller: _confirmPasswordController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: glassInput("Confirm Password"),
+                              obscureText: true,
+                              validator: (value) {
+                                if (value != _passwordController.text) {
+                                  return 'Passwords do not match';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: _createAccount,
+                                child: const Text('Create Account'),
+                            ),
+                          ],
+                          ),
+                        ],
+                        ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ),
+            ),
         ),
-      ),
     );
   }
 
@@ -311,7 +394,7 @@ class _SignupScreenState extends State<SignupScreen>{
         children: [
           Text(title,
               style:
-              const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white,)),
           const SizedBox(height: 30),
           ...children,
         ],
